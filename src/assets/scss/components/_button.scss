@@ -1,0 +1,35 @@
+.btn {
+	@extend %transition;
+	color: $white;
+	text-decoration: none;
+	text-align: center;
+	text-transform: uppercase;
+	font-weight: 700;
+	font-size: rem-calc(24px);
+	line-height: 1;
+	display: inline-block;
+	vertical-align: top;
+	padding: rem-calc(13px 15px);
+	border: 1px solid transparent;
+	border-radius: rem-calc(8px);
+	cursor: pointer;
+	outline: none;
+}
+
+.btn__primary {
+	background: $primary;
+
+	&:focus, 
+	&:hover {
+		background: darken($primary, 30%);
+	}
+}
+
+.btn__danger {
+	background: $danger;
+
+	&:focus, 
+	&:hover {
+		background: darken($danger, 30%);
+	}
+}

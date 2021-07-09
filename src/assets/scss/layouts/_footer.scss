@@ -1,0 +1,53 @@
+#footer {
+	padding: rem-calc(24px 16px);
+	background: $black-500;
+
+	@include media('>=tablet') {
+		padding: rem-calc(24px 62px);
+	}
+}
+
+.footer__nav {
+	@extend %listreset;
+	display: flex;
+	justify-content: space-between;
+
+	li {
+		text-align: center;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	a {
+		color: $primary;
+	}
+
+	[class^="icon-"],
+	[class*=" icon-"] {
+		font-size: rem-calc(32px);
+		line-height: 1;
+		display: block;
+		margin-bottom: rem-calc(8px);
+
+		@include media('>=tablet') {
+			font-size: rem-calc(64px);
+			margin-bottom: rem-calc(18px);
+		}
+	}
+
+	.active a {
+		color: $white;
+	}
+
+	.text {
+		font-weight: 700;
+		font-size: rem-calc(18px);
+		line-height: 1.1667;
+		display: block;
+
+		@include media('>=tablet') {
+			font-size: rem-calc(30px);
+		}
+	}
+}

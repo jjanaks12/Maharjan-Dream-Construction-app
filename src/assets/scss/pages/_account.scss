@@ -1,0 +1,80 @@
+.account__section {
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.account__section__body {
+	width: 100%;
+	max-width: rem-calc(862px);
+	padding: rem-calc(30px 15px);
+
+	h1 {
+		text-align: center;
+	}
+}
+
+.account__section__form {
+	@include font(24px);
+
+	@include media('>=tablet') {
+		padding: rem-calc(0 25px);
+	}
+
+	.forgot__password {
+		max-width: 50%;
+		flex-grow: 0;
+		flex-shrink: 0;
+	}
+
+	.form__holder {
+		@include font(18px);
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: rem-calc(30px);
+
+		@include media('>=tablet') {
+			@include font(24px);
+		}
+
+		.custom__checkbox {
+			max-width: 50%;
+			flex-grow: 1;
+			flex-shrink: 0;
+		}
+	}
+
+	.btn__holder {
+		text-align: center;
+	}
+
+	.btn__primary {
+		width: rem-calc(192px);
+
+		[class^="icon-"],
+		[class*=" icon-"] {
+			display: inline-block;
+			vertical-align: middle;
+			margin: rem-calc(-4px 8px 0 0);
+		}
+	}
+
+	.btn__block {
+		margin-bottom: rem-calc(30px);
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+
+		.text {
+			text-transform: uppercase;
+			font-weight: 700;
+		}
+	}
+
+	.btn__danger {
+		width: rem-calc(264px);
+	}
+}

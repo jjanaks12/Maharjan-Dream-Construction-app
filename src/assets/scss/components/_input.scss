@@ -1,0 +1,81 @@
+[type=email],
+[type=password],
+[type=search],
+[type=text] {
+	@include animate(border-color);
+	background: $black-500;
+	color: $white;
+	width: 100%;
+	height: rem-calc(80px);
+	padding: rem-calc(5px 27px);
+	font: #{ rem-calc(18px) }/1.1667 $base-font-sans-serif;
+	border: 1px solid $black-500;
+	box-sizing: border-box;
+	border-radius: rem-calc(8px);
+	outline: none;
+
+	@include media('>=tablet') {
+		font-size: rem-calc(24px);
+	}
+
+	@include placeholder {
+		color: $light;
+	}
+
+	&:focus {
+		border-color: $primary;
+	}
+
+	.input--invalid & {
+		color: $danger;
+		border-color: $danger;
+	}
+}
+
+.input__text {
+	@include font(16px);
+	display: inline-block;
+	vertical-align: top;
+	padding-top: rem-calc(10px);
+
+	.input--invalid & {
+		color: $danger;
+	}
+}
+
+.form__group {
+	margin-bottom: rem-calc(40px);
+}
+
+.custom__checkbox {
+	$self: &;
+	user-select: none;
+
+	input {
+		@extend .sr-only !optional;
+
+		&:checked ~ #{ $self }__text:before {
+			background: $primary;
+			border-color: $primary;
+		}
+	}
+
+	&__text {
+		@extend .icon-check !optional;
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+
+		&:before {
+			@include size(#{ rem-calc(25px) });
+			@include animate(background border-color);
+			background: $white;
+			display: inline-flex;
+			justify-content: center;
+			align-items: center;
+			font: #{ rem-calc(15px) }/1 icomoon;
+			border-radius: rem-calc(4px);
+			margin-right: rem-calc(15px);
+		}
+	}
+}
