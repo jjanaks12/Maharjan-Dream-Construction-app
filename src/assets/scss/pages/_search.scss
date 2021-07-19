@@ -9,7 +9,7 @@
 		visibility: hidden;
 	}
 
-	[type=text] {
+	[type="text"] {
 		padding-left: rem-calc(68px);
 		border-radius: 0;
 
@@ -17,7 +17,7 @@
 			color: $primary;
 		}
 
-		@include media('>=tablet') {
+		@include media(">=tablet") {
 			padding-left: rem-calc(136px);
 		}
 
@@ -26,7 +26,9 @@
 		}
 	}
 
-	[type=submit] {
+	[type="submit"],
+	.btn__cancel {
+		@include animate(color);
 		background: none;
 		color: $primary;
 		font-size: rem-calc(27px);
@@ -37,14 +39,29 @@
 		top: 50%;
 		left: rem-calc(35px);
 		transform: translateY(-50%);
+		cursor: pointer;
 
-		@include media('>=tablet') {
+		@include media(">=tablet") {
 			font-size: rem-calc(42px);
 			left: rem-calc(70px);
+		}
+
+		&:hover {
+			color: $gray;
 		}
 	}
 
 	.form__group {
 		margin-bottom: 0;
+	}
+
+	.btn__cancel {
+		left: auto;
+		right: rem-calc(35px);
+
+		@include media(">=tablet") {
+			left: auto;
+			right: rem-calc(70px);
+		}
 	}
 }

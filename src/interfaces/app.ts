@@ -7,3 +7,11 @@ export type newRouteConfig = RouteConfig & {
     }
     [propName: string]: any
 }
+
+export interface iMenu {
+    name: string
+    text: string
+    icon: string
+    path: string
+    [propName: string]: any
+}

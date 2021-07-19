@@ -1,16 +1,19 @@
 #header {
 	@include font(24px);
 	background: $black-500;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
 
-	@include media('>=tablet') {
+	@include media(">=tablet") {
 		@include font(36px, 42px);
 	}
 
 	&.is-app {
 		padding-top: rem-calc(72px);
+	}
+
+	.header-holder {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
 	}
 }
 
@@ -31,7 +34,7 @@
 	outline: none;
 	cursor: pointer;
 
-	@include media('>=tablet') {
+	@include media(">=tablet") {
 		@include font(64px, 64px);
 		max-width: rem-calc(114px);
 		height: rem-calc(114px);
@@ -47,4 +50,9 @@
 
 .auth__user {
 	color: $primary;
+
+	[class^="icon-"],
+	[class*=" icon-"] {
+		margin-right: rem-calc(10px);
+	}
 }

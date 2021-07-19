@@ -1,6 +1,8 @@
+import { iMenu } from '@/interfaces/app'
 import { VNode } from 'vue'
 import { Component, Vue } from 'vue-property-decorator'
 import { mapActions } from 'vuex'
+import menuList from './menuList'
 
 
 @Component({
@@ -20,10 +22,12 @@ export default class Footer extends Vue {
         return (<footer id="footer">
             <nav class="footer__nav__icon">
                 <ul class="footer__nav">
-                    <li class="active"><a href="#"><span class="icon-home"></span><span class="text">Home</span></a></li>
-                    <li><a href="#"><span class="icon-collection"></span><span class="text">Collection</span></a></li>
-                    <li><a href="#"><span class="icon-bell"></span><span class="text">Notification</span></a></li>
-                    <li><router-link to={{ name: 'account' }}><span class="icon-user"></span><span class="text">Me</span></router-link></li>
+                    {menuList.map((item: iMenu) => (<li class={{ 'active': item.path === this.$route.name }}>
+                        <router-link to={{ name: item.path }}>
+                            <span class={item.icon}></span>
+                            <span class="text">{item.text}</span>
+                        </router-link>
+                    </li>))}
                 </ul>
             </nav>
         </footer>)

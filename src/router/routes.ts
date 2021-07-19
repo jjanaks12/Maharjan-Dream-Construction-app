@@ -38,7 +38,23 @@ const routes: Array<newRouteConfig> = [{
     component: () => import('@/pages/Account'),
     meta: {
         layout: 'default',
-        type: 'nauthorized'
+        type: 'authorized'
+    }
+}, {
+    path: '/notification',
+    name: 'notification',
+    component: () => import('@/pages/Notification'),
+    meta: {
+        layout: 'default',
+        type: 'authorized'
+    }
+}, {
+    path: '/collection',
+    name: 'collection',
+    component: () => import('@/pages/Collection'),
+    meta: {
+        layout: 'default',
+        type: 'authorized'
     }
 }, {
     path: '/login',

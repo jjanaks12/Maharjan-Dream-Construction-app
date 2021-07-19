@@ -5,12 +5,18 @@
 .item__section__heading {
 	display: flex;
 	justify-content: space-between;
+	flex-wrap: wrap;
 	align-items: center;
 	padding: rem-calc(0 40px);
 	margin-bottom: rem-calc(8px);
 
 	h2 {
 		flex-grow: 1;
+	}
+
+	.text__holder {
+		flex-grow: 1;
+		width: 100%;
 	}
 }
 

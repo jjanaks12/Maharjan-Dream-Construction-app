@@ -1,5 +1,6 @@
+import { iErrorMessage } from './../../interfaces/auth';
 import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 
 import { iLogin, iUserDetail } from "@/interfaces/auth";
 import axios from '@/services/axios'
@@ -8,6 +9,7 @@ import axios from '@/services/axios'
 export default class Root extends VuexModule {
     private token: string | null = null
     private userDetail: iUserDetail | null = null
+    private errors!: iErrorMessage
 
     get getLoggedinUser(): iUserDetail | null {
         return this.userDetail
@@ -15,6 +17,10 @@ export default class Root extends VuexModule {
 
     get getToken(): string | null {
         return this.token
+    }
+
+    get getErrorMessage(): iErrorMessage | null {
+        return this.errors
     }
 
     @Mutation
@@ -27,19 +33,25 @@ export default class Root extends VuexModule {
         this.userDetail = { ...userDetail }
     }
 
+    @Mutation
+    SET_ERROR_MESSAGE(errorMessage: iErrorMessage): void {
+        this.errors = errorMessage
+    }
+
     @Action
     login(formData: iLogin): Promise<void | boolean> {
         return new Promise((resolve, reject) => {
 
-            axios.post('admin/login', formData)
+            axios.post('user/login', formData)
                 .then((userResponse: AxiosResponse) => {
                     this.context.commit('SET_TOKEN', userResponse.data.token)
                     this.context.commit('SET_LOGIN_USER', userResponse.data)
 
                     resolve(true)
                 })
-                .catch((error: AxiosError) => {
-                    reject({ ...error })
+                .catch((error: iErrorMessage) => {
+                    this.context.commit('SET_ERROR_MESSAGE', error?.errors)
+                    reject(false)
                 })
         })
     }
@@ -49,14 +61,12 @@ export default class Root extends VuexModule {
         return new Promise((resolve, reject) => {
 
             axios.post('users', formData)
-                .then((userResponse: AxiosResponse) => {
-                    this.context.commit('SET_TOKEN', userResponse.data.token)
-                    this.context.commit('SET_LOGIN_USER', userResponse.data)
-
+                .then(() => {
                     resolve(true)
                 })
-                .catch((error: AxiosError) => {
-                    reject({ ...error })
+                .catch((error: iErrorMessage) => {
+                    this.context.commit('SET_ERROR_MESSAGE', error?.errors)
+                    reject(false)
                 })
         })
     }
@@ -65,37 +75,22 @@ export default class Root extends VuexModule {
     logout(): Promise<boolean> {
         return new Promise((resolve, reject) => {
 
-            axios.post('admin/logout')
+            axios.get('user/logout')
                 .then(() => {
                     this.context.commit('SET_TOKEN', null)
                     this.context.commit('SET_LOGIN_USER', {})
                     resolve(true)
                 })
-                .catch((error: AxiosError) => {
-                    reject({ ...error })
-                })
-        })
-    }
-
-    @Action
-    fetchLogginedUser(): Promise<boolean> {
-        return new Promise((resolve, reject) => {
-
-            resolve(true)
-            axios.post('admin/logout')
-                .then(() => {
-                    this.context.commit('SET_TOKEN', null)
-                    this.context.commit('SET_LOGIN_USER', {})
-                })
-                .catch((error: AxiosError) => {
-                    reject({ ...error })
+                .catch((error: iErrorMessage) => {
+                    this.context.commit('SET_ERROR_MESSAGE', error?.errors)
+                    reject(false)
                 })
         })
     }
 
     @Action
     resetUser(): Promise<boolean> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             this.context.commit('SET_TOKEN', null)
             this.context.commit('SET_LOGIN_USER', {})
 
