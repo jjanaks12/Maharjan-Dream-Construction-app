@@ -26,16 +26,18 @@ instance.interceptors.request.use((request: AxiosRequestConfig) => {
 })
 
 // Response.interceptor
-instance.interceptors.response.use((response: AxiosResponse): AxiosResponse => response, (error: AxiosError): Promise<AxiosError> => {
+instance.interceptors.response.use((response: AxiosResponse): AxiosResponse => response, (error: AxiosError): AxiosError => {
 
-    if (error.response?.status == 403) {
-        Store.dispatch('root/resetUser')
+    if (error.response?.status == 401 || error.response?.status == 403) {
+        Store.commit('root/SET_LOGIN_USER', {})
         router.push({ name: 'login' })
     }
 
-    return new Promise((resolve, reject) => {
-        reject(error.response?.data)
-    })
+    else if ([422, 400].includes(error.response?.status || 0)) {
+        Store.commit('root/SET_ERROR_MESSAGE', error.response?.data?.errors)
+    }
+
+    return error
 })
 
 export default instance

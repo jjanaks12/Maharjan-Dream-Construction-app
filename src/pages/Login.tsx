@@ -1,12 +1,17 @@
-import { iLogin } from '@/interfaces/auth'
+import { iErrorMessage, iLogin } from '@/interfaces/auth'
 import FormComponent from '@/core/FormComponent'
 
 import { validate } from 'vee-validate'
 import { VNode } from 'vue'
 import { Component } from 'vue-property-decorator'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 @Component({
+  computed: {
+    ...mapGetters({
+      errorList: 'root/getErrorMessage',
+    })
+  },
   methods: {
     ...mapActions({
       login: 'root/login'
@@ -16,8 +21,9 @@ import { mapActions } from 'vuex'
 export default class Login extends FormComponent {
   private login!: (formData: iLogin) => Promise<boolean>
   private isLoggingIn: boolean = false
+  private errorList?: iErrorMessage
   private formData: iLogin = {
-    email: 'admin@gmail.com',
+    email: 'jjanaks12@gmail.com',
     password: 'password',
     // rememberMe: false
   }
@@ -97,17 +103,21 @@ export default class Login extends FormComponent {
         this.errors['password'] = result.errors
       })
 
-    this.$nextTick(() => {
+    this.$nextTick(async () => {
       if (!this.hasError) {
         this.isLoggingIn = true
 
-        this.login(this.formData)
-          .then(() => {
-            this.$router.push({ name: 'home' })
-          })
-          .finally(() => {
-            this.isLoggingIn = false
-          })
+        try {
+          const data = await this.login(this.formData)
+
+          if (data) {
+            this.errors = { ...this.errors, ...this.errorList }
+              this.$router.push({ name: 'realstate' })
+          }
+
+        } finally {
+          this.isLoggingIn = false
+        }
       }
     })
   }

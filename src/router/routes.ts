@@ -9,6 +9,38 @@ const routes: Array<newRouteConfig> = [{
         type: 'authorized'
     }
 }, {
+    path: '/realstate',
+    name: 'realstate',
+    component: () => import('@/pages/realState/Index'),
+    meta: {
+        layout: 'default',
+        type: 'authorized'
+    }
+}, {
+    path: '/realstate/:id',
+    name: 'realstate_detail',
+    component: () => import('@/pages/realState/Detail'),
+    meta: {
+        layout: 'default',
+        type: 'authorized'
+    }
+}, {
+    path: '/material',
+    name: 'material',
+    component: () => import('@/pages/material/Index'),
+    meta: {
+        layout: 'default',
+        type: 'authorized'
+    }
+}, {
+    path: '/material/:id',
+    name: 'material_detail',
+    component: () => import('@/pages/material/Detail'),
+    meta: {
+        layout: 'default',
+        type: 'authorized'
+    }
+}, {
     path: '/search',
     name: 'search',
     component: () => import('@/pages/search/Index'),
@@ -35,7 +67,31 @@ const routes: Array<newRouteConfig> = [{
 }, {
     path: '/account',
     name: 'account',
-    component: () => import('@/pages/Account'),
+    component: () => import('@/pages/account/Index'),
+    meta: {
+        layout: 'default',
+        type: 'authorized'
+    }
+}, {
+    path: '/info',
+    name: 'account_info',
+    component: () => import('@/pages/account/Info'),
+    meta: {
+        layout: 'default',
+        type: 'authorized'
+    }
+}, {
+    path: '/verification',
+    name: 'account_verification',
+    component: () => import('@/pages/account/Verification'),
+    meta: {
+        layout: 'simple',
+        type: 'unauthorized'
+    }
+}, {
+    path: '/change_password',
+    name: 'change_password',
+    component: () => import('@/pages/account/ChangePassword'),
     meta: {
         layout: 'default',
         type: 'authorized'

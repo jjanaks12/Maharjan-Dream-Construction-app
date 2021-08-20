@@ -4,6 +4,7 @@ import { NavigationGuardNext, Route } from 'vue-router'
 
 export default (to: Route, from: Route, next: NavigationGuardNext) => {
   const type = to?.meta?.type
+  
 
   switch (type) {
     case 'authorized':

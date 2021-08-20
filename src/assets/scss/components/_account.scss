@@ -1,0 +1,110 @@
+.account__message {
+    background: $black-500;
+    color: $gray;
+    text-align: center;
+    padding: rem-calc(20px 10px);
+    border-radius: 8px;
+
+    h2 {
+        color: $white;
+        margin-bottom: rem-calc(15px);
+    }
+
+    strong {
+        color: $white;
+        font-weight: 400;
+    }
+}
+
+.account__form {
+    padding-bottom: rem-calc(30px);
+
+    label {
+        display: inline-block;
+        vertical-align: top;
+        margin-bottom: rem-calc(8px);
+    }
+
+    [type="text"] {
+        height: rem-calc(52px);
+        border-color: rgba($white, 0.1);
+
+        &:focus {
+            border-color: $primary;
+        }
+    }
+
+    strong {
+        display: block;
+        margin-bottom: rem-calc(8px);
+    }
+
+    .avatar {
+        background: $black-500;
+        color: $gray;
+        margin-bottom: rem-calc(15px);
+        height: rem-calc(320px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: rem-calc(0 -15px 15px);
+        position: relative;
+
+        img {
+            @include size(100%);
+            object-fit: cover;
+        }
+
+        [class^="icon-"],
+        [class*=" icon-"] {
+            font-size: rem-calc(100px);
+        }
+
+        .custom__file__upload {
+            position: absolute;
+            bottom: rem-calc(10px);
+            right: rem-calc(10px);
+
+            input {
+                opacity: 0;
+                visibility: hidden;
+                position: absolute;
+            }
+        }
+    }
+
+    .btn__holder {
+        text-align: right;
+    }
+
+    .files {
+        display: flex;
+        margin: rem-calc(0 -5px);
+
+        .custom__file__upload {
+            max-width: calc(50% - #{rem-calc(10px)});
+            flex: calc(50% - #{rem-calc(10px)}) 0 0;
+            min-height: rem-calc(100px);
+            color: $gray;
+            text-align: center;
+            font-size: rem-calc(12px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: rem-calc(0 5px);
+            border: rem-calc(3px) solid $black;
+            border-radius: rem-calc(5px);
+
+            input {
+                opacity: 0;
+                visibility: hidden;
+                position: absolute;
+            }
+
+            img {
+                @include size(100%);
+                object-fit: cover;
+            }
+        }
+    }
+}

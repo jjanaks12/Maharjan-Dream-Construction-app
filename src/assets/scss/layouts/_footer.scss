@@ -1,6 +1,12 @@
 #footer {
 	padding: rem-calc(24px 16px);
-	background: $black-500;
+	background: $black-900;
+	backdrop-filter: blur(10px);
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 9999;
 
 	@include media('>=tablet') {
 		padding: rem-calc(24px 62px);

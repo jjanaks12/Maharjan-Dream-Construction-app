@@ -18,10 +18,11 @@ import { mapActions, mapGetters } from 'vuex'
         })
     }
 })
-export default class Login extends FormComponent {
+export default class Register extends FormComponent {
     private register!: (formData: iUserDetail) => Promise<boolean>
     private isLoggingIn: boolean = false
     private errorList?: iErrorMessage
+    private isSuccess: boolean = false
     private formData: iUserDetail = {
         name: 'Janak Shrestha',
         address: 'futung',
@@ -51,7 +52,7 @@ export default class Login extends FormComponent {
     render(): VNode {
         return (<section class="account__section">
             <div class="account__section__body">
-                <h1>Register</h1>
+                {!this.isSuccess ? [<h1>Register</h1>,
                 <form action="#" class="account__section__form" onSubmit={this.formSubmitted} novalidate>
                     <div class={{ 'form__group': true, 'input--invalid': this.errors.name.length > 0 }}>
                         <label class="sr-only" for="asf-name">Full Name</label>
@@ -97,9 +98,20 @@ export default class Login extends FormComponent {
                             <router-link to={{ name: "login" }} class="btn btn__primary">login</router-link>
                         </div>
                     </div>
-                </form>
+                </form>] : <div class="account__message">
+                    <h2 class="h3">Your account has been created successfully</h2>
+                    <p>Please check you registered email <strong>{this.formData.email}</strong> for verification link.</p>
+                    <a href="#" class="btn btn__primary" onClick={(event: MouseEvent) => {
+                        event.preventDefault();
+                        this.$router.push({
+                            name: 'login', query: {
+                                email: this.formData.email
+                            }
+                        })
+                    }}>Continue</a>
+                </div>}
             </div>
-        </section>)
+        </section >)
     }
 
     /**
@@ -146,10 +158,10 @@ export default class Login extends FormComponent {
 
                 this.register(formData)
                     .then(() => {
-                        this.$router.push({ name: 'login' })
-                    })
-                    .catch(() => {
                         this.errors = { ...this.errors, ...this.errorList }
+
+                        if (!this.hasError)
+                            this.isSuccess = true
                     })
                     .finally(() => {
                         this.isLoggingIn = false

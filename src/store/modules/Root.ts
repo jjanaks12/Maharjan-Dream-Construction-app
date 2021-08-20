@@ -1,15 +1,20 @@
-import { iErrorMessage } from './../../interfaces/auth';
-import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
-import { AxiosResponse } from "axios";
+import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators"
+import { AxiosResponse } from "axios"
 
-import { iLogin, iUserDetail } from "@/interfaces/auth";
+import { iLogin, iUserDetail, iErrorMessage, iPassword, resedEmail } from "@/interfaces/auth"
 import axios from '@/services/axios'
 
 @Module
 export default class Root extends VuexModule {
-    private token: string | null = null
-    private userDetail: iUserDetail | null = null
-    private errors!: iErrorMessage
+    private errors: iErrorMessage = {}
+    private token: string = ''
+    private currentPage: string = 'realstate'
+    private userDetail: iUserDetail = {
+        address: '',
+        email: '',
+        name: '',
+        phone: '',
+    }
 
     get getLoggedinUser(): iUserDetail | null {
         return this.userDetail
@@ -19,13 +24,12 @@ export default class Root extends VuexModule {
         return this.token
     }
 
-    get getErrorMessage(): iErrorMessage | null {
+    get getErrorMessage() {
         return this.errors
     }
 
-    @Mutation
-    SET_TOKEN(token: string): void {
-        this.token = token
+    get getCurrentPage(): string {
+        return this.currentPage
     }
 
     @Mutation
@@ -38,36 +42,35 @@ export default class Root extends VuexModule {
         this.errors = errorMessage
     }
 
-    @Action
-    login(formData: iLogin): Promise<void | boolean> {
-        return new Promise((resolve, reject) => {
+    @Mutation
+    SET_CURRENT_PAGE(current: string): void {
+        this.currentPage = current
+    }
 
-            axios.post('user/login', formData)
-                .then((userResponse: AxiosResponse) => {
-                    this.context.commit('SET_TOKEN', userResponse.data.token)
-                    this.context.commit('SET_LOGIN_USER', userResponse.data)
-
-                    resolve(true)
-                })
-                .catch((error: iErrorMessage) => {
-                    this.context.commit('SET_ERROR_MESSAGE', error?.errors)
-                    reject(false)
-                })
-        })
+    @Mutation
+    SET_TOKEN(token: string): void {
+        this.token = token
     }
 
     @Action
-    register(formData: iUserDetail): Promise<void | boolean> {
-        return new Promise((resolve, reject) => {
+    updatePageName(current: string): Promise<boolean> {
+        return new Promise((resolve) => {
+            this.context.commit('SET_CURRENT_PAGE', current)
+            resolve(true)
+        })
+    }
 
-            axios.post('users', formData)
-                .then(() => {
-                    resolve(true)
-                })
-                .catch((error: iErrorMessage) => {
-                    this.context.commit('SET_ERROR_MESSAGE', error?.errors)
-                    reject(false)
-                })
+    @Action({ commit: 'SET_TOKEN' })
+    async login(formData: iLogin) {
+        const { data }: AxiosResponse = await axios.post('user/login', formData)
+        return data.token
+    }
+
+    @Action
+    async register(formData: iUserDetail): Promise<boolean> {
+        return await axios.post('users', {
+            url: location.origin + '/verification',
+            data: formData
         })
     }
 
@@ -77,8 +80,33 @@ export default class Root extends VuexModule {
 
             axios.get('user/logout')
                 .then(() => {
-                    this.context.commit('SET_TOKEN', null)
-                    this.context.commit('SET_LOGIN_USER', {})
+                    this.context.commit('SET_TOKEN', '')
+                    resolve(true)
+                })
+                .catch((error: iErrorMessage) => {
+                    this.context.commit('SET_ERROR_MESSAGE', error?.errors)
+                    reject(false)
+                })
+        })
+    }
+
+    @Action({ commit: 'SET_LOGIN_USER' })
+    async fetchUser() {
+        if (this.token) {
+            const { data } = await axios.get(`auth_user`)
+            return data
+        }
+    }
+
+    @Action
+    changePassword({ id, old_password, password }: iPassword): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+
+            axios.post(`users/${id}/password/update`, {
+                old_password,
+                password
+            })
+                .then(() => {
                     resolve(true)
                 })
                 .catch((error: iErrorMessage) => {
@@ -89,12 +117,22 @@ export default class Root extends VuexModule {
     }
 
     @Action
-    resetUser(): Promise<boolean> {
-        return new Promise((resolve) => {
-            this.context.commit('SET_TOKEN', null)
-            this.context.commit('SET_LOGIN_USER', {})
+    async resendEmail(formData: resedEmail) {
+        const { data } = await axios.post('users/resend_verification_email', formData)
+        return data
+    }
 
-            resolve(true)
-        })
+    @Action
+    async verifyEmail(formData: resedEmail) {
+        const { data } = await axios.post('users/verify_email', formData)
+        return data
+    }
+
+    @Action
+    save(formData: iUserDetail) {
+        axios.put(`users/${formData.uuid}`, formData)
+            .then(() => {
+                this.context.dispatch('fetchUser')
+            })
     }
 }

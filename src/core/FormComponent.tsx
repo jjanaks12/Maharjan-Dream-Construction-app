@@ -1,20 +1,20 @@
 import { iErrorMessage } from '@/interfaces/auth'
-import { Component, Vue, Watch } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 
-let timer: any
+// let timer: any
 @Component
 export default class FormComponent extends Vue {
     protected errors!: iErrorMessage
 
-    @Watch('errors', { deep: true })
-    errorWatcher() {
-        if (timer)
-            return
+    // @Watch('errors', { deep: true })
+    // errorWatcher() {
+    //     if (timer)
+    //         return
 
-        timer = setTimeout(() => {
-            this.resetErrorMessage()
-        }, 7000)
-    }
+    //     timer = setTimeout(() => {
+    //         this.resetErrorMessage()
+    //     }, 7000)
+    // }
 
     /**
     * Checks if there are any errors

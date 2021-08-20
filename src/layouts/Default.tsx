@@ -4,23 +4,22 @@ import { mapGetters } from 'vuex'
 
 import AppFooter from '@/layouts/partials/Footer'
 import AppHeader from '@/layouts/partials/Header'
-import { iUserDetail } from '@/interfaces/auth'
+import SnackBar from '@/components/common/SnackBar'
 
 @Component({
   computed: {
     ...mapGetters({
+      message: 'root/getErrorMessage',
       userDetail: 'root/getLoggedinUser'
     })
   }
 })
 export default class Default extends Vue {
-  private userDetail!: iUserDetail | null
+  private message!: string
 
-  /**
-   * Mounted hooks
-   */
-  // mounted() {
-  // }
+  constructor(props: any) {
+    super(props)
+  }
 
   /**
    * Template pf the component
@@ -30,12 +29,11 @@ export default class Default extends Vue {
   render(): VNode {
     return (<div id="wrapper">
       <AppHeader />
-      <main id="main">
-        <transition name="slide-fade" mode="out-in">
-          <router-view />
-        </transition>
-      </main>
+      <transition name="slide-fade" mode="out-in">
+        <router-view />
+      </transition>
       <AppFooter />
+      {this.message ? <SnackBar key={3} message={this.message} /> : null}
     </div>)
   }
 }

@@ -16,8 +16,23 @@
 	outline: none;
 }
 
+.btn__xs {
+	font-size: rem-calc(16px);
+	padding: rem-calc(8px 10px);
+	border-radius: rem-calc(4px);
+}
+
 .btn__block {
 	display: block;
+}
+
+.btn__default {
+	background: $black;
+
+	&:focus, 
+	&:hover {
+		background: darken($primary, 30%);
+	}
 }
 
 .btn__primary {

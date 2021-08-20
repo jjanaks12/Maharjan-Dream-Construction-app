@@ -1,7 +1,6 @@
 import { VNode } from 'vue'
 import { Component, Vue } from 'vue-property-decorator'
 import CoolLightBox from 'vue-cool-lightbox'
-import 'vue-cool-lightbox/dist/vue-cool-lightbox.min.css'
 
 interface iImage {
     id?: number
@@ -44,7 +43,7 @@ export default class RealestateCollection extends Vue {
                     {(this.imageCount > 0 && index == this.images.length - 1) ? (<span class="counter">+{this.imageCount}</span>) : null}
                 </a>))}
             </div>
-            <CoolLightBox effect={'fade'} items={this.imageList} index={this.activeImage} onClose={() => this.activeImage = null} />
+            <CoolLightBox effect={'fade'} items={this.imageList} index={this.activeImage} closeOnClickOutsideMobile={true} gallery={false} onClose={() => this.activeImage = null} />
         </section>)
     }
 

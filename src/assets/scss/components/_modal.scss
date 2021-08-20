@@ -1,0 +1,49 @@
+.modal {
+    @include animate(opacity visibility transform);
+    background: rgba($white, 0.4);
+    min-height: 100vh;
+    text-align: center;
+    white-space: nowrap;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: rem-calc(40px 5px);
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 99;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(rem-calc(20px));
+
+    &:after {
+        content: '';
+        min-height: 100%;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    &--active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+}
+
+.modal__holder {
+    background: $black-900;
+    width: 100%;
+    max-width: rem-calc(768px);
+    white-space: normal;
+    text-align: left;
+    display: inline-block;
+    vertical-align: middle;
+    padding: rem-calc(0 15px);
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.modal__footer {
+    padding: rem-calc(20px 0);
+}

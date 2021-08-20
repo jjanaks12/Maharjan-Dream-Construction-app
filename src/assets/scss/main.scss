@@ -23,6 +23,7 @@ $media-expressions: (
 
 @import 'vendors/icomoon';
 @import 'vendors/include-media';
+@import '~vue-cool-lightbox/dist/vue-cool-lightbox.min.css';
 
 @import 'base/functions';
 @import 'base/variables';
@@ -37,6 +38,10 @@ $media-expressions: (
 @import 'components/item';
 @import 'components/collection';
 @import 'components/featured';
+@import 'components/cart';
+@import 'components/user';
+@import 'components/account';
+@import 'components/modal';
 
 @import 'pages/account';
 @import 'pages/homepage';

@@ -5,16 +5,38 @@ export interface iLogin {
     [propName: string]: any
 }
 
+export interface iPassword {
+    old_password: string,
+    password: string,
+    password_confirmation: string
+    [propName: string]: any
+}
+
+export interface resedEmail {
+    email: string
+    url: string
+}
+
+export interface verifyEmail {
+    email: string
+    url?: string
+    code: string
+}
+
 export interface iUserDetail {
     name: string
     email: string
     phone: string
     address: string
-    password: string
+    password?: string
     confirm_password?: string
     photo?: string
-    citizenship_front?: string
-    citizenship_back?: string
+    token?: string
+    citizenship_front?: string | null
+    citizenship_back?: string | null
+    email_verified_at?: string
+    created_at?: string
+    uuid?: string
     [propName: string]: any
 }
 
