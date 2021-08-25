@@ -24,12 +24,12 @@ export default class Register extends FormComponent {
     private errorList?: iErrorMessage
     private isSuccess: boolean = false
     private formData: iUserDetail = {
-        name: 'Janak Shrestha',
-        address: 'futung',
-        password: 'password',
-        confirm_password: 'password',
-        phone: '9876543210',
-        email: 'jjanaks12@gmail.com',
+        name: '',
+        address: '',
+        password: '',
+        confirm_password: '',
+        phone: '',
+        email: '',
     }
 
     constructor() {

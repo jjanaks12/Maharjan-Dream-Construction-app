@@ -43,3 +43,10 @@ export interface iUserDetail {
 export interface iErrorMessage {
     [propName: string]: Array<string>
 }
+
+export interface resetPassword {
+    password: string
+    password_confirmation: string
+    email: string
+    code: string
+}

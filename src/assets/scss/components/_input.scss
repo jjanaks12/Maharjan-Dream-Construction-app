@@ -1,7 +1,8 @@
 [type=email],
 [type=password],
 [type=search],
-[type=text] {
+[type=text],
+select {
 	@include animate(border-color);
 	background: $black-500;
 	color: $white;

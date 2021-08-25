@@ -87,7 +87,7 @@
 }
 
 .item__detail {
-	padding: rem-calc(0 40px);
+	padding: rem-calc(0 25px);
 
 	p {
 		margin-bottom: rem-calc(15px);
@@ -95,12 +95,86 @@
 
 	&__description {
 		h2 {
+			font-size: rem-calc(30px);
+			margin-bottom: rem-calc(20px);
+		}
+
+		.title {
 			margin-bottom: rem-calc(15px);
+		}
+		
+		.holder {
+			color: $gray;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding-bottom: rem-calc(5px);
+			margin-bottom: rem-calc(40px);
+			border-bottom: 1px dashed $gray;
+		}
+	
+		.price {
+			font-style: normal;
+			display: block;
+	
+			span {
+				font-size: 120%;
+				font-weight: 700;
+			}
 		}
 
 		.text__holder {
 			margin-bottom: rem-calc(15px);
+
+			h1, .h1,
+			h2, .h2,
+			h3, .h3,
+			h4, .h4,
+			h5, .h5,
+			h6, .h6 {
+				font-weight: 400;
+				margin-bottom: rem-calc(5px);
+			}
+
+			h1 {
+				font-size: rem-calc(32px);
+			}
+
+			h2 {
+				font-size: rem-calc(27px);
+			}
+
+			h3 {
+				font-size: rem-calc(24px);
+			}
+
+			h4 {
+				font-size: rem-calc(20px);
+			}
+
+			h5 {
+				font-size: rem-calc(18px);
+			}
+
+			h6 {
+				font-size: rem-calc(16px);
+			}
+
+			p {
+				margin-bottom: rem-calc(20px);
+			}
 		}
+	}
+}
+
+.item__section__footer {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: rem-calc(0 25px 20px);
+
+	.day__count {
+		color: $gray;
 	}
 }
 

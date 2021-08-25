@@ -29,7 +29,7 @@ instance.interceptors.request.use((request: AxiosRequestConfig) => {
 instance.interceptors.response.use((response: AxiosResponse): AxiosResponse => response, (error: AxiosError): AxiosError => {
 
     if (error.response?.status == 401 || error.response?.status == 403) {
-        Store.commit('root/SET_LOGIN_USER', {})
+        Store.dispatch('root/resetUser')
         router.push({ name: 'login' })
     }
 

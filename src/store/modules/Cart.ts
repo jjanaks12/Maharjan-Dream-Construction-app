@@ -1,7 +1,9 @@
 import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators"
 
 // import axios from '@/services/axios'
-import { iMaterial, iCart } from "@/interfaces/app"
+import { iCart } from '@/interfaces/cart';
+// import { iUserDetail } from '@/interfaces/auth';
+import { iMaterial } from "@/interfaces/app"
 
 @Module
 export default class Cart extends VuexModule {
@@ -13,6 +15,10 @@ export default class Cart extends VuexModule {
 
     get count(): number {
         return this.list.length
+    }
+
+    get totalAmount(): number {
+        return this.list.reduce((acc: number, item: iCart) => acc + (item.quantity * item.material.price), 0)
     }
 
     @Mutation
@@ -31,16 +37,41 @@ export default class Cart extends VuexModule {
     }
 
     @Mutation
+    INCREASE_QUANTITY({ id }: iMaterial) {
+        const cartItem: iCart | undefined = this.list.find((item: iCart) => item.id === id)
+
+        if (!cartItem)
+            return
+
+        cartItem.quantity++
+    }
+
+    @Mutation
+    REDUCE_QUANTITY({ id }: iMaterial) {
+        const cartItem: iCart | undefined = this.list.find((item: iCart) => item.id === id)
+
+        if (!cartItem)
+            return
+
+        if (cartItem.quantity > 1) {
+            cartItem.quantity--
+        } else {
+            const index = this.list.indexOf(cartItem)
+
+            if (index >= 0) {
+                this.list.splice(index, 1)
+            }
+        }
+    }
+
+    @Mutation
     REMOVE_ITEM(index: number) {
         this.list.splice(index, 1)
     }
 
-    @Action
-    addToCart(item: iMaterial): Promise<boolean> {
-        return new Promise((resolve) => {
-            this.context.commit('ADD_TO_CART', item)
-            resolve(true)
-        })
+    @Mutation
+    RESET_CART() {
+        this.list = []
     }
 
     @Action
@@ -58,4 +89,29 @@ export default class Cart extends VuexModule {
             resolve(true)
         })
     }
+
+    // @Action({ commit: 'RESET_CART' })
+    @Action
+    async makeOrder() {
+        /*
+        const { uuid }: iUserDetail = this.context.rootGetters['root/getLoggedinUser'] as iUserDetail
+
+        const formData = this.list.reduce((acc: Array<dataObject>, item: iCart) => acc.push({
+            type: 'material',
+            product_id: item.material.id,
+            delivery_address: ''
+            // [item.material.id as number]: item.quantity
+        }), [])
+        console.log(uuid, formData);
+        // const { data } = await axios.post('/order', formData)
+
+        // return data
+        */
+    }
+
+    @Action({ commit: 'RESET_CART' })
+    resetCart() {
+        return true
+    }
 }
+

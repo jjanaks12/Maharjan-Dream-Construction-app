@@ -46,5 +46,10 @@ $media-expressions: (
 @import 'pages/account';
 @import 'pages/homepage';
 @import 'pages/search';
+@import 'pages/training';
+@import 'pages/order';
+@import 'pages/404';
+@import 'pages/forgot-password';
+@import 'pages/reset-password';
 
 @import 'layouts/footer';

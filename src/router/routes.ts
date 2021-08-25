@@ -41,6 +41,46 @@ const routes: Array<newRouteConfig> = [{
         type: 'authorized'
     }
 }, {
+    path: '/rent',
+    name: 'rent',
+    component: () => import('@/pages/rent/Index'),
+    meta: {
+        layout: 'default',
+        type: 'authorized'
+    }
+}, {
+    path: '/rent/:id',
+    name: 'rent_detail',
+    component: () => import('@/pages/rent/Detail'),
+    meta: {
+        layout: 'default',
+        type: 'authorized'
+    }
+}, {
+    path: '/training',
+    name: 'training',
+    component: () => import('@/pages/training/Index'),
+    meta: {
+        layout: 'default',
+        type: 'authorized'
+    }
+}, {
+    path: '/training/:id',
+    name: 'training_detail',
+    component: () => import('@/pages/training/Detail'),
+    meta: {
+        layout: 'default',
+        type: 'authorized'
+    }
+}, {
+    path: '/delivery',
+    name: 'delivery',
+    component: () => import('@/pages/Delivery'),
+    meta: {
+        layout: 'default',
+        type: 'authorized'
+    }
+}, {
     path: '/search',
     name: 'search',
     component: () => import('@/pages/search/Index'),
@@ -65,6 +105,22 @@ const routes: Array<newRouteConfig> = [{
         type: 'authorized'
     }
 }, {
+    path: '/resturant',
+    name: 'resturant',
+    component: () => import('@/pages/resturant/Index'),
+    meta: {
+        layout: 'default',
+        type: 'authorized'
+    }
+}, {
+    path: '/resturant_detail/:id',
+    name: 'resturant_detail',
+    component: () => import('@/pages/resturant/Detail'),
+    meta: {
+        layout: 'default',
+        type: 'authorized'
+    }
+}, {
     path: '/account',
     name: 'account',
     component: () => import('@/pages/account/Index'),
@@ -84,6 +140,22 @@ const routes: Array<newRouteConfig> = [{
     path: '/verification',
     name: 'account_verification',
     component: () => import('@/pages/account/Verification'),
+    meta: {
+        layout: 'simple',
+        type: 'unauthorized'
+    }
+}, {
+    path: '/forgot_password',
+    name: 'forgot_password',
+    component: () => import('@/pages/account/ForgotPassword'),
+    meta: {
+        layout: 'simple',
+        type: 'unauthorized'
+    }
+}, {
+    path: '/reset',
+    name: 'reset',
+    component: () => import('@/pages/account/ResetPassword'),
     meta: {
         layout: 'simple',
         type: 'unauthorized'

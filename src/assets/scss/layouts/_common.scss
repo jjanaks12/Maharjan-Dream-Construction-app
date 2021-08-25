@@ -96,11 +96,14 @@ mark {
 #wrapper {
 	background: #333;
 	min-height: 100vh;
-	padding-bottom: rem-calc(120px);
 	overflow: hidden;
 	position: relative;
 	color: $white;
 	z-index: 1;
+
+	&:not(.simple__page) {
+		padding-bottom: rem-calc(120px);
+	}
 
 	&:after {
 		content: "";
@@ -147,6 +150,10 @@ mark {
 	}
 }
 
+.text--danger {
+	color: $danger !important;
+}
+
 .text--center {
 	text-align: center !important;
 }
@@ -156,6 +163,7 @@ mark {
 }
 
 .message {
+	@include animate(opacity visibility);
 	background: $primary;
 	color: $black;
 	width: 80%;
@@ -170,6 +178,13 @@ mark {
 	right: rem-calc(10px);
 	bottom: rem-calc(40px);
 	z-index: 4;
+	opacity: 0;
+	visibility: hidden;
+
+	&--show {
+		opacity: 1;
+		visibility: visible;
+	}
 
 	button {
 		@include animate(color);

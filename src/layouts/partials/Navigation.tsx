@@ -18,22 +18,27 @@ const menuList: Array<iMenu> = [{
 }, {
     icon: '',
     name: 'rent',
-    path: 'home',
+    path: 'rent',
     text: 'Rents'
 }, {
     icon: '',
     name: 'training',
-    path: 'home',
+    path: 'training',
     text: 'Trainings'
 }, {
     icon: '',
-    name: 'rent',
-    path: 'home',
+    name: 'resturant',
+    path: 'resturant',
+    text: 'Resturant'
+}, {
+    icon: '',
+    name: 'delivery',
+    path: 'delivery',
     text: 'Delivery'
 }, {
     icon: '',
     name: 'notification',
-    path: 'home',
+    path: 'notification',
     text: 'Notification'
 }, {
     icon: '',

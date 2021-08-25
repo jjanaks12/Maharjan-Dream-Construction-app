@@ -23,9 +23,8 @@ export default class Login extends FormComponent {
   private isLoggingIn: boolean = false
   private errorList?: iErrorMessage
   private formData: iLogin = {
-    email: 'jjanaks12@gmail.com',
-    password: 'password',
-    // rememberMe: false
+    email: '',
+    password: ''
   }
 
   constructor() {
@@ -35,6 +34,13 @@ export default class Login extends FormComponent {
       email: [],
       password: []
     }
+  }
+
+  mounted() {
+    this.$nextTick(() => {
+      if (this.$route.query.email)
+        this.formData.email = this.$route.query.email as string
+    })
   }
 
   /**
@@ -57,11 +63,7 @@ export default class Login extends FormComponent {
             {this.errors.password.length > 0 ? (<span class="input__text">{this.errors.password[0]}</span>) : null}
           </div>
           <div class="form__holder">
-            {/* <label class="custom__checkbox">
-              <input type="checkbox" name="remember_me" id="asf-remember_me" />
-              <span class="custom__checkbox__text">Remember me?</span>
-            </label> */}
-            <a href="#" class="forgot__password">Forgot password?</a>
+            <router-link to={{ name: "forgot_password" }} class="forgot__password">Forgot password?</router-link>
           </div>
           <div class="btn__holder">
             <div class="btn__block">
@@ -112,7 +114,7 @@ export default class Login extends FormComponent {
 
           if (data) {
             this.errors = { ...this.errors, ...this.errorList }
-              this.$router.push({ name: 'realstate' })
+            this.$router.push({ name: 'realstate' })
           }
 
         } finally {

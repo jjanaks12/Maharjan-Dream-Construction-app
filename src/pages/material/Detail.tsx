@@ -1,10 +1,10 @@
 import { VNode } from 'vue'
 import { Component, Vue, Watch } from 'vue-property-decorator'
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 import Slick from 'vue-slick'
 
-import RealestateCollection from '@/components/realstate/Collection'
-import { iCart, iImage, iMaterial } from '@/interfaces/app'
+import { iCart } from '@/interfaces/cart'
+import { iImage, iMaterial } from '@/interfaces/app'
 
 const slickOpt = {
     rows: 0,
@@ -21,7 +21,9 @@ const slickOpt = {
     methods: {
         ...mapActions({
             getMaterial: 'material/getMaterial',
-            addToCart: 'cart/addToCart'
+        }),
+        ...mapMutations({
+            addToCart: 'cart/ADD_TO_CART'
         })
     }
 })
@@ -70,7 +72,6 @@ export default class MaterialDetail extends Vue {
                     </div>
                 </div>
             </section>
-            <RealestateCollection />
         </main>)
     }
 

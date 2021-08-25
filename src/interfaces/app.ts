@@ -79,9 +79,43 @@ export interface iMaterial {
     [propName: string]: any
 }
 
-export interface iCart {
-    id: number
-    quantity: number
-    material: iMaterial
+export interface iRentResponse {
+    data: Array<iRent>
+    current_page: number
+    per_page: number
+    last_page: number
+    total: number
+    [propName: string]: any
+}
+
+export interface iRent {
+    id?: number
+    name: string
+    machinery: string
+    excerpt: string
+    description: string
+    created_at?: string
+    price: string
+    [propName: string]: any
+}
+
+export interface iTrainingResponse {
+    data: Array<iTraining>
+    current_page: number
+    per_page: number
+    last_page: number
+    total: number
+    [propName: string]: any
+}
+
+export interface iTraining {
+    id?: number
+    title: string
+    excerpt: string
+    description: string
+    duration: string
+    duration_type: string
+    price: string
+    start_date: string
     [propName: string]: any
 }

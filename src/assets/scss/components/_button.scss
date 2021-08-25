@@ -35,12 +35,30 @@
 	}
 }
 
+.btn__info {
+	background: $info;
+
+	&:focus, 
+	&:hover {
+		background: darken($info, 30%);
+	}
+}
+
 .btn__primary {
 	background: $primary;
 
 	&:focus, 
 	&:hover {
 		background: darken($primary, 30%);
+	}
+}
+
+.btn__success {
+	background: $success;
+
+	&:focus, 
+	&:hover {
+		background: darken($success, 30%);
 	}
 }
 

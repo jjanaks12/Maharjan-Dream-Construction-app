@@ -19,11 +19,11 @@ export default class Simple extends Vue {
   }
   
   render(): VNode {
-    return (<div id="wrapper">
+    return (<div id="wrapper" class="simple__page">
       <transition name="slide-fade" mode="out-in">
         <router-view />
       </transition>
-      {this.message ? <SnackBar key={3} message={this.message} /> : null}
+      {this.message ? <SnackBar message={this.message} /> : null}
     </div>)
   }
 }

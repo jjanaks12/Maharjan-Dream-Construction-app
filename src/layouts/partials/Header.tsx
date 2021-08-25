@@ -29,16 +29,16 @@ export default class Header extends Vue {
     }
 
     mounted() {
-        document.addEventListener('touchstart', (event: TouchEvent) => {
-            this.touchstartX = event.changedTouches[0].screenX;
-            this.touchstartY = event.changedTouches[0].screenY;
-        }, false)
+        // document.addEventListener('touchstart', (event: TouchEvent) => {
+        //     this.touchstartX = event.changedTouches[0].screenX;
+        //     this.touchstartY = event.changedTouches[0].screenY;
+        // }, false)
 
-        document.addEventListener('touchend', (event: TouchEvent) => {
-            this.touchendX = event.changedTouches[0].screenX;
-            this.touchendY = event.changedTouches[0].screenY;
-            this.handleGesture();
-        }, false);
+        // document.addEventListener('touchend', (event: TouchEvent) => {
+        //     this.touchendX = event.changedTouches[0].screenX;
+        //     this.touchendY = event.changedTouches[0].screenY;
+        //     this.handleGesture();
+        // }, false);
     }
 
     @Watch('$route')

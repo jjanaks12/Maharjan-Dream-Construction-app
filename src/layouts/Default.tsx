@@ -27,13 +27,13 @@ export default class Default extends Vue {
    * @returns VNode
    */
   render(): VNode {
-    return (<div id="wrapper">
+    return (<div id="wrapper" class="default__page">
       <AppHeader />
       <transition name="slide-fade" mode="out-in">
         <router-view />
       </transition>
       <AppFooter />
-      {this.message ? <SnackBar key={3} message={this.message} /> : null}
+      {this.message ? <SnackBar message={this.message} /> : null}
     </div>)
   }
 }

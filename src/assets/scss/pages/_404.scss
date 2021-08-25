@@ -1,0 +1,26 @@
+.not__found {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    h1 {
+        margin-bottom: rem-calc(5px);
+    }
+
+    .links {
+        a {
+            @include animate(color);
+
+            &:hover,
+            &:focus {
+                color: $primary;
+            }
+
+            + a {
+                margin-left: rem-calc(10px);
+            }
+        }
+    }
+}

@@ -79,8 +79,6 @@ export default class Material extends VuexModule {
     @Action
     nextPage(): Promise<boolean> {
         return new Promise((resolve) => {
-            console.log(this.currentPage);
-
 
             this.context.dispatch('fetch', {
                 page: this.currentPage + 1

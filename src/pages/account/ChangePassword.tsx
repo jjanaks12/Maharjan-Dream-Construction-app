@@ -59,7 +59,7 @@ export default class ChangePassword extends FormComponent {
                         {this.errors.password.length > 0 ? (<span class="input__text">{this.errors.password[0]}</span>) : null}
                     </div>
                     <div class="form__group">
-                        <label for="confirm_password">New Password</label>
+                        <label for="confirm_password">Confirm New Password</label>
                         <input type="password" name="confirm_password" id="confirm_password" v-model={this.formData.password_confirmation} />
                         {this.errors.password_confirmation.length > 0 ? (<span class="input__text">{this.errors.password_confirmation[0]}</span>) : null}
                     </div>

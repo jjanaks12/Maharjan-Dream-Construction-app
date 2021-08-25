@@ -1,21 +1,29 @@
 import { VNode } from 'vue'
 import { Component, Vue } from 'vue-property-decorator'
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
-import { iCart } from '@/interfaces/app'
+import { iCart } from '@/interfaces/cart'
 import CartItem from './Item'
 
 @Component({
     computed: {
         ...mapGetters({
             noOfItem: 'cart/count',
-            list: 'cart/getList'
+            list: 'cart/getList',
+            totalAmount: 'cart/totalAmount'
+        })
+    },
+    methods: {
+        ...mapActions({
+            makeOrder: 'cart/makeOrder'
         })
     }
 })
 export default class Cart extends Vue {
     private noOfItem!: number
     private list!: Array<iCart>
+    private totalAmount!: number
+    private makeOrder!: () => void
 
     constructor(props: any) {
         super(props)
@@ -38,13 +46,20 @@ export default class Cart extends Vue {
 
     noEmptyCart() {
         return [
-            (<header class="cart__header">
+            <header class="cart__header">
                 <strong class="cart__title">Cart</strong>
-                {this.noOfItem > 0 ? (<a href="#" class="btn btn__xs btn__primary">Place order</a>) : null}
-            </header>),
-            (<div class="cart__list">
+                {this.noOfItem > 0 ? (<a href="#" class="btn btn__xs btn__primary" onClick={(event: MouseEvent) => {
+                    event.preventDefault()
+                    this.makeOrder()
+                }}>Place order</a>) : null}
+            </header>,
+            <div class="cart__list">
                 {this.list.map((item: iCart) => (<CartItem item={item} />))}
-            </div>)
+            </div>,
+            <div class="cart__footer">
+                <strong>Total Amount</strong>
+                <em>Rs. {this.totalAmount}</em>
+            </div>
         ]
     }
 }

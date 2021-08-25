@@ -1,7 +1,7 @@
 import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators"
 import { AxiosResponse } from "axios"
 
-import { iLogin, iUserDetail, iErrorMessage, iPassword, resedEmail } from "@/interfaces/auth"
+import { resetPassword, iLogin, iUserDetail, iErrorMessage, iPassword, resedEmail } from "@/interfaces/auth"
 import axios from '@/services/axios'
 
 @Module
@@ -80,7 +80,7 @@ export default class Root extends VuexModule {
 
             axios.get('user/logout')
                 .then(() => {
-                    this.context.commit('SET_TOKEN', '')
+                    this.context.dispatch('resetUser')
                     resolve(true)
                 })
                 .catch((error: iErrorMessage) => {
@@ -117,6 +117,21 @@ export default class Root extends VuexModule {
     }
 
     @Action
+    async forgotPassword(email: string): Promise<boolean> {
+        const { data }: AxiosResponse = await axios.post(`password/email`, {
+            email,
+            url: location.origin + '/reset'
+        })
+        return data
+    }
+
+    @Action
+    async resetPassword(formData: resetPassword) {
+        const { data }: AxiosResponse = await axios.post('password/reset', formData)
+        return data
+    }
+
+    @Action
     async resendEmail(formData: resedEmail) {
         const { data } = await axios.post('users/resend_verification_email', formData)
         return data
@@ -134,5 +149,17 @@ export default class Root extends VuexModule {
             .then(() => {
                 this.context.dispatch('fetchUser')
             })
+    }
+
+    @Action
+    resetUser(): Promise<boolean> {
+        return new Promise((resolve) => {
+            this.context.commit('SET_CURRENT_PAGE', 'realstate')
+            this.context.commit('SET_TOKEN', null)
+            this.context.commit('SET_LOGIN_USER', {})
+            this.context.dispatch('cart/resetCart', null, { root: true })
+
+            resolve(true)
+        })
     }
 }
