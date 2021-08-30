@@ -25,7 +25,7 @@ export interface iMenu {
 }
 
 export interface iImage {
-    id?: number
+    id?: string
     url: string,
     file?: ArrayBuffer | null
     [propName: string]: any
@@ -54,7 +54,7 @@ export interface iMaterialResponse {
 }
 
 export interface iRealState {
-    id?: number
+    id?: string
     location: string
     rate: string
     unit: string

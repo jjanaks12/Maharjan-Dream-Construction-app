@@ -34,7 +34,7 @@ export default class Root extends VuexModule {
 
     @Mutation
     SET_LOGIN_USER(userDetail: iUserDetail): void {
-        this.userDetail = { ...userDetail }
+        this.userDetail = userDetail
     }
 
     @Mutation

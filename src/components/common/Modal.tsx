@@ -1,5 +1,5 @@
 import { VNode } from "vue"
-import { Component, Prop, Vue } from "vue-property-decorator"
+import { Component, Prop, Vue, Watch } from "vue-property-decorator"
 
 @Component
 export default class Modal extends Vue {
@@ -10,9 +10,22 @@ export default class Modal extends Vue {
 
     @Prop({ required: true }) value!: boolean
 
+    @Watch('value')
+    valueChanged() {
+        if (this.value)
+            document.body.style.overflow = 'hidden'
+        else
+            document.body.style.overflow = ''
+    }
+
     render(): VNode {
-        return (<div class={{ "modal": true, "modal--active": this.value }}>
-            <div class="modal__holder">
+        return <div class={{ "modal": true, "modal--active": this.value }} onClick={(event: MouseEvent) => {
+            event.preventDefault()
+            this.$emit('input', false)
+        }}>
+            <div class="modal__holder" onClick={(event: MouseEvent) => {
+                event.stopPropagation()
+            }}>
                 <div class="modal__body">
                     {this.$slots.default}
                 </div>
@@ -23,6 +36,6 @@ export default class Modal extends Vue {
                     }}>close</button>
                 </footer>
             </div>
-        </div>)
+        </div>
     }
 }

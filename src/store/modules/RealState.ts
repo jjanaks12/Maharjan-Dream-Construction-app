@@ -85,7 +85,7 @@ export default class RealState extends VuexModule {
     }
 
     @Action
-    async getProperty(id: number): Promise<iRealState> {
+    async getProperty(id: string): Promise<iRealState> {
 
         if (this.list.data.length == 0)
             await this.context.dispatch('fetch')

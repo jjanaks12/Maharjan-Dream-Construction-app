@@ -158,8 +158,16 @@ mark {
 	text-align: center !important;
 }
 
+.text--right {
+	text-align: right !important;
+}
+
 .text--primary {
 	color: $primary !important;
+}
+
+.mb-4 {
+	margin-bottom: 1rem;
 }
 
 .message {
@@ -167,7 +175,7 @@ mark {
 	background: $primary;
 	color: $black;
 	width: 80%;
-	font-size: rem-calc(16px);
+	font-size: rem-calc(14px);
 	line-height: 1.4;
 	display: flex;
 	justify-content: space-between;
@@ -177,7 +185,7 @@ mark {
 	position: fixed;
 	right: rem-calc(10px);
 	bottom: rem-calc(40px);
-	z-index: 4;
+	z-index: 99999;
 	opacity: 0;
 	visibility: hidden;
 
