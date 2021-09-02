@@ -1,7 +1,7 @@
 import { VNode } from 'vue'
 import { Component, Vue } from 'vue-property-decorator'
 
-import img05 from '@/assets/images/img05.png'
+// import img05 from '@/assets/images/img05.png'
 import RealestateService from '@/components/realstate/Services'
 
 @Component
@@ -11,7 +11,7 @@ export default class SearchDetail extends Vue {
             <section class="item__section">
                 <div class="item__detail">
                     <div class="item__detail__image">
-                        <img src={img05} alt="image-description" />
+                        {/* <img src={img05} alt="image-description" /> */}
                     </div>
                     <div class="item__detail__description">
                         <h2>Purano gaun</h2>

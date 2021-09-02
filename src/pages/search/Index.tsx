@@ -1,7 +1,7 @@
 import { VNode } from 'vue'
 import { Component, Vue } from 'vue-property-decorator'
 
-import img04 from '@/assets/images/img04.png'
+// import img04 from '@/assets/images/img04.png'
 import RealestateItem from '@/components/realstate/Item'
 
 @Component
@@ -10,7 +10,7 @@ export default class Search extends Vue {
     return (<main id="main">
       <section class="featured__section">
         <div class="featured__image">
-          <img src={img04} alt="image description" />
+          {/* <img src={img04} alt="image description" /> */}
         </div>
         <div class="featured__caption">
           <h2 class="h1">All as you <mark>Wished</mark> for</h2>
