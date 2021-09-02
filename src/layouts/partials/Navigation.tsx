@@ -10,11 +10,11 @@ const menuList: Array<iMenu> = [{
     name: 'realstate',
     path: 'realstate',
     text: 'Realstate'
-}, {
-    icon: '',
-    name: 'material',
-    path: 'material',
-    text: 'Materials'
+// }, {
+//     icon: '',
+//     name: 'material',
+//     path: 'material',
+//     text: 'Materials'
 }, {
     icon: '',
     name: 'rent',
@@ -27,20 +27,25 @@ const menuList: Array<iMenu> = [{
     text: 'Trainings'
 }, {
     icon: '',
-    name: 'resturant',
-    path: 'resturant',
-    text: 'Resturant'
+    name: 'collection',
+    path: 'collection',
+    text: 'Collections'
 }, {
-    icon: '',
-    name: 'delivery',
-    path: 'delivery',
-    text: 'Delivery'
-}, {
-    icon: '',
-    name: 'notification',
-    path: 'notification',
-    text: 'Notification'
-}, {
+//     icon: '',
+//     name: 'resturant',
+//     path: 'resturant',
+//     text: 'Resturant'
+// }, {
+//     icon: '',
+//     name: 'delivery',
+//     path: 'delivery',
+//     text: 'Delivery'
+// }, {
+//     icon: '',
+//     name: 'notification',
+//     path: 'notification',
+//     text: 'Notification'
+// }, {
     icon: '',
     name: 'account',
     path: 'account',
@@ -78,7 +83,7 @@ export default class Navigation extends Vue {
             </ul>
             <Cart />
             <div class="nav__footer">
-            <a href="#" onClick={this.makeLogout}>logout</a>
+                <a href="#" onClick={this.makeLogout}>logout</a>
             </div>
         </nav>)
     }

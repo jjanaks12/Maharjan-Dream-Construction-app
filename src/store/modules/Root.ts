@@ -6,6 +6,7 @@ import axios from '@/services/axios'
 
 @Module
 export default class Root extends VuexModule {
+    private showMenu: boolean = false
     private errors: iErrorMessage = {}
     private token: string = ''
     private currentPage: string = 'realstate'
@@ -14,6 +15,10 @@ export default class Root extends VuexModule {
         email: '',
         name: '',
         phone: '',
+    }
+
+    get isMenuActive(): boolean {
+        return this.showMenu
     }
 
     get getLoggedinUser(): iUserDetail | null {
@@ -50,6 +55,11 @@ export default class Root extends VuexModule {
     @Mutation
     SET_TOKEN(token: string): void {
         this.token = token
+    }
+
+    @Mutation
+    UPDATE_MENU(status: boolean = false): void {
+        this.showMenu = status
     }
 
     @Action

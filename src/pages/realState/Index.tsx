@@ -3,7 +3,6 @@ import { Component, Vue } from 'vue-property-decorator'
 import { mapActions, mapGetters } from 'vuex'
 
 import RealestateItem from '@/components/realstate/Item'
-import RealestateCollection from '@/components/realstate/Collection'
 import { iRealState } from '@/interfaces/app'
 
 @Component({
@@ -41,7 +40,6 @@ export default class RealState extends Vue {
                     <a href="#" class="btn btn__primary">load more</a>
                 </div>) : null}
             </section>
-            <RealestateCollection />
         </main>)
     }
 }

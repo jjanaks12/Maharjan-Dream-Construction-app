@@ -2,31 +2,56 @@ import '@/assets/scss/main.scss'
 
 import { Component, Vue, Watch } from "vue-property-decorator"
 import { VNode } from "vue/types/umd"
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
+// import Hammer from 'hammerjs'
 
-import { iUserDetail } from './interfaces/auth'
-import Default from "./layouts/Default"
-import Simple from "./layouts/Simple"
+import { iUserDetail } from "@/interfaces/auth"
+import Default from "@/layouts/Default"
+import Simple from "@/layouts/Simple"
 
+// let hammer
 let timer: any = 0
 
 @Component({
   computed: {
     ...mapGetters({
-      userDetail: 'root/getLoggedinUser'
+      userDetail: 'root/getLoggedinUser',
+      showMenu: 'root/isMenuActive'
     })
   },
   methods: {
+    ...mapMutations({
+      toggleNavigation: 'root/UPDATE_MENU'
+    }),
     ...mapActions({
       fetchUser: 'root/fetchUser'
     })
   }
 })
 export default class App extends Vue {
+  // private showMenu!: boolean
   private fetchUser!: () => Promise<boolean>
+  // private toggleNavigation!: (status: boolean) => void
   private userDetail!: iUserDetail
 
   mounted() {
+    // const self = this
+
+    // setTimeout(() => {
+    //   const el: HTMLElement | null = document.querySelector('#wrapper')
+
+    //   if (el) {
+    //     hammer = new Hammer(el, {})
+    //     hammer.get('swipe').set({ direction: Hammer.DIRECTION_HORIZONTAL })
+
+    //     hammer.on("swipe", function () {
+    //       console.log('a');
+          
+    //       self.toggleNavigation(!self.showMenu)
+    //     })
+    //   }
+    // }, 500)
+
     this.fetchUser()
   }
 

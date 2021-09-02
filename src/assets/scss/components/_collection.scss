@@ -18,6 +18,27 @@
 	}
 }
 
+.collection__section__header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	h1,
+	.h1,
+	h2,
+	.h2,
+	h3,
+	.h3,
+	h4,
+	.h4,
+	h5,
+	.h5,
+	h6,
+	.h6 {
+		flex-grow: 1;
+	}
+}
+
 .collection__grid {
 	&.is-grid {
 		display: grid;
@@ -97,5 +118,95 @@
 		@include media(">=tablet") {
 			font-size: rem-calc(64px);
 		}
+	}
+}
+
+.collection__form {
+	padding-top: rem-calc(20px);
+
+	h2 {
+		font-size: rem-calc(24px);
+		margin-bottom: rem-calc(15px);
+	}
+
+	[type="text"] {
+		background: $white;
+		color: $black;
+		border-width: 0;
+	}
+}
+
+.collection__option {
+	@extend %listreset;
+	text-align: right;
+
+	li {
+		margin-bottom: rem-calc(5px);
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	.warning:hover {
+		color: $primary;
+	}
+
+	.danger:hover {
+		color: $danger;
+	}
+}
+
+.collection__empty {
+	color: $danger;
+	text-align: center;
+	padding: rem-calc(10px 20px);
+	border: 1px dashed $danger;
+	border-radius: 4px;
+
+	p {
+		margin-bottom: 0;
+	}
+}
+
+.collection__list {
+	display: flex;
+	flex-wrap: wrap;
+	padding-top: rem-calc(20px);
+
+	h2 {
+		width: 100%;
+		font-size: rem-calc(24px);
+		margin-bottom: rem-calc(16px);
+	}
+
+	&__item {
+		@include animate(border-color color);
+		width: calc(33.33% - #{rem-calc(20px)});
+		height: rem-calc(80px);
+		text-align: center;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: rem-calc(10px);
+		margin: rem-calc(0 10px 20px);
+		border: 1px dashed $gray;
+		border-radius: 5px;
+
+		&:hover {
+			color: $primary;
+			border-color: $primary;
+		}
+	}
+}
+
+.collection_confirm {
+	color: $gray;
+	text-align: center;
+	padding-top: rem-calc(30px);
+
+	h3 {
+		color: $white;
+		font-size: rem-calc(21px);
 	}
 }

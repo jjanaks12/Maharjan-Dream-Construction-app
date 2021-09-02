@@ -1,0 +1,23 @@
+.appointment {
+    padding-top: rem-calc(20px);
+
+    h2 {
+        font-size: rem-calc(24px);
+    }
+
+    label {
+        display: inline-block;
+        vertical-align: middle;
+        margin-bottom: rem-calc(3px);
+    }
+
+    [type="email"],
+    [type="password"],
+    [type="search"],
+    [type="text"],
+    [type="datetime-local"],
+    select {
+        background: $white;
+        color: $gray;
+    }
+}

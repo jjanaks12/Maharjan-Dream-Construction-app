@@ -1,0 +1,29 @@
+.dropdown {
+    $self: &;
+    position: relative;
+
+    &__opener {
+        svg {
+            width: rem-calc(30px);
+        }
+    }
+
+    &__holder {
+        @include animate(opacity visibility);
+        background: $white;
+        min-width: rem-calc(120px);
+        padding: rem-calc(10px);
+        border-radius: rem-calc(4px);
+        opacity: 0;
+        visibility: hidden;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        z-index: 4;
+
+        @at-root #{$self}--active & {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+}

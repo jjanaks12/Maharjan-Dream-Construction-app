@@ -178,6 +178,17 @@
 	}
 }
 
+.item__detail__header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: rem-calc(16px);
+
+	.btn {
+		flex-grow: 1;
+	}
+}
+
 .item__detail__image {
 	background: $black-900;
 	margin-bottom: rem-calc(32px);

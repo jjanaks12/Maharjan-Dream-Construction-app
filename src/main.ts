@@ -5,6 +5,7 @@ import store from '@/store'
 
 // plugins
 import '@/plugins/validator'
+import '@/plugins/directive/click-outside'
 
 Vue.config.productionTip = false
 

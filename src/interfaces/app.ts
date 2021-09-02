@@ -26,7 +26,7 @@ export interface iMenu {
 
 export interface iImage {
     id?: string
-    url: string,
+    image_url: string,
     file?: ArrayBuffer | null
     [propName: string]: any
 }

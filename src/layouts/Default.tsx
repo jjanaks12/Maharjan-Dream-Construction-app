@@ -32,7 +32,7 @@ export default class Default extends Vue {
       <transition name="slide-fade" mode="out-in">
         <router-view />
       </transition>
-      <AppFooter />
+      {/* <AppFooter /> */}
       {this.message ? <SnackBar message={this.message} /> : null}
     </div>)
   }

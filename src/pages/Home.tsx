@@ -1,8 +1,6 @@
 import { VNode } from 'vue'
 import { Component, Vue } from 'vue-property-decorator'
 
-import RealestateCollection from '@/components/realstate/Collection'
-
 @Component
 export default class Home extends Vue {
   render(): VNode {
@@ -13,7 +11,6 @@ export default class Home extends Vue {
           <a class="s" href="#">see all</a>
         </header>
       </section>
-      <RealestateCollection />
     </main>)
   }
 }

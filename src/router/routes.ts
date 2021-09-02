@@ -41,6 +41,22 @@ const routes: Array<newRouteConfig> = [{
         type: 'authorized'
     }
 }, {
+    path: '/collection',
+    name: 'collection',
+    component: () => import('@/pages/collection/Index'),
+    meta: {
+        layout: 'default',
+        type: 'authorized'
+    }
+}, {
+//     path: '/collection_detail/:id?',
+//     name: 'collection_detail',
+//     component: () => import('@/pages/collection/Detail'),
+//     meta: {
+//         layout: 'default',
+//         type: 'authorized'
+//     }
+// }, {
     path: '/rent',
     name: 'rent',
     component: () => import('@/pages/rent/Index'),
@@ -172,14 +188,6 @@ const routes: Array<newRouteConfig> = [{
     path: '/notification',
     name: 'notification',
     component: () => import('@/pages/Notification'),
-    meta: {
-        layout: 'default',
-        type: 'authorized'
-    }
-}, {
-    path: '/collection',
-    name: 'collection',
-    component: () => import('@/pages/Collection'),
     meta: {
         layout: 'default',
         type: 'authorized'

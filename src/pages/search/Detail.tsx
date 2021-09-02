@@ -1,7 +1,6 @@
 import { VNode } from 'vue'
 import { Component, Vue } from 'vue-property-decorator'
 
-import RealestateCollection from '@/components/realstate/Collection'
 import img05 from '@/assets/images/img05.png'
 import RealestateService from '@/components/realstate/Services'
 
@@ -21,7 +20,6 @@ export default class SearchDetail extends Vue {
                     </div>
                 </div>
             </section>
-            <RealestateCollection />
         </main>)
     }
 }

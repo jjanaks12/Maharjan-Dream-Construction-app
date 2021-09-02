@@ -157,7 +157,7 @@ export default class Training extends VuexModule {
         const { uuid }: iUserDetail = this.context.rootGetters['root/getLoggedinUser'] as iUserDetail
 
         axios.post(`users/${uuid}/trainings?training_id=${id}`)
-            .then(async (data) => {
+            .then(async () => {
                 await this.context.dispatch('fetchEnrolled')
                 await this.context.dispatch('fetch')
             })

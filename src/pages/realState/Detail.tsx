@@ -4,12 +4,12 @@ import { mapActions } from 'vuex'
 import Slick from 'vue-slick'
 
 import { iImage, iRealState } from '@/interfaces/app'
-import { appointment } from '@/interfaces/appointment'
+import { appointment, AppointmentType } from '@/interfaces/appointment'
 
-import RealestateCollection from '@/components/realstate/Collection'
 import RealestateService from '@/components/realstate/Services'
 import Modal from '@/components/common/Modal'
 import Appointment from '@/components/realstate/Appointment'
+import CollectionDetail from '@/components/collection/Detail'
 
 const slickOpt = {
     rows: 0,
@@ -22,15 +22,18 @@ const slickOpt = {
         ...mapActions({
             getProperty: 'realstate/getProperty',
             checkAppointment: 'appointment/checkAppointment',
+            fetchCollection: 'collection/fetch',
         })
     }
 })
 export default class RealstateDetail extends Vue {
     private isLoading: boolean = false
     private appointment: appointment | null = null
+    private showCollection: boolean = false
 
     private getProperty!: (id: string) => iRealState
-    private checkAppointment!: (realstate_id: string) => any
+    private checkAppointment!: (payload: { type: string, id: string }) => any
+    private fetchCollection!: () => any
     private showAvailabilityModal: boolean = false
     private property: iRealState = {
         location: '',
@@ -44,7 +47,8 @@ export default class RealstateDetail extends Vue {
         this.isLoading = true
         const id = this.$route?.params?.id
         this.property = await this.getProperty(id)
-        this.appointment = await this.checkAppointment(id)
+        this.appointment = await this.checkAppointment({ type: AppointmentType.REALSTATE, id })
+        this.fetchCollection()
 
         this.isLoading = false
 
@@ -63,12 +67,19 @@ export default class RealstateDetail extends Vue {
                                 ? <div class="meta__info">
                                     <p>Your appointment for this propperty has <span class="text--primary">{this.appointment.status}</span> status. You will soon get updates</p>
                                 </div>
-                                : <div class="text--right mb-4">
-                                    <a href="#" class="btn btn__xs btn__primary" onClick={(event: MouseEvent) => {
+                                : null,
+                            <div class="item__detail__header">
+                                <a href="#" class="btn btn__xs btn__success" onClick={(event: MouseEvent) => {
+                                    event.preventDefault()
+                                    this.showCollection = true
+                                }}>add to collection</a>
+                                {!(this.appointment && Object.keys(this.appointment).length > 0)
+                                    ? <a href="#" class="btn btn__xs btn__primary" onClick={(event: MouseEvent) => {
                                         event.preventDefault()
                                         this.showAvailabilityModal = true
                                     }}>Request Appointment</a>
-                                </div>,
+                                    : null}
+                            </div>,
                             this.property.images
                                 ? <Slick class="item__detail__image" options={slickOpt} ref="propertyDetailSlick">
                                     {this.property.images?.map((image: iImage) => (<img src={image.image_url} alt={this.property.name} />))}
@@ -83,9 +94,11 @@ export default class RealstateDetail extends Vue {
                         : null}
                 </div>
             </section>
-            <RealestateCollection />
             <Modal v-model={this.showAvailabilityModal}>
                 <Appointment onClose={() => { this.showAvailabilityModal = false }} />
+            </Modal>
+            <Modal v-model={this.showCollection}>
+                <CollectionDetail onClose={() => { this.showCollection = false }} />
             </Modal>
         </main>)
     }
