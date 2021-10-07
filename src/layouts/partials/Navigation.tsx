@@ -10,11 +10,11 @@ const menuList: Array<iMenu> = [{
     name: 'realstate',
     path: 'realstate',
     text: 'Realstate'
-// }, {
-//     icon: '',
-//     name: 'material',
-//     path: 'material',
-//     text: 'Materials'
+}, {
+    icon: '',
+    name: 'material',
+    path: 'material',
+    text: 'Materials'
 }, {
     icon: '',
     name: 'rent',
@@ -31,25 +31,25 @@ const menuList: Array<iMenu> = [{
     path: 'collection',
     text: 'Collections'
 }, {
-//     icon: '',
-//     name: 'resturant',
-//     path: 'resturant',
-//     text: 'Resturant'
-// }, {
-//     icon: '',
-//     name: 'delivery',
-//     path: 'delivery',
-//     text: 'Delivery'
-// }, {
-//     icon: '',
-//     name: 'notification',
-//     path: 'notification',
-//     text: 'Notification'
-// }, {
+    icon: '',
+    name: 'resturant',
+    path: 'resturant',
+    text: 'Resturant'
+}, {
+    icon: '',
+    name: 'notification',
+    path: 'notification',
+    text: 'Notifications'
+}, {
+    icon: '',
+    name: 'order',
+    path: 'order',
+    text: 'My Orders'
+}, {
     icon: '',
     name: 'account',
     path: 'account',
-    text: 'Account'
+    text: 'My Account'
 }]
 
 @Component({

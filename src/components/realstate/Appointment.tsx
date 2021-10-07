@@ -107,7 +107,7 @@ export default class Appointment extends FormComponent {
     }
 
     updateUserID() {
-        if (this.user.uuid)
-            this.formData.user_id = this.user.uuid
+        if (this.user.id)
+            this.formData.user_id = this.user.id
     }
 }

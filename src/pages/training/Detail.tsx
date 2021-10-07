@@ -15,7 +15,7 @@ import moment from 'moment'
     }
 })
 export default class TrainingDetail extends Vue {
-    private getTraining!: (id: number) => iTraining
+    private getTraining!: (id: string) => iTraining
     private isEnrolled!: (training: iTraining) => Promise<boolean>
     private enroll!: (training: iTraining) => Promise<boolean>
     private hasEnrolled: boolean = false
@@ -88,14 +88,14 @@ export default class TrainingDetail extends Vue {
     }
 
     async checkRoute() {
-        const id = parseInt(this.$route?.params?.id)
+        const id = this.$route?.params?.id as string
         this.training = await this.getTraining(id)
     }
 
     async checkEnrolled() {
         await this.isEnrolled(this.training)
             .then((data) => {
-                
+
                 if (data) {
                     this.hasEnrolled = true
                     this.$forceUpdate()

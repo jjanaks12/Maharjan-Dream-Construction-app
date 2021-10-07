@@ -44,15 +44,6 @@ export interface iRealStateResponse {
     [propName: string]: any
 }
 
-export interface iMaterialResponse {
-    data: Array<iMaterial>
-    current_page: number
-    per_page: number
-    last_page: number
-    total: number
-    [propName: string]: any
-}
-
 export interface iRealState {
     id?: string
     location: string
@@ -67,7 +58,7 @@ export interface iRealState {
 }
 
 export interface iMaterial {
-    id?: number
+    id?: string
     name: string
     description: string
     quantity: string
@@ -109,7 +100,7 @@ export interface iTrainingResponse {
 }
 
 export interface iTraining {
-    id?: number
+    id?: string
     title: string
     excerpt: string
     description: string
@@ -117,5 +108,14 @@ export interface iTraining {
     duration_type: string
     price: string
     start_date: string
+    [propName: string]: any
+}
+
+export interface APIResponse<T> {
+    data: Array<T>
+    current_page: number
+    per_page: number
+    last_page: number
+    total: number
     [propName: string]: any
 }

@@ -3,6 +3,7 @@ import { AxiosResponse } from "axios"
 
 import { iRent, iRentResponse, RequestQuery } from '@/interfaces/app'
 import axios from '@/services/axios'
+import { SearchType } from "@/interfaces/search"
 
 let params: RequestQuery = {
     params: {
@@ -124,8 +125,13 @@ export default class Rent extends VuexModule {
                     name: searchtext
                 }
             }
+            this.context.commit('root/ADD_TO_HISTORY_LIST', {
+                title: searchtext,
+                type: SearchType.RENT
+            }, {
+                root: true
+            })
             this.context.dispatch('fetch', params)
-
             resolve(true)
         })
     }

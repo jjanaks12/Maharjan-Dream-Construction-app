@@ -256,3 +256,18 @@
 		top: -50%;
 	}
 }
+
+.item__date {
+	color: $gray;
+	font-style: normal;
+	display: block;
+}
+
+.item__delivery_date {
+	color: $gray;
+	font-style: normal;
+
+	span {
+		color: $white;
+	}
+}

@@ -2,7 +2,9 @@ import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators"
 import { AxiosResponse } from "axios"
 
 import { resetPassword, iLogin, iUserDetail, iErrorMessage, iPassword, resedEmail } from "@/interfaces/auth"
+import { iSearch } from '@/interfaces/search';
 import axios from '@/services/axios'
+import { iDelivery } from "@/interfaces/delivery";
 
 @Module
 export default class Root extends VuexModule {
@@ -10,6 +12,8 @@ export default class Root extends VuexModule {
     private errors: iErrorMessage = {}
     private token: string = ''
     private currentPage: string = 'realstate'
+    private searchHistory: Array<iSearch> = []
+    private delivery: Array<iDelivery> = []
     private userDetail: iUserDetail = {
         address: '',
         email: '',
@@ -37,6 +41,14 @@ export default class Root extends VuexModule {
         return this.currentPage
     }
 
+    get historyList(): Array<iSearch> {
+        return this.searchHistory
+    }
+
+    get deliveryType(): Array<iDelivery> {
+        return this.delivery
+    }
+
     @Mutation
     SET_LOGIN_USER(userDetail: iUserDetail): void {
         this.userDetail = userDetail
@@ -60,6 +72,27 @@ export default class Root extends VuexModule {
     @Mutation
     UPDATE_MENU(status: boolean = false): void {
         this.showMenu = status
+    }
+
+    @Mutation
+    ADD_TO_HISTORY_LIST(search: iSearch): void {
+        if (!this.searchHistory.includes(search))
+            this.searchHistory.unshift(search)
+    }
+
+    @Mutation
+    REMOVE_SEARCH(index: number): void {
+        this.searchHistory.splice(index, 1)
+    }
+
+    @Mutation
+    CLEAR_HISTORY(): void {
+        this.searchHistory = []
+    }
+
+    @Mutation
+    SET_DELIVERY_TYPE(typeList: Array<iDelivery>) {
+        this.delivery = typeList
     }
 
     @Action
@@ -171,5 +204,12 @@ export default class Root extends VuexModule {
 
             resolve(true)
         })
+    }
+
+    @Action({ commit: 'SET_DELIVERY_TYPE' })
+    async fetchDeliveryType() {
+        const { data }: AxiosResponse = await axios.get('deliveries')
+
+        return data
     }
 }

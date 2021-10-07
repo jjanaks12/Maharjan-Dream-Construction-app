@@ -30,7 +30,7 @@ export default class Default extends Vue {
     return (<div id="wrapper" class="default__page">
       <AppHeader />
       <transition name="slide-fade" mode="out-in">
-        <router-view />
+        <router-view key={Date.now()} />
       </transition>
       {/* <AppFooter /> */}
       {this.message ? <SnackBar message={this.message} /> : null}

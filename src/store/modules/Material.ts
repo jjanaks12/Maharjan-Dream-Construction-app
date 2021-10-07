@@ -3,7 +3,14 @@ import { AxiosResponse } from "axios";
 
 import axios from '@/services/axios'
 import { iErrorMessage } from '@/interfaces/auth'
-import { RequestQuery, iMaterial, iMaterialResponse } from '@/interfaces/app'
+import { RequestQuery, iMaterial, APIResponse } from '@/interfaces/app'
+import { SearchType } from "@/interfaces/search";
+
+let params: RequestQuery = {
+    params: {
+        per_page: 10
+    }
+}
 
 const materialInit: iMaterial = {
     name: '',
@@ -17,7 +24,7 @@ const materialInit: iMaterial = {
 @Module
 export default class Material extends VuexModule {
     private errors!: iErrorMessage
-    private materials: iMaterialResponse = {
+    private materials: APIResponse<iMaterial> = {
         data: [],
         current_page: 0,
         last_page: 0,
@@ -51,29 +58,20 @@ export default class Material extends VuexModule {
     }
 
     @Mutation
-    SET_STATE_LIST(list: iMaterialResponse) {
+    SET_STATE_LIST(list: APIResponse<iMaterial>) {
         this.materials = list
     }
 
-    @Action
-    fetch(data: RequestQuery): Promise<boolean> {
-        return new Promise((resolve, reject) => {
-
-            axios.get('materials', {
-                params: {
-                    ...data,
-                    per_page: 10
-                }
-            })
-                .then((response: AxiosResponse) => {
-                    this.context.commit('SET_STATE_LIST', response.data)
-                    resolve(true)
-                })
-                .catch((error: iErrorMessage) => {
-                    this.context.commit('SET_ERROR_MESSAGE', error?.errors || { message: 'no data' })
-                    reject(false)
-                })
+    @Action({ commit: 'SET_STATE_LIST' })
+    async fetch(query: RequestQuery): Promise<APIResponse<iMaterial>> {
+        const { data }: AxiosResponse = await axios.get('materials', {
+            params: {
+                ...query,
+                per_page: 10
+            }
         })
+
+        return data
     }
 
     @Action
@@ -89,7 +87,28 @@ export default class Material extends VuexModule {
     }
 
     @Action
-    async getMaterial(id: number): Promise<iMaterial> {
+    search(searchtext: string): Promise<boolean> {
+        return new Promise((resolve) => {
+
+            params = {
+                params: {
+                    title: searchtext
+                }
+            }
+            this.context.commit('root/ADD_TO_HISTORY_LIST', {
+                title: searchtext,
+                type: SearchType.MATERIAL
+            }, {
+                root: true
+            })
+            this.context.dispatch('fetch', params)
+
+            resolve(true)
+        })
+    }
+
+    @Action
+    async getMaterial(id: string): Promise<iMaterial> {
 
         if (this.materials.data.length == 0)
             await this.context.dispatch('fetch')

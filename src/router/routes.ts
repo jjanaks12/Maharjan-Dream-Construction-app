@@ -3,6 +3,9 @@ import { newRouteConfig } from '@/interfaces/app'
 const routes: Array<newRouteConfig> = [{
     path: '/',
     name: 'home',
+    redirect: {
+      name: 'realstate'
+    },
     component: () => import('@/pages/Home'),
     meta: {
         layout: 'default',
@@ -89,33 +92,17 @@ const routes: Array<newRouteConfig> = [{
         type: 'authorized'
     }
 }, {
-    path: '/delivery',
-    name: 'delivery',
-    component: () => import('@/pages/Delivery'),
+    path: '/order',
+    name: 'order',
+    component: () => import('@/pages/Orders'),
     meta: {
         layout: 'default',
         type: 'authorized'
     }
 }, {
-    path: '/search',
+    path: '/search/:text?',
     name: 'search',
-    component: () => import('@/pages/search/Index'),
-    meta: {
-        layout: 'default',
-        type: 'authorized'
-    }
-}, {
-    path: '/searchDetail',
-    name: 'search_detail',
-    component: () => import('@/pages/search/Detail'),
-    meta: {
-        layout: 'default',
-        type: 'authorized'
-    }
-}, {
-    path: '/searchList',
-    name: 'search_list',
-    component: () => import('@/pages/search/List'),
+    component: () => import('@/pages/Search'),
     meta: {
         layout: 'default',
         type: 'authorized'

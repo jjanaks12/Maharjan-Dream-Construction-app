@@ -61,6 +61,13 @@ h3,
 	margin-bottom: rem-calc(3px);
 }
 
+h4,
+.h4 {
+	@include font(18px, 26px);
+	font-weight: 400;
+	margin-bottom: rem-calc(3px);
+}
+
 a {
 	@include animate(color);
 	color: $light;

@@ -48,10 +48,11 @@ export default class Cart extends Vue {
         return [
             <header class="cart__header">
                 <strong class="cart__title">Cart</strong>
-                {this.noOfItem > 0 ? (<a href="#" class="btn btn__xs btn__primary" onClick={(event: MouseEvent) => {
-                    event.preventDefault()
-                    this.makeOrder()
-                }}>Place order</a>) : null}
+                {
+                    this.noOfItem > 0 && this.$route.name !== 'order' ?
+                        <router-link to={{ name: 'order' }} class="btn btn__xs btn__primary">Place order</router-link>
+                        : null
+                }
             </header>,
             <div class="cart__list">
                 {this.list.map((item: iCart) => (<CartItem item={item} />))}

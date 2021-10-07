@@ -4,6 +4,7 @@ import { AxiosResponse } from "axios";
 import axios from '@/services/axios'
 import { iErrorMessage } from '@/interfaces/auth'
 import { iRealState, iRealStateResponse, RequestQuery } from '@/interfaces/app'
+import { SearchType } from "@/interfaces/search";
 
 const propertyInit: iRealState = {
     location: '',
@@ -13,12 +14,18 @@ const propertyInit: iRealState = {
     description: '',
 }
 
+let params: RequestQuery = {
+    params: {
+        per_page: 10
+    }
+}
+
 @Module
 export default class RealState extends VuexModule {
     private errors!: iErrorMessage
     private list: iRealStateResponse = {
         data: [],
-        current_page: 0,
+        current_page: 5,
         last_page: 0,
         per_page: 0,
         total: 0
@@ -59,8 +66,11 @@ export default class RealState extends VuexModule {
         return new Promise((resolve, reject) => {
 
             axios.get('realStates', { ...data })
-                .then((response: AxiosResponse) => {
-                    this.context.commit('SET_STATE_LIST', response.data)
+                .then(({ data, status }: AxiosResponse) => {
+                    if (status === 200)
+                        this.context.commit('SET_STATE_LIST', data)
+                    else
+                        this.context.commit('SET_STATE_LIST', propertyInit)
                     resolve(true)
                 })
                 .catch((error: iErrorMessage) => {
@@ -74,11 +84,33 @@ export default class RealState extends VuexModule {
     nextPage(): Promise<boolean> {
         return new Promise((resolve) => {
 
-            this.context.dispatch('fetch', {
-                params: {
-                    page: this.currentPage + 1
+            if (this.currentPage < this.lastPage) {
+                params = {
+                    params: {
+                        ...params.params,
+                        page: this.currentPage + 1
+                    }
                 }
-            })
+                this.context.dispatch('fetch', params)
+            }
+
+            resolve(true)
+        })
+    }
+
+    @Action
+    prevPage(): Promise<boolean> {
+        return new Promise((resolve) => {
+
+            if (this.currentPage > 1) {
+                params = {
+                    params: {
+                        ...params.params,
+                        page: this.currentPage - 1
+                    }
+                }
+                this.context.dispatch('fetch', params)
+            }
 
             resolve(true)
         })
@@ -91,5 +123,44 @@ export default class RealState extends VuexModule {
             await this.context.dispatch('fetch')
 
         return await this.list.data.find((material: iRealState) => material.id === id) || propertyInit
+    }
+
+    @Action
+    gotoPage(pageno: number): Promise<boolean> {
+        return new Promise((resolve) => {
+
+            if (this.currentPage >= 1) {
+                params = {
+                    params: {
+                        ...params.params,
+                        page: pageno
+                    }
+                }
+                this.context.dispatch('fetch', params)
+            }
+
+            resolve(true)
+        })
+    }
+
+    @Action
+    search(searchtext: string): Promise<boolean> {
+        return new Promise((resolve) => {
+
+            params = {
+                params: {
+                    location: searchtext
+                }
+            }
+            this.context.commit('root/ADD_TO_HISTORY_LIST', {
+                title: searchtext,
+                type: SearchType.REALSTATE
+            }, {
+                root: true
+            })
+            this.context.dispatch('fetch', params)
+
+            resolve(true)
+        })
     }
 }

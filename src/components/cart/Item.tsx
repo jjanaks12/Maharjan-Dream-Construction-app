@@ -31,7 +31,7 @@ export default class CartItem extends Vue {
     }
 
     get image(): string {
-        return this.item.material.images && this.item.material.images.length > 0 ? this.item.material.images[0].url : ''
+        return this.item.material.images && this.item.material.images.length > 0 ? this.item.material.images[0].image_url : ''
     }
 
     /**

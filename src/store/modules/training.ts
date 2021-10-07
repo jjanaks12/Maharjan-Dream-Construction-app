@@ -4,6 +4,7 @@ import { AxiosResponse } from "axios"
 import axios from '@/services/axios'
 import { iUserDetail } from '@/interfaces/auth';
 import { iTraining, iTrainingResponse, RequestQuery } from '@/interfaces/app'
+import { SearchType } from "@/interfaces/search";
 
 let params: RequestQuery = {
     params: {
@@ -137,6 +138,12 @@ export default class Training extends VuexModule {
                     title: searchtext
                 }
             }
+            this.context.commit('root/ADD_TO_HISTORY_LIST', {
+                title: searchtext,
+                type: SearchType.TRAINING
+            }, {
+                root: true
+            })
             this.context.dispatch('fetch', params)
 
             resolve(true)
@@ -144,7 +151,7 @@ export default class Training extends VuexModule {
     }
 
     @Action
-    async getTraining(id: number): Promise<iTraining> {
+    async getTraining(id: string): Promise<iTraining> {
 
         if (this.trainingList.data.length == 0)
             await this.context.dispatch('fetch')
@@ -154,7 +161,7 @@ export default class Training extends VuexModule {
 
     @Action
     enroll({ id }: iTraining) {
-        const { uuid }: iUserDetail = this.context.rootGetters['root/getLoggedinUser'] as iUserDetail
+        const { id: uuid }: iUserDetail = this.context.rootGetters['root/getLoggedinUser'] as iUserDetail
 
         axios.post(`users/${uuid}/trainings?training_id=${id}`)
             .then(async () => {
@@ -165,10 +172,10 @@ export default class Training extends VuexModule {
 
     @Action({ commit: 'SET_ENROLLED_LIST' })
     async fetchEnrolled() {
-        const { uuid }: iUserDetail = this.context.rootGetters['root/getLoggedinUser'] as iUserDetail
+        const { id }: iUserDetail = this.context.rootGetters['root/getLoggedinUser'] as iUserDetail
 
-        if (uuid) {
-            const { data }: AxiosResponse = await axios.get(`users/${uuid}/trainings`)
+        if (id) {
+            const { data }: AxiosResponse = await axios.get(`users/${id}/trainings`)
             return data
         }
     }

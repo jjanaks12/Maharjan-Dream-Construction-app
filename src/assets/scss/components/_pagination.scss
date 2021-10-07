@@ -1,0 +1,32 @@
+.pagination {
+    text-align: center;
+    padding-top: rem-calc(16px);
+
+    ul {
+        @extend %listreset;
+    }
+
+    li {
+        display: inline-block;
+        vertical-align: middle;
+        margin: rem-calc(0 5px);
+    }
+
+    a,
+    strong {
+        @include size(#{rem-calc(30px)});
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid transparent;
+    }
+    
+    strong {
+        border-color: $primary;
+    }
+
+    .next,
+    .prev {
+        font-weight: 700;
+    }
+}

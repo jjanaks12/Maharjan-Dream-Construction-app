@@ -1,8 +1,7 @@
 import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators"
 
-// import axios from '@/services/axios'
-import { iCart } from '@/interfaces/cart';
-// import { iUserDetail } from '@/interfaces/auth';
+import axios from '@/services/axios'
+import { formData, iCart } from '@/interfaces/cart';
 import { iMaterial } from "@/interfaces/app"
 
 @Module
@@ -37,7 +36,7 @@ export default class Cart extends VuexModule {
     }
 
     @Mutation
-    INCREASE_QUANTITY({ id }: iMaterial) {
+    INCREASE_QUANTITY({ id }: iCart) {
         const cartItem: iCart | undefined = this.list.find((item: iCart) => item.id === id)
 
         if (!cartItem)
@@ -47,7 +46,7 @@ export default class Cart extends VuexModule {
     }
 
     @Mutation
-    REDUCE_QUANTITY({ id }: iMaterial) {
+    REDUCE_QUANTITY({ id }: iCart) {
         const cartItem: iCart | undefined = this.list.find((item: iCart) => item.id === id)
 
         if (!cartItem)
@@ -90,27 +89,26 @@ export default class Cart extends VuexModule {
         })
     }
 
-    // @Action({ commit: 'RESET_CART' })
-    @Action
-    async makeOrder() {
-        /*
-        const { uuid }: iUserDetail = this.context.rootGetters['root/getLoggedinUser'] as iUserDetail
+    @Action({ commit: 'RESET_CART' })
+    async makeOrder(formData: formData) {
+        const materialList: { [PropName: string]: number } = this.getList.reduce((acc, currentValue: iCart) => Object.assign(acc, { [currentValue.material?.id as string]: currentValue.quantity }), {})
 
-        const formData = this.list.reduce((acc: Array<dataObject>, item: iCart) => acc.push({
-            type: 'material',
-            product_id: item.material.id,
-            delivery_address: ''
-            // [item.material.id as number]: item.quantity
-        }), [])
-        console.log(uuid, formData);
-        // const { data } = await axios.post('/order', formData)
+        const { status } = await axios.post('/user/order', {
+            material: formData.type == 'material' ? materialList : null,
+            ...formData
+        })
 
-        // return data
-        */
+        if (status === 200) {
+            this.context.dispatch('order/fetch', {}, { root: true })
+            return true
+        }
+
+        return false
     }
 
     @Action({ commit: 'RESET_CART' })
     resetCart() {
+        this.context.dispatch('order/fetch', null, { root: true })
         return true
     }
 }

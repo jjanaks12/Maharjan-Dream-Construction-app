@@ -100,3 +100,66 @@
         }
     }
 }
+
+.order__status {
+    @extend %listreset;
+    @include font(10px);
+    text-align: center;
+    text-transform: uppercase;
+    display: flex;
+    overflow: hidden;
+    padding-top: rem-calc(10px);
+
+    li {
+        $width: 15px;
+        flex-grow: 1;
+        position: relative;
+        z-index: 1;
+
+        &::before {
+            @include size(#{rem-calc($width)});
+            background: $primary;
+            content: "";
+            display: block;
+            margin: 0 auto rem-calc(5px);
+            border-radius: 50%;
+            position: relative;
+            z-index: 1;
+        }
+
+        &.current {
+            &::after {
+                right: 50%;
+            }
+
+            ~ li {
+                &::before {
+                    background: $gray;
+                }
+
+                &::after {
+                    background: transparent;
+                }
+            }
+        }
+
+        &::after {
+            background: $primary;
+            content: "";
+            height: rem-calc(2px);
+            position: absolute;
+            top: rem-calc($width/2);
+            left: 0;
+            right: 0;
+            z-index: -1;
+        }
+
+        &:first-child::after {
+            left: 50%;
+        }
+
+        &:last-child::after {
+            right: 50%;
+        }
+    }
+}

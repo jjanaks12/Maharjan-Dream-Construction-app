@@ -13,7 +13,7 @@ export default class MaterialItem extends Vue {
     @Prop({ required: true }) item!: iMaterial
 
     get featuredImage(): string {
-        return this.item.images && this.item.images.length > 0 ? this.item.images[0].url : ''
+        return this.item.images && this.item.images.length > 0 ? this.item.images[0].image_url : ''
     }
 
     /**

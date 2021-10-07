@@ -28,7 +28,7 @@ const slickOpt = {
     }
 })
 export default class MaterialDetail extends Vue {
-    private getMaterial!: (id: number) => iMaterial
+    private getMaterial!: (id: string) => iMaterial
     private addToCart!: (item: iMaterial) => Promise<boolean>
     private cartList!: Array<iCart>
 
@@ -64,7 +64,7 @@ export default class MaterialDetail extends Vue {
                 </header>) : null}
                 <div class="item__detail">
                     <Slick class="item__detail__image" options={slickOpt} ref="materialDetailSlick">
-                        {this.material.images?.map((image: iImage) => (<img src={image.url} alt={this.material.name} />))}
+                        {this.material.images?.map((image: iImage) => (<img src={image.image_url} alt={this.material.name} />))}
                     </Slick>
                     <div class="item__detail__description">
                         <h2>{this.material.name}</h2>
@@ -76,7 +76,7 @@ export default class MaterialDetail extends Vue {
     }
 
     async checkRoute() {
-        const id = parseInt(this.$route?.params?.id)
+        const id = this.$route?.params?.id
         this.material = await this.getMaterial(id)
 
         setTimeout(() => {
