@@ -4,6 +4,7 @@ import { mapActions, mapGetters } from "vuex"
 
 import { iRent } from "@/interfaces/app"
 import RentItem from "@/components/rent/Item"
+import Paginate from "@/components/common/Paginate"
 
 @Component({
     computed: {
@@ -16,9 +17,9 @@ import RentItem from "@/components/rent/Item"
     methods: {
         ...mapActions({
             fetch: 'rent/fetch',
-            prevPage: 'rent/prevPage',
-            nextPage: 'rent/nextPage',
-            gotoPage: 'rent/gotoPage'
+            prev: 'rent/prevPage',
+            next: 'rent/nextPage',
+            goto: 'rent/gotoPage'
         })
     }
 })
@@ -29,7 +30,9 @@ export default class Rent extends Vue {
     private currentPage!: number
     private lastPage!: number
     private fetch!: () => Promise<boolean>
-    private nextPage!: () => Promise<boolean>
+    private next!: () => Promise<boolean>
+    private prev!: () => Promise<boolean>
+    private goto!: (pageno: number) => Promise<boolean>
 
     mounted() {
         this.isLoading = true
@@ -47,9 +50,7 @@ export default class Rent extends Vue {
                     <h2>Rent</h2>
                 </header>
                 {this.list.map((rent: iRent) => (<RentItem item={rent} />))}
-                {this.currentPage < this.lastPage ? (<div class="text--center">
-                    <a href="#" class="btn btn__primary" onClick={(event: MouseEvent) => { event.preventDefault(); this.nextPage() }}>load more</a>
-                </div>) : null}
+                <Paginate current={this.currentPage} total={this.lastPage} onNext={() => this.next()} onPrev={() => this.prev()} onGoto={(pageno: number) => this.goto(pageno)} />
             </section>
         </main>
     }

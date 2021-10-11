@@ -44,10 +44,7 @@ export default class RealState extends Vue {
                     <h2>Realstates</h2>
                 </header>
                 {this.propertyList.map((property: iRealState) => (<RealestateItem item={property} />))}
-                {this.currentPage < this.lastPage ? (<div class="text--center">
-                    <a href="#" class="btn btn__primary">load more</a>
-                </div>) : null}
-                {/* <Paginate current={this.currentPage} total={this.lastPage} onNext={() => this.next()} onPrev={() => this.prev()} onGoto={(pageno: number) => this.goto(pageno)} /> */}
+                <Paginate current={this.currentPage} total={this.lastPage} onNext={() => this.next()} onPrev={() => this.prev()} onGoto={(pageno: number) => this.goto(pageno)} />
             </section>
         </main>)
     }

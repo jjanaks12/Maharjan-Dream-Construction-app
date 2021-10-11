@@ -5,7 +5,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator'
 export default class Paginate extends Vue {
     @Prop({ required: true }) current!: number
     @Prop({ required: true }) total!: number
-    @Prop({ default: 3 }) max!: number
+    @Prop({ default: 4 }) max!: number
 
     constructor(props: any) {
         super(props)

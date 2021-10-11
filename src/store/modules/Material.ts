@@ -64,12 +64,7 @@ export default class Material extends VuexModule {
 
     @Action({ commit: 'SET_STATE_LIST' })
     async fetch(query: RequestQuery): Promise<APIResponse<iMaterial>> {
-        const { data }: AxiosResponse = await axios.get('materials', {
-            params: {
-                ...query,
-                per_page: 10
-            }
-        })
+        const { data }: AxiosResponse = await axios.get('materials', { ...query })
 
         return data
     }
@@ -78,9 +73,51 @@ export default class Material extends VuexModule {
     nextPage(): Promise<boolean> {
         return new Promise((resolve) => {
 
-            this.context.dispatch('fetch', {
-                page: this.currentPage + 1
-            })
+            if (this.currentPage < this.lastPage) {
+                params = {
+                    params: {
+                        ...params.params,
+                        page: this.currentPage + 1
+                    }
+                }
+                this.context.dispatch('fetch', params)
+            }
+
+            resolve(true)
+        })
+    }
+
+    @Action
+    prevPage(): Promise<boolean> {
+        return new Promise((resolve) => {
+
+            if (this.currentPage > 1) {
+                params = {
+                    params: {
+                        ...params.params,
+                        page: this.currentPage - 1
+                    }
+                }
+                this.context.dispatch('fetch', params)
+            }
+
+            resolve(true)
+        })
+    }
+
+    @Action
+    gotoPage(pageno: number): Promise<boolean> {
+        return new Promise((resolve) => {
+
+            if (this.currentPage >= 1) {
+                params = {
+                    params: {
+                        ...params.params,
+                        page: pageno
+                    }
+                }
+                this.context.dispatch('fetch', params)
+            }
 
             resolve(true)
         })

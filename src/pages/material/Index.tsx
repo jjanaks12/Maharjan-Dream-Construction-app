@@ -4,6 +4,7 @@ import { mapActions, mapGetters } from 'vuex'
 
 import { iMaterial } from '@/interfaces/app'
 import MaterialItem from '@/components/material/Item'
+import Paginate from '@/components/common/Paginate'
 
 @Component({
     computed: {
@@ -16,7 +17,9 @@ import MaterialItem from '@/components/material/Item'
     methods: {
         ...mapActions({
             fetchMaterial: 'material/fetch',
-            nextPage: 'material/nextPage'
+            next: 'material/nextPage',
+            prev: 'material/prevPage',
+            goto: 'material/gotoPage',
         })
     }
 })
@@ -26,7 +29,9 @@ export default class RealState extends Vue {
     private currentPage!: number
 
     private fetchMaterial!: () => Promise<boolean>
-    private nextPage!: () => Promise<boolean>
+    private next!: () => Promise<boolean>
+    private prev!: () => Promise<boolean>
+    private goto!: (pageno: number) => Promise<boolean>
 
     beforeMount() {
         this.fetchMaterial()
@@ -39,9 +44,7 @@ export default class RealState extends Vue {
                     <h2>Materials</h2>
                 </header>
                 {this.list.map((material: iMaterial) => (<MaterialItem item={material} />))}
-                {this.currentPage < this.lastPage ? (<div class="text--center">
-                    <a href="#" class="btn btn__primary" onClick={(event: MouseEvent) => { event.preventDefault(); this.nextPage() }}>load more</a>
-                </div>) : null}
+                <Paginate current={this.currentPage} total={this.lastPage} onNext={() => this.next()} onPrev={() => this.prev()} onGoto={(pageno: number) => this.goto(pageno)} />
             </section>
         </main>)
     }

@@ -4,6 +4,7 @@ import { mapActions, mapGetters } from "vuex"
 
 import { iMenu } from "@/interfaces/resturant"
 import ResturantItem from "@/components/resturant/Item"
+import Paginate from "@/components/common/Paginate"
 
 @Component({
     computed: {
@@ -16,8 +17,8 @@ import ResturantItem from "@/components/resturant/Item"
     methods: {
         ...mapActions({
             fetch: 'resturant/menuFetch',
-            nextPage: 'resturant/nextMenuPage',
-            prevPage: 'resturant/prevMenuPage',
+            next: 'resturant/nextMenuPage',
+            prev: 'resturant/prevMenuPage',
             goto: 'resturant/menuGotoPage',
         })
     }
@@ -31,8 +32,8 @@ export default class Resturant extends Vue {
 
     private currentPage!: number
     private lastPage!: number
-    private nextPage!: () => Promise<boolean>
-    private prevPage!: () => Promise<boolean>
+    private next!: () => Promise<boolean>
+    private prev!: () => Promise<boolean>
     private goto!: (pageno: number) => Promise<boolean>
 
     constructor(props: any) {
@@ -55,9 +56,7 @@ export default class Resturant extends Vue {
                     <h2>Resturant</h2>
                 </header>
                 {this.list.map((resturant: iMenu) => (<ResturantItem item={resturant} />))}
-                {this.currentPage < this.lastPage ? (<div class="text--center">
-                    <a href="#" class="btn btn__primary" onClick={(event: MouseEvent) => { event.preventDefault(); this.nextPage() }}>load more</a>
-                </div>) : null}
+                <Paginate current={this.currentPage} total={this.lastPage} onNext={() => this.next()} onPrev={() => this.prev()} onGoto={(pageno: number) => this.goto(pageno)} />
             </section>
         </main>
     }
