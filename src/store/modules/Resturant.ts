@@ -11,14 +11,6 @@ let params: RequestQuery = {
     }
 }
 
-const resturantInit: iMenu = {
-    name: '',
-    price: '',
-    description: '',
-    excerpt: '',
-    quantity: 0,
-}
-
 @Module
 export default class Resturant extends VuexModule {
     private desk: iDeskResponse = {

@@ -26,7 +26,6 @@ import SearchResturant from '@/components/search/Resturant'
 export default class Search extends Vue {
   private histories!: Array<iSearch>
   private currentPage!: string
-  private toggleSearch!: (status: boolean) => void
 
   render(): VNode {
     return (<main id="main">

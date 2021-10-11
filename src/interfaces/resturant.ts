@@ -39,3 +39,11 @@ export interface iMenu {
     images?: Array<iImage>
     [propName: string]: any
 }
+
+export const resturantInit: iMenu = {
+    name: '',
+    price: '',
+    description: '',
+    excerpt: '',
+    quantity: 0,
+}

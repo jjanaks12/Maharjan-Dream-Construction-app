@@ -19,7 +19,7 @@ import { mapGetters, mapMutations } from 'vuex'
 })
 export default class SearchHistory extends Vue {
     private histories!: Array<iSearch>
-    private removeSearch!: (index: number | undefined) => void
+    private removeSearch!: (id: number | undefined) => void
     private currentPage!: string
 
     get historyList(): Array<iSearch> {
@@ -28,7 +28,7 @@ export default class SearchHistory extends Vue {
 
     render(): VNode {
         return <div class="search__list">
-            {this.historyList.slice(0, 10).map((history: iSearch, index: number) => <div class="search__item">
+            {this.historyList.slice(0, 10).map((history: iSearch) => <div class="search__item">
                 <a href="#" onClick={(event: MouseEvent) => {
                     event.preventDefault()
                     this.$router.push({
