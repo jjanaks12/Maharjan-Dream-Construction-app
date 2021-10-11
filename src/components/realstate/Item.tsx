@@ -28,7 +28,7 @@ export default class RealestateItem extends Vue {
                 <p>{this.item.excerpt}</p>
                 {this.item.detail ? (<RealestateService item={this.item.detail} />) : null}
             </div>
-            <a href="#" class="item__link"><span class="icon-d-arrow"></span></a>
+            <router-link to={{ name: 'realstate_detail', params: { id: this.item.id } }} class="item__link"><span class="icon-d-arrow"></span></router-link>
         </div>)
     }
 }

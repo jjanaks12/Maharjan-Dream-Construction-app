@@ -44,10 +44,6 @@ export default class ResturantDetail extends Vue {
         this.checkRoute()
     }
 
-    beforeRouteLeave() {
-        console.log("Stopping the interval timer")
-    }
-
     render(): VNode {
         return (<main id="main">
             <section class="item__section training__section">

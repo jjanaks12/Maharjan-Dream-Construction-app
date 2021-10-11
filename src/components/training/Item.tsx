@@ -27,7 +27,7 @@ export default class RentItem extends Vue {
                 <p>{this.item.excerpt}</p>
                 {this.remainingDay > 0 ? <span>{this.remainingDay} day{this.remainingDay > 1 ? 's' : ''} left</span> : <span class="text--danger">expired</span>}
             </div>
-            <a href="#" class="item__link"><span class="icon-d-arrow"></span></a>
+            <router-link to={{ name: 'training_detail', params: { id: this.item.id } }} class="item__link"><span class="icon-d-arrow"></span></router-link>
         </div>)
     }
 }

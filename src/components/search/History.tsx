@@ -19,23 +19,31 @@ import { mapGetters, mapMutations } from 'vuex'
 })
 export default class SearchHistory extends Vue {
     private histories!: Array<iSearch>
-    private removeSearch!: (index: number) => void
+    private removeSearch!: (index: number | undefined) => void
+    private currentPage!: string
+
+    get historyList(): Array<iSearch> {
+        return this.histories.filter((history: iSearch) => history.type === this.currentPage)
+    }
 
     render(): VNode {
         return <div class="search__list">
-            {this.histories.slice(0, 10).map((history: iSearch, index: number) => <div class="search__item">
+            {this.historyList.slice(0, 10).map((history: iSearch, index: number) => <div class="search__item">
                 <a href="#" onClick={(event: MouseEvent) => {
                     event.preventDefault()
                     this.$router.push({
                         name: this.$route.name as string,
                         params: {
                             text: history.title
+                        },
+                        query: {
+                            t: new Date().getTime().toString()
                         }
                     })
                 }}>{history.title}</a>
                 <a href="#" class="remove" onClick={(event: MouseEvent) => {
                     event.preventDefault()
-                    this.removeSearch(index)
+                    this.removeSearch(history.id)
                 }}><span class="icon-close"></span></a>
             </div>)}
         </div>

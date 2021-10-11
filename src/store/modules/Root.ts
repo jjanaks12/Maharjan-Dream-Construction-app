@@ -9,6 +9,7 @@ import { iDelivery } from "@/interfaces/delivery";
 @Module
 export default class Root extends VuexModule {
     private showMenu: boolean = false
+    private showSearch: boolean = false
     private errors: iErrorMessage = {}
     private token: string = ''
     private currentPage: string = 'realstate'
@@ -23,6 +24,10 @@ export default class Root extends VuexModule {
 
     get isMenuActive(): boolean {
         return this.showMenu
+    }
+
+    get isSearchActive(): boolean {
+        return this.showSearch
     }
 
     get getLoggedinUser(): iUserDetail | null {
@@ -75,13 +80,25 @@ export default class Root extends VuexModule {
     }
 
     @Mutation
-    ADD_TO_HISTORY_LIST(search: iSearch): void {
-        if (!this.searchHistory.includes(search))
-            this.searchHistory.unshift(search)
+    UPDATE_SEARCH(status: boolean = false): void {
+        this.showSearch = status
     }
 
     @Mutation
-    REMOVE_SEARCH(index: number): void {
+    ADD_TO_HISTORY_LIST(search: iSearch): void {
+        const a: iSearch | undefined = this.searchHistory.find((s: iSearch) => search.title === s.title && search.type === s.type)
+
+        if (!a)
+            this.searchHistory.unshift({
+                id: this.searchHistory.length + 1,
+                ...search
+            })
+    }
+
+    @Mutation
+    REMOVE_SEARCH(id: number): void {
+        const index = this.searchHistory.indexOf(this.searchHistory.find((history: iSearch) => id === history.id) as iSearch)
+
         this.searchHistory.splice(index, 1)
     }
 

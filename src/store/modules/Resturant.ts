@@ -3,6 +3,7 @@ import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators'
 import axios from '@/services/axios'
 import { iDeskResponse, iDesk, iMenu, iMenuResponse } from '@/interfaces/resturant'
 import { RequestQuery } from '@/interfaces/app'
+import { AxiosResponse } from 'axios'
 
 let params: RequestQuery = {
     params: {
@@ -221,6 +222,12 @@ export default class Resturant extends VuexModule {
                     name: searchtext
                 }
             }
+            this.context.commit('root/ADD_TO_HISTORY_LIST', {
+                title: searchtext,
+                type: 'resturant'
+            }, {
+                root: true
+            })
             this.context.dispatch('menuFetch', params)
 
             resolve(true)
@@ -229,22 +236,7 @@ export default class Resturant extends VuexModule {
 
     @Action
     async getMenu(id: string): Promise<iMenu> {
-        let menuTemp: iMenu = resturantInit
-
-        if (this.getMenuList.length == 0)
-            await this.context.dispatch('menuFetch')
-
-        await this.getMenuList.find((menu: iMenu) => {
-
-            if (menu.id === id) {
-                menuTemp = menu
-                return true
-            } else {
-                menuTemp = menu.children?.find((submneu: iMenu) => submneu.id === id) || resturantInit
-                return true
-            }
-        })
-        
-        return menuTemp
+        const { data }: AxiosResponse = await axios.get(`menus/${id}`)
+        return data
     }
 }

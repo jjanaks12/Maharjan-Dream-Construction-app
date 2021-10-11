@@ -7,6 +7,7 @@ export enum SearchType {
 }
 
 export interface iSearch {
+    id?: number
     title: string
     type: SearchType
 }

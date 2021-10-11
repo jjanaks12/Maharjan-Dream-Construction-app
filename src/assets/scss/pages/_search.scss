@@ -65,3 +65,21 @@
 		}
 	}
 }
+
+.search__list {
+	padding: rem-calc(0 40px);
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.search__item {
+	& + & {
+		margin-left: rem-calc(10px);
+	}
+
+	.remove {
+		color: $primary;
+		font-size: rem-calc(10px);
+		margin-left: rem-calc(5px);
+	}
+}

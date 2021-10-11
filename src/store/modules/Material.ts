@@ -129,7 +129,7 @@ export default class Material extends VuexModule {
 
             params = {
                 params: {
-                    title: searchtext
+                    name: searchtext
                 }
             }
             this.context.commit('root/ADD_TO_HISTORY_LIST', {

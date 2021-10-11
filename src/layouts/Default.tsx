@@ -2,7 +2,7 @@ import { VNode } from 'vue'
 import { Component, Vue } from 'vue-property-decorator'
 import { mapGetters } from 'vuex'
 
-import AppFooter from '@/layouts/partials/Footer'
+// import AppFooter from '@/layouts/partials/Footer'
 import AppHeader from '@/layouts/partials/Header'
 import SnackBar from '@/components/common/SnackBar'
 

@@ -242,6 +242,11 @@ mark {
 	}
 }
 
+.hide {
+	visibility: hidden;
+	opacity: 0;
+}
+
 @keyframes rotate {
 	0% {
 		transform: rotateZ(0deg);

@@ -4,6 +4,13 @@ import { mapActions, mapGetters } from 'vuex'
 
 let timer: number
 
+const searchText: { [propName: string]: string } = {
+    realstate: 'Address, suburb, postcard or state',
+    rent: 'Search for rent',
+    training: 'Search for training',
+    resturant: 'Search for Resturant',
+}
+
 @Component({
     computed: {
         ...mapGetters({
@@ -16,6 +23,7 @@ let timer: number
             searchRent: 'rent/search',
             searchTraining: 'training/search',
             searchMaterial: 'material/search',
+            searchMenu: 'resturant/menuSearch',
         })
     }
 })
@@ -27,6 +35,7 @@ export default class SearchForm extends Vue {
     private searchRent!: (text: string) => Promise<void>
     private searchTraining!: (text: string) => Promise<void>
     private searchMaterial!: (text: string) => Promise<void>
+    private searchMenu!: (text: string) => Promise<void>
 
     constructor(props: any) {
         super(props)
@@ -48,13 +57,16 @@ export default class SearchForm extends Vue {
     }
 
     get searchPlaceholder(): string {
-        if (this.currentPage === 'realstate')
-            return 'Address, suburb, postcard or state'
-        if (this.currentPage === 'rent')
-            return 'Search for rent'
-        if (this.currentPage === 'training')
-            return 'Search for training'
-        return 'search text here'
+        return searchText[this.currentPage] ? searchText[this.currentPage] : 'search text here'
+    }
+
+    mounted() {
+        const searchText = this.$route.params.text
+
+        if (searchText) {
+            this.searchText = searchText
+            this.search()
+        }
     }
 
     /**
@@ -94,6 +106,8 @@ export default class SearchForm extends Vue {
             await this.searchTraining(this.searchText)
         } else if (this.currentPage === 'material') {
             await this.searchMaterial(this.searchText)
+        } else if (this.currentPage === 'resturant') {
+            await this.searchMenu(this.searchText)
         }
     }
 }

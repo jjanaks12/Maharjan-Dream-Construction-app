@@ -8,12 +8,14 @@ import Navigation from '@/layouts/partials/Navigation'
 @Component({
     computed: {
         ...mapGetters({
-            showNavigation: 'root/isMenuActive'
+            showNavigation: 'root/isMenuActive',
+            showSearch: 'root/isSearchActive'
         })
     },
     methods: {
         ...mapMutations({
-            toggleNavigation: 'root/UPDATE_MENU'
+            toggleNavigation: 'root/UPDATE_MENU',
+            toggleSearch: 'root/UPDATE_SEARCH'
         }),
         ...mapActions({
             logout: 'root/logout'
@@ -22,19 +24,27 @@ import Navigation from '@/layouts/partials/Navigation'
 })
 export default class Header extends Vue {
     private logout!: () => Promise<boolean>
-    private showNavigation!: () => void
-    private showSearchForm: boolean = false
+
+    private showNavigation!: boolean
+    private showSearch!: boolean
     private toggleNavigation!: (status: boolean) => void
+    private toggleSearch!: (status: boolean) => void
 
     constructor(props: any) {
         super(props)
+    }
 
-        this.showSearchForm = this.$route.name === 'search'
+    mounted() {
+        this.$route.name === 'search' ? this.toggleSearch(true) : null
     }
 
     @Watch('$route')
     routeWatcher() {
         this.toggleNavigation(false)
+    }
+
+    get showShowSearch(): boolean {
+        return !['collection'].includes(this.$route.name as string)
     }
 
     /**
@@ -43,7 +53,7 @@ export default class Header extends Vue {
     render(): VNode {
         return (<header id="header" class="is-app">
             <transition name="slide-fade" mode="out-in">
-                {!this.showSearchForm ? (<div class="header-holder">
+                {!this.showSearch ? (<div class="header-holder">
                     <button type="button" class="menu__opener" onClick={(event: MouseEvent) => {
                         event.preventDefault()
                         this.toggleNavigation(!this.showNavigation)
@@ -52,11 +62,15 @@ export default class Header extends Vue {
                         <span class="icon-user"></span>
                         <span class="text">Me</span>
                     </router-link>
-                    <a href="#" class="search__opener" onClick={this.toggleSearchForm}><span class="icon-search"></span></a>
-                </div>) : (<SearchForm onClose={this.toggleSearchForm} />)}
+                    <a href="#" class={{ "search__opener": true, "hide": !this.showShowSearch }} onClick={(event: MouseEvent) => {
+                        event.preventDefault()
+                        this.toggleSearch(true)
+                        this.$router.push({ name: 'search' })
+                    }}><span class="icon-search"></span></a>
+                </div>) : (<SearchForm onClose={() => this.toggleSearch(false)} />)}
             </transition>
             <transition name="slide-fade" mode="out-in">
-                {this.showNavigation ? (<Navigation onClose={() => this.toggleNavigation(!this.showNavigation)} />) : null}
+                {this.showNavigation ? (<Navigation onClose={() => this.toggleNavigation(false)} />) : null}
             </transition>
         </header>)
     }
@@ -75,14 +89,5 @@ export default class Header extends Vue {
             .then(() => {
                 this.$router.push({ name: 'login' })
             })
-    }
-
-    toggleSearchForm(event: MouseEvent): void {
-        event.preventDefault()
-
-        this.showSearchForm = !this.showSearchForm
-
-        if (this.showSearchForm)
-            this.$router.push({ name: 'search' })
     }
 }

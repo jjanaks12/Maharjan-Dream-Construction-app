@@ -30,7 +30,7 @@ export default class ResturantItem extends Vue {
                 <h3><router-link to={{ name: 'resturant_detail', params: { id: this.item.id } }}>{this.item.name}</router-link></h3>
                 <p>{this.item.excerpt}</p>
             </div>
-            <a href="#" class="item__link"><span class="icon-d-arrow"></span></a>
+            <router-link to={{ name: 'resturant_detail', params: { id: this.item.id } }} class="item__link"><span class="icon-d-arrow"></span></router-link>
             {/* {this.item.children && this.item.children.length > 0
                 ? <div class="space-y-1 pt-1">
                     {this.item.children.map((menuItem: iMenu, index: number) => <ResturantItem item={menuItem} class="ml-9" />)}

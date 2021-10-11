@@ -26,7 +26,7 @@ export default class MaterialItem extends Vue {
                 <h3><router-link to={{ name: 'material_detail', params: { id: this.item.id } }}>{this.item.name}</router-link></h3>
                 <p>{this.item.excerpt}</p>
             </div>
-            <a href="#" class="item__link"><span class="icon-d-arrow"></span></a>
+            <router-link to={{ name: 'material_detail', params: { id: this.item.id } }} class="item__link"><span class="icon-d-arrow"></span></router-link>
         </div>)
     }
 }
