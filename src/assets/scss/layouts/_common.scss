@@ -139,6 +139,16 @@ mark {
 	margin-right: rem-calc(10px);
 }
 
+.animate {
+	animation: rotate 2s linear infinite;
+	position: relative;
+}
+
+.d-inline-block {
+	display: inline-block;
+	vertical-align: top;
+}
+
 .btn__close {
 	@include animate(color);
 	background: none;
@@ -245,6 +255,16 @@ mark {
 .hide {
 	visibility: hidden;
 	opacity: 0;
+}
+
+.logo {
+	width: rem-calc(200px);
+	margin: 0 auto rem-calc(25px);
+
+	img {
+		width: 100%;
+		height: auto;
+	}
 }
 
 @keyframes rotate {

@@ -2,7 +2,7 @@ import { VNode } from 'vue'
 import { Component, Vue } from 'vue-property-decorator'
 import { mapGetters } from 'vuex'
 
-// import AppFooter from '@/layouts/partials/Footer'
+import AppFooter from '@/layouts/partials/Footer'
 import AppHeader from '@/layouts/partials/Header'
 import SnackBar from '@/components/common/SnackBar'
 
@@ -32,7 +32,7 @@ export default class Default extends Vue {
       <transition name="slide-fade" mode="out-in">
         <router-view key={Date.now()} />
       </transition>
-      {/* <AppFooter /> */}
+      <AppFooter />
       {this.message ? <SnackBar message={this.message} /> : null}
     </div>)
   }

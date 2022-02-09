@@ -205,7 +205,7 @@ export default class Root extends VuexModule {
 
     @Action
     save(formData: iUserDetail) {
-        axios.put(`users/${formData.uuid}`, formData)
+        axios.put(`users/${formData.id}`, formData)
             .then(() => {
                 this.context.dispatch('fetchUser')
             })

@@ -6,16 +6,16 @@ const menuList: Array<iMenu> = [{
     icon: "icon-home",
     path: "home"
 }, {
-    name: "Collection",
-    text: "Collection",
-    icon: "icon-collection",
-    path: "collection"
+    name: "Order",
+    text: "Order",
+    icon: "icon-order",
+    path: "order"
 }, {
-    name: "Notification",
-    text: "Notification",
-    icon: "icon-bell",
-    path: "notification"
-}, {
+//     name: "Notification",
+//     text: "Notification",
+//     icon: "icon-bell",
+//     path: "notification"
+// }, {
     name: "Account",
     text: "Account",
     icon: "icon-user",

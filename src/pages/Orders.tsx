@@ -33,7 +33,11 @@ export default class Order extends Vue {
                 </header>
                 <Cart />
                 <OrderList />
-                <Modal v-model={this.showModal}>
+                <Modal v-model={this.showModal} {...{
+                    scopedSlots: {
+                        header: (): VNode => <h2>Ready to checkout?</h2>
+                    }
+                }}>
                     <OrderForm onClose={() => this.showModal = false} />
                 </Modal>
             </section>

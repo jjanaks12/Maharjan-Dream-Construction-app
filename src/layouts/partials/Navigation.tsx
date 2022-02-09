@@ -31,16 +31,16 @@ const menuList: Array<iMenu> = [{
     path: 'collection',
     text: 'Collections'
 }, {
-    icon: '',
-    name: 'resturant',
-    path: 'resturant',
-    text: 'Resturant'
-}, {
-    icon: '',
-    name: 'notification',
-    path: 'notification',
-    text: 'Notifications'
-}, {
+//     icon: '',
+//     name: 'resturant',
+//     path: 'resturant',
+//     text: 'Resturant'
+// }, {
+//     icon: '',
+//     name: 'notification',
+//     path: 'notification',
+//     text: 'Notifications'
+// }, {
     icon: '',
     name: 'order',
     path: 'order',

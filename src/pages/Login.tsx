@@ -6,6 +6,8 @@ import { VNode } from 'vue'
 import { Component } from 'vue-property-decorator'
 import { mapActions, mapGetters } from 'vuex'
 
+import Brand from '@/components/common/Brand'
+
 @Component({
   computed: {
     ...mapGetters({
@@ -50,6 +52,7 @@ export default class Login extends FormComponent {
   render(): VNode {
     return (<section class="account__section">
       <div class="account__section__body">
+        <Brand />
         <h1>Login</h1>
         <form action="#" class="account__section__form" onSubmit={this.formSubmitted} novalidate>
           <div class={{ 'form__group': true, 'input--invalid': this.errors.email.length > 0 }}>

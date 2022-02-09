@@ -6,7 +6,7 @@ import FormComponent from "@/core/FormComponent"
 import { iUserDetail } from "@/interfaces/auth"
 
 interface profile {
-    uuid?: string,
+    id?: string,
     address: string,
     email: string,
     name: string,
@@ -56,7 +56,7 @@ export default class ProfileForm extends FormComponent {
 
     mounted() {
         this.formData = {
-            uuid: this.userDetail.uuid,
+            id: this.userDetail.id,
             address: this.userDetail.address,
             email: this.userDetail.email,
             name: this.userDetail.name,
@@ -67,7 +67,7 @@ export default class ProfileForm extends FormComponent {
     @Watch('userDetail')
     userDetailChanged() {
         this.formData = {
-            uuid: this.userDetail.uuid,
+            id: this.userDetail.id,
             address: this.userDetail.address,
             email: this.userDetail.email,
             name: this.userDetail.name,

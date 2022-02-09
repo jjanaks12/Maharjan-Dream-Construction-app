@@ -1,3 +1,5 @@
+@use "sass:math";
+
 .collection__section {
 	padding: rem-calc(60px 20px);
 
@@ -87,7 +89,7 @@
 		grid-row: 1;
 
 		img {
-			max-height: calc(#{$max-height/2} - 4px);
+			max-height: calc(#{math.div($max-height, 2)} - 4px);
 		}
 	}
 
@@ -96,7 +98,7 @@
 		grid-row: 2;
 
 		img {
-			max-height: calc(#{$max-height/2} - 4px);
+			max-height: calc(#{math.div($max-height, 2)} - 4px);
 		}
 	}
 

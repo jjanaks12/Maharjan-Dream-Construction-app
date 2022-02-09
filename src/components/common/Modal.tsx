@@ -9,6 +9,7 @@ export default class Modal extends Vue {
     }
 
     @Prop({ required: true }) value!: boolean
+    @Prop({ default: null }) title!: string | null
 
     @Watch('value')
     valueChanged() {
@@ -26,6 +27,15 @@ export default class Modal extends Vue {
             <div class="modal__holder" onClick={(event: MouseEvent) => {
                 event.stopPropagation()
             }}>
+                {this.$scopedSlots.header
+                    ? <header class="modal__header">
+                        {this.$scopedSlots.header({})}
+                    </header>
+                    : this.title
+                        ? <header class="modal__header">
+                            <h2>{this.title}</h2>
+                        </header>
+                        : null}
                 <div class="modal__body">
                     {this.$slots.default}
                 </div>

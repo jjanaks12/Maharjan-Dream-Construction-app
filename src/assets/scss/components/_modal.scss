@@ -1,6 +1,7 @@
 .modal {
     @include animate(opacity visibility transform);
     background: rgba($white, 0.4);
+    backdrop-filter: blur(3px);
     min-height: 100vh;
     text-align: center;
     white-space: nowrap;
@@ -18,7 +19,7 @@
     transform: translateY(rem-calc(20px));
 
     &:after {
-        content: '';
+        content: "";
         min-height: 100%;
         display: inline-block;
         vertical-align: middle;
@@ -39,11 +40,21 @@
     text-align: left;
     display: inline-block;
     vertical-align: middle;
-    padding: rem-calc(0 15px);
     overflow: hidden;
     border-radius: 8px;
 }
 
+.modal__header {
+    padding: rem-calc(20px);
+    border-bottom: 1px solid rgba($white, 0.1);
+}
+
+.modal__body {
+    padding: rem-calc(20px);
+}
+
 .modal__footer {
-    padding: rem-calc(20px 0);
+    text-align: right;
+    padding: rem-calc(20px);
+    border-top: 1px solid rgba($white, 0.1);
 }

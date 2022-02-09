@@ -40,7 +40,7 @@ export default class CartItem extends Vue {
     render(): VNode {
         return (<div class="cart__item">
             <div class="cart__item__image">
-                <img src={this.image} alt="" />
+                <img src={this.image} alt={this.item.material.name} />
             </div>
             <div class="cart__item__detail">
                 <router-link to={{ name: 'material_detail', params: { id: this.item.material.id } }}>{this.item.material.name} <span>({this.item.quantity})</span></router-link>

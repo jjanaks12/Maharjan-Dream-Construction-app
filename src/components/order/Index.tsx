@@ -23,6 +23,7 @@ import OrderItem from './Item'
     }
 })
 export default class OrderList extends Vue {
+    private isLoading: boolean = false
     private list!: Array<iOrder>
     private current!: number
     private total!: number
@@ -31,17 +32,30 @@ export default class OrderList extends Vue {
     private next!: () => Promise<boolean>
     private prev!: () => Promise<boolean>
 
-    async mounted() {
-        await this.fetch()
+    mounted() {
+        this.getOrder()
     }
 
     render(): VNode {
         return <section class="item__section">
             <header class="item__section__heading">
                 <h2 class="h4">Previous orders</h2>
+                <a href="#" onClick={(event: MouseEvent) => {
+                    event.preventDefault()
+                    this.getOrder()
+                }}><span class={{ "icon-loop d-inline-block": true, animate: this.isLoading }}></span></a>
             </header>
             {this.list.map((order: iOrder) => <OrderItem order={order} />)}
             <Paginate current={this.current} total={this.total} onNext={() => this.next()} onPrev={() => this.prev()} />
         </section>
+    }
+
+    getOrder() {
+        this.isLoading = true
+
+        this.fetch()
+            .finally(() => {
+                this.isLoading = false
+            })
     }
 }

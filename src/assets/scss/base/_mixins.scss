@@ -1,3 +1,5 @@
+@use "sass:math";
+
 // vertical align el inside parent with fixed height/min-height
 // usage
 // html - .parent>.child
@@ -255,7 +257,7 @@ $animation-speed: .3s !default;
 
 @mixin rem-font-size($pxSize) {
 	font-size: $pxSize;
-	font-size: ($pxSize / 10px) + rem;
+	font-size: math.div($pxSize, 10px) + rem;
 }
 
 /// Display flex 
@@ -273,7 +275,7 @@ $animation-speed: .3s !default;
 
 @mixin font($size, $line-height: $size + 4) {
 	font-size: rem-calc($size);
-	line-height: $line-height / $size;
+	line-height: math.div($line-height, $size);
 }
 
 @mixin flex($justify-content) {

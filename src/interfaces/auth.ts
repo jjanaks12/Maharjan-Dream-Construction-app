@@ -36,7 +36,7 @@ export interface iUserDetail {
     citizenship_back?: string | null
     email_verified_at?: string
     created_at?: string
-    uuid?: string
+    id?: string
     [propName: string]: any
 }
 
