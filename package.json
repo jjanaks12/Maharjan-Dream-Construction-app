@@ -1,11 +1,12 @@
 {
-  "name": "MaharjanGroup",
+  "name": "Guthi",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "resources": "capacitor-resources -p android,ios"
   },
   "dependencies": {
     "@capacitor/android": "^3.1.1",
@@ -41,6 +42,7 @@
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "@vue/eslint-config-typescript": "^7.0.0",
+    "capacitor-resources": "^2.0.5",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
     "sass": "^1.26.5",
