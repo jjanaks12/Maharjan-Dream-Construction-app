@@ -1,4 +1,5 @@
 import Vue from 'vue'
+
 import App from '@/App'
 import router from '@/router'
 import store from '@/store'
@@ -6,6 +7,7 @@ import store from '@/store'
 // plugins
 import '@/plugins/validator'
 import '@/plugins/directive/click-outside'
+import '@/plugins/pluginCheck'
 
 Vue.config.productionTip = false
 
