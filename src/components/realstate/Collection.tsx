@@ -38,24 +38,22 @@ export default class Collection extends Vue {
      * @returns VNode
      */
     render(): VNode {
-        return (<main id="main">
-            <section class="item__section">
-                <header class="item__section__heading">
-                    <h2>Collection</h2>
-                    <div class="text__holder">
-                        <p>Organise your saved properties.</p>
-                        <a href="#" class="btn btn__block btn__danger" onClick={(event: MouseEvent) => {
-                            event.preventDefault()
+        return <section class="item__section">
+            <header class="item__section__heading">
+                <h2>Collection</h2>
+                <div class="text__holder">
+                    <p>Organise your saved properties.</p>
+                    <a href="#" class="btn btn__block btn__danger" onClick={(event: MouseEvent) => {
+                        event.preventDefault()
 
-                            this.showModal = true
-                        }}>Create a Collection</a>
-                    </div>
-                </header>
-                {this.list.map((collection: iCollection) => <RealestateCollection collection={collection} />)}
-            </section>
+                        this.showModal = true
+                    }}>Create a Collection</a>
+                </div>
+            </header>
+            {this.list.map((collection: iCollection) => <RealestateCollection collection={collection} />)}
             <Modal v-model={this.showModal}>
                 <CollectionForm onClose={() => this.showModal = false} />
             </Modal>
-        </main>)
+        </section>
     }
 }

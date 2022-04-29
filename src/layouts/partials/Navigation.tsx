@@ -25,31 +25,21 @@ const menuList: Array<iMenu> = [{
     name: 'training',
     path: 'training',
     text: 'Trainings'
-}, {
-    icon: '',
-    name: 'collection',
-    path: 'collection',
-    text: 'Collections'
-}, {
-//     icon: '',
-//     name: 'resturant',
-//     path: 'resturant',
-//     text: 'Resturant'
 // }, {
 //     icon: '',
 //     name: 'notification',
 //     path: 'notification',
 //     text: 'Notifications'
 // }, {
-    icon: '',
-    name: 'order',
-    path: 'order',
-    text: 'My Orders'
-}, {
-    icon: '',
-    name: 'account',
-    path: 'account',
-    text: 'My Account'
+//     icon: '',
+//     name: 'order',
+//     path: 'order',
+//     text: 'My Orders'
+// }, {
+    // icon: '',
+    // name: 'account',
+    // path: 'account',
+    // text: 'My Account'
 }]
 
 @Component({

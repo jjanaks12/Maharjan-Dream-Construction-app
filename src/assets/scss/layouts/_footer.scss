@@ -1,16 +1,14 @@
 #footer {
-	padding: rem-calc(24px 16px);
 	background: rgba($black, 0.3);
-	backdrop-filter: blur(10px);
+	backdrop-filter: blur(20px);
+	// padding: rem-calc(15px 30px);
+	border-radius: rem-calc(50px);
 	position: fixed;
-	right: 0;
-	bottom: 0;
-	left: 0;
+	right: 50%;
+	transform: translateX(50%);
+	bottom: rem-calc(20px);
 	z-index: 9999;
-
-	@include media('>=tablet') {
-		padding: rem-calc(24px 62px);
-	}
+	overflow: hidden;
 }
 
 .footer__nav {
@@ -26,22 +24,22 @@
 	}
 
 	a {
-		color: $primary;
-	}
-
-	[class^="icon-"],
-	[class*=" icon-"] {
-		font-size: rem-calc(32px);
+		@include animate(background);
+		@include size(#{rem-calc(70px)});
+		font-size: rem-calc(28px);
 		line-height: 1;
-		display: block;
-		margin-bottom: rem-calc(8px);
+		color: $primary;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		outline: none;
 
-		@include media('>=tablet') {
-			font-size: rem-calc(64px);
-			margin-bottom: rem-calc(18px);
+		&:hover,
+		&:focus {
+			background: rgba($black, 0.2);
 		}
 	}
-
+	
 	.active a {
 		color: $white;
 	}
@@ -50,10 +48,6 @@
 		font-weight: 700;
 		font-size: rem-calc(18px);
 		line-height: 1.1667;
-		display: block;
-
-		@include media('>=tablet') {
-			font-size: rem-calc(30px);
-		}
+		display: none;
 	}
 }

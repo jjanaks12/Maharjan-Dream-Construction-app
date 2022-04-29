@@ -13,10 +13,6 @@ html {
 	@include media(">=tablet") {
 		font-size: 1.93vw;
 	}
-
-	@include media(">=desktop") {
-		// font-size: 16px;
-	}
 }
 
 body {
@@ -101,7 +97,7 @@ mark {
 }
 
 #wrapper {
-	background: #333;
+	background: #2c2c2c;
 	min-height: 100vh;
 	overflow: hidden;
 	position: relative;
@@ -112,17 +108,27 @@ mark {
 		padding-bottom: rem-calc(120px);
 	}
 
-	&:after {
-		content: "";
+	&::before,
+	&::after {
+		content: '';
+		border-radius: 50%;
 		position: absolute;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
 		z-index: -1;
-		background: url("../images/pattern01.jpg") repeat 0 0;
-		mix-blend-mode: color-burn;
-		opacity: 0.8;
+		filter: blur(100px);
+	}
+
+	&::before {
+		background: $primary;
+		@include size(#{rem-calc(350px)});
+		top: rem-calc(150px);
+		right: rem-calc(-150px);
+	}
+
+	&::after {
+		background: darken($primary, 40%);
+		@include size(#{rem-calc(450px)});
+		bottom: rem-calc(-50px);
+		left: rem-calc(-150px);
 	}
 }
 
@@ -264,6 +270,18 @@ mark {
 	img {
 		width: 100%;
 		height: auto;
+	}
+}
+
+.status {
+	display: inline-block;
+	vertical-align: top;
+	padding: rem-calc(3px 15px);
+
+	&__success {
+		background: $success;
+		text-transform: uppercase;
+		border-radius: rem-calc(15px);
 	}
 }
 

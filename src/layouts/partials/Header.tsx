@@ -4,12 +4,14 @@ import { mapActions, mapGetters, mapMutations } from 'vuex'
 
 import SearchForm from '@/components/search/Form'
 import Navigation from '@/layouts/partials/Navigation'
+import { iUserDetail } from '@/interfaces/auth'
 
 @Component({
     computed: {
         ...mapGetters({
             showNavigation: 'root/isMenuActive',
-            showSearch: 'root/isSearchActive'
+            showSearch: 'root/isSearchActive',
+            user: 'root/getLoggedinUser'
         })
     },
     methods: {
@@ -24,6 +26,7 @@ import Navigation from '@/layouts/partials/Navigation'
 })
 export default class Header extends Vue {
     private logout!: () => Promise<boolean>
+    private user!: iUserDetail
 
     private showNavigation!: boolean
     private showSearch!: boolean
@@ -60,7 +63,7 @@ export default class Header extends Vue {
                     }}><span class="icon-menu"></span></button>
                     <router-link class="auth__user" to={{ name: 'account_info' }}>
                         <span class="icon-user"></span>
-                        <span class="text">Me</span>
+                        <span class="text">{this.user.name}</span>
                     </router-link>
                     <a href="#" class={{ "search__opener": true, "hide": !this.showShowSearch }} onClick={(event: MouseEvent) => {
                         event.preventDefault()

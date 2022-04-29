@@ -44,14 +44,6 @@ const routes: Array<newRouteConfig> = [{
         type: 'authorized'
     }
 }, {
-    path: '/collection',
-    name: 'collection',
-    component: () => import('@/pages/collection/Index'),
-    meta: {
-        layout: 'default',
-        type: 'authorized'
-    }
-}, {
 //     path: '/collection_detail/:id?',
 //     name: 'collection_detail',
 //     component: () => import('@/pages/collection/Detail'),

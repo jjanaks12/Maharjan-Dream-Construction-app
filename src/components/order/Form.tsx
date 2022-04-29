@@ -93,7 +93,6 @@ export default class OrderForm extends FormComponent {
 
                 try {
                     const data = await this.makeOrder(this.formData)
-                    console.log(data)
 
                     if (!data)
                         this.errors = { ...this.errors, ...this.errorList }

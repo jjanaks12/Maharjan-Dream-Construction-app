@@ -1,3 +1,4 @@
+import { iUserDetail } from '@/interfaces/auth';
 import { RouteConfig } from 'vue-router';
 
 export type newRouteConfig = RouteConfig & {
@@ -54,6 +55,8 @@ export interface iRealState {
     created_at?: string
     images?: Array<iImage>
     detail?: iService
+    users?: Array<iUserDetail>
+    published?: boolean
     [propName: string]: any
 }
 

@@ -33,8 +33,10 @@ $media-expressions: (
 @import 'layouts/common';
 @import 'layouts/header';
 
+@import 'components/loading';
 @import 'components/button';
 @import 'components/input';
+@import 'components/tabs';
 @import 'components/item';
 @import 'components/collection';
 @import 'components/featured';
@@ -44,6 +46,7 @@ $media-expressions: (
 @import 'components/modal';
 @import 'components/dropdown';
 @import 'components/pagination';
+@import 'components/editor';
 
 @import 'pages/account';
 @import 'pages/homepage';

@@ -1,8 +1,8 @@
 import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators"
-import { AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 
 import axios from '@/services/axios'
-import { iErrorMessage } from '@/interfaces/auth'
+import { iErrorMessage, iUserDetail } from '@/interfaces/auth'
 import { iRealState, iRealStateResponse, RequestQuery } from '@/interfaces/app'
 import { SearchType } from "@/interfaces/search";
 
@@ -22,6 +22,7 @@ let params: RequestQuery = {
 
 @Module
 export default class RealState extends VuexModule {
+    private tab: string = ''
     private errors!: iErrorMessage
     private list: iRealStateResponse = {
         data: [],
@@ -29,6 +30,10 @@ export default class RealState extends VuexModule {
         last_page: 0,
         per_page: 0,
         total: 0
+    }
+
+    get activeTab(): string {
+        return this.tab
     }
 
     get getErrorMessage(): iErrorMessage | null {
@@ -59,6 +64,11 @@ export default class RealState extends VuexModule {
     @Mutation
     SET_STATE_LIST(list: iRealStateResponse) {
         this.list = list
+    }
+
+    @Mutation
+    SET_ACTIVE_TAB(title: string) {
+        this.tab = title
     }
 
     @Action
@@ -119,10 +129,9 @@ export default class RealState extends VuexModule {
     @Action
     async getProperty(id: string): Promise<iRealState> {
 
-        if (this.list.data.length == 0)
-            await this.context.dispatch('fetch')
+        const { data } = await axios('realStates/' + id)
 
-        return await this.list.data.find((material: iRealState) => material.id === id) || propertyInit
+        return data
     }
 
     @Action
@@ -162,5 +171,52 @@ export default class RealState extends VuexModule {
 
             resolve(true)
         })
+    }
+
+    @Action
+    save(formData: iRealState): Promise<boolean> {
+        const { id: userID } = this.context.rootGetters['root/getLoggedinUser'] as iUserDetail
+
+        return new Promise((resolve, reject) => {
+            axios({
+                method: formData.id ? 'put' : 'post',
+                url: formData.id ? `/realStates/users/${userID}/edit` : `/realStates/users/${userID}`,
+                data: formData
+            })
+                .then(() => {
+                    this.context.dispatch('fetch')
+                    resolve(true)
+                }).catch((error: AxiosError) => {
+                    reject(error.response?.data)
+                })
+        })
+    }
+
+    @Action
+    deleteImage(id: number): Promise<boolean> {
+        return new Promise((resolve) => {
+
+            axios.delete(`realStates/image/${id}`)
+            resolve(true)
+        })
+    }
+
+    @Action
+    destory(id: number): Promise<boolean> {
+        return new Promise((resolve) => {
+
+            axios.delete('user/realStates/delete/' + id)
+                .then(() => {
+
+                    this.context.dispatch('fetch')
+                    resolve(true)
+                })
+                .catch(() => { })
+        })
+    }
+
+    @Action({ commit: 'SET_ACTIVE_TAB' })
+    setActiveTab(title: string): string {
+        return title
     }
 }

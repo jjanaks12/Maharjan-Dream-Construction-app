@@ -14,6 +14,12 @@
 	border-radius: rem-calc(8px);
 	cursor: pointer;
 	outline: none;
+
+	> [class^="icon"],
+	> [class*="icon"] {
+		display: inline-block;
+		vertical-align: middle;
+	}
 }
 
 .btn__xs {
@@ -26,10 +32,25 @@
 	display: block;
 }
 
+.btn__icon {
+	@include size(#{rem-calc(40px)});
+	font-size: rem-calc(16px);
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	padding: 0;
+	border-radius: 50%;
+
+	&:hover {
+		background: rgba($primary, 0.3);
+		color: $primary;
+	}
+}
+
 .btn__default {
 	background: $black;
 
-	&:focus, 
+	&:focus,
 	&:hover {
 		background: darken($primary, 30%);
 	}
@@ -38,7 +59,7 @@
 .btn__info {
 	background: $info;
 
-	&:focus, 
+	&:focus,
 	&:hover {
 		background: darken($info, 30%);
 	}
@@ -46,8 +67,9 @@
 
 .btn__primary {
 	background: $primary;
+	color: $black;
 
-	&:focus, 
+	&:focus,
 	&:hover {
 		background: darken($primary, 30%);
 	}
@@ -56,7 +78,7 @@
 .btn__success {
 	background: $success;
 
-	&:focus, 
+	&:focus,
 	&:hover {
 		background: darken($success, 30%);
 	}
@@ -65,7 +87,7 @@
 .btn__danger {
 	background: $danger;
 
-	&:focus, 
+	&:focus,
 	&:hover {
 		background: darken($danger, 30%);
 	}

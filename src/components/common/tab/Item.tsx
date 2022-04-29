@@ -17,8 +17,6 @@ export default class TabItem extends Vue {
     }
 
     render(): VNode {
-        return <div>
-            {this.$slots.default}
-        </div>
+        return <div class={{ "tab__item": true, "tab__item--active": this.isActive }}>{this.$slots.default}</div >
     }
 }

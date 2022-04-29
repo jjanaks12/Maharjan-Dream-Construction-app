@@ -2,39 +2,37 @@ import { VNode } from 'vue'
 import { Component, Vue } from 'vue-property-decorator'
 import { mapActions, mapGetters } from 'vuex'
 
-import RealestateItem from '@/components/realstate/Item'
-import { iRealState } from '@/interfaces/app'
-import Paginate from '@/components/common/Paginate'
+import Modal from '@/components/common/Modal'
+import RealstateCreate from '@/components/realstate/Create'
+import Tab from '@/components/common/tab/Index'
+import TabItem from '@/components/common/tab/Item'
+import Collection from '@/components/realstate/Collection'
+import RealStateList from './List'
+import MyProperty from '@/components/realstate/MyProperty'
 
 @Component({
     computed: {
         ...mapGetters({
-            propertyList: 'realstate/getPropertyList',
-            lastPage: 'realstate/lastPage',
-            currentPage: 'realstate/currentPage'
+            activeTab: 'realstate/activeTab'
         })
     },
     methods: {
         ...mapActions({
             fetchProperty: 'realstate/fetch',
-            next: 'realstate/nextPage',
-            prev: 'realstate/prevPage',
-            goto: 'realstate/gotoPage',
+            setActiveTab: 'realstate/setActiveTab',
         })
     }
 })
 export default class RealState extends Vue {
-    private propertyList!: Array<iRealState>
-    private lastPage!: number
-    private currentPage!: number
+    private showCreateModal: boolean = false
+    private isLoading: boolean = false
 
     private fetchProperty!: () => Promise<boolean>
-    private next!: () => Promise<boolean>
-    private prev!: () => Promise<boolean>
-    private goto!: (pageno: number) => Promise<boolean>
+    private setActiveTab!: (title: string) => string
+    private activeTab!: string
 
-    beforeMount() {
-        this.fetchProperty()
+    mounted() {
+        this.init()
     }
 
     render(): VNode {
@@ -42,10 +40,40 @@ export default class RealState extends Vue {
             <section class="item__section">
                 <header class="item__section__heading">
                     <h2>Realstates</h2>
+                    <div class="item__section__heading__action">
+                        <a href="#" class={{ 'btn btn__icon': true, 'animate': this.isLoading }} onClick={(event: MouseEvent) => {
+                            event.preventDefault()
+                            this.init()
+                        }}><span class="icon-loop"></span></a>
+                        <a href="#" class="btn btn__icon" onClick={(event: MouseEvent) => {
+                            event.preventDefault()
+                            this.showCreateModal = true
+                        }}><span class="icon-plus"></span></a>
+                    </div>
                 </header>
-                {this.propertyList.map((property: iRealState) => (<RealestateItem item={property} />))}
-                <Paginate current={this.currentPage} total={this.lastPage} onNext={() => this.next()} onPrev={() => this.prev()} onGoto={(pageno: number) => this.goto(pageno)} />
+                <Tab onChange={(title: string) => this.setActiveTab(title)}>
+                    <TabItem title="All" active={['All', ''].includes(this.activeTab)}>
+                        <RealStateList />
+                    </TabItem>
+                    <TabItem title="Mine" active={this.activeTab === 'Mine'}>
+                        <MyProperty />
+                    </TabItem>
+                    <TabItem title="Collection" active={this.activeTab === 'Collection'}>
+                        <Collection />
+                    </TabItem>
+                </Tab>
+                <Modal title="Add new Property" v-model={this.showCreateModal}>
+                    <RealstateCreate onClose={() => { this.showCreateModal = false }} />
+                </Modal>
             </section>
         </main>)
+    }
+
+    init() {
+        this.isLoading = true
+        this.fetchProperty()
+            .finally(() => {
+                this.isLoading = false
+            })
     }
 }

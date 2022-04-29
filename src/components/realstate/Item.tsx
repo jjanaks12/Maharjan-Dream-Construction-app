@@ -22,7 +22,12 @@ export default class RealestateItem extends Vue {
      */
     render(): VNode {
         return (<div class="item">
-            <div class="item__image"><img src={this.featuredImage} alt={this.item.location} /></div>
+            {this.featuredImage
+                ? <div class="item__image">
+                    <img src={this.featuredImage} alt={this.item.location} />
+                </div>
+                : null
+            }
             <div class="item__description">
                 <h3><router-link to={{ name: 'realstate_detail', params: { id: this.item.id } }}>{this.item.location}</router-link></h3>
                 <p>{this.item.excerpt}</p>

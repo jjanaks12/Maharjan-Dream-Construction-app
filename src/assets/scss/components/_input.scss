@@ -3,6 +3,7 @@
 [type=search],
 [type=text],
 [type=datetime-local],
+textarea,
 select {
 	@include animate(border-color);
 	background: $black-500;

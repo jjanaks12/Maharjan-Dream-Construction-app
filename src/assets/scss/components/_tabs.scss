@@ -1,0 +1,54 @@
+.tab {
+    $self: &;
+    
+    &__list {
+        @extend %listreset;
+        padding: rem-calc(40px 40px 0);
+        border-bottom: 1px solid $primary;
+
+        li {
+            display: inline-block;
+            vertical-align: top;
+
+            + li {
+                margin-left: 3px;
+            }
+        }
+
+        a {
+            @include animate(background color);
+            font-size: rem-calc(16px);
+            display: inline-block;
+            vertical-align: top;
+            padding: rem-calc(8px 15px);
+            border-radius: rem-calc(4px) rem-calc(4px) 0 0;
+            outline: none;
+
+            &:focus,
+            &:hover {
+                background: rgba($primary, 0.2);
+                color: $white;
+            }
+        }
+
+        #{$self}--active a {
+            color: $white;
+            background: $primary;
+        }
+    }
+
+    &__item {
+        @include animate(opacity visibility transform);
+        opacity: 0;
+        visibility: hidden;
+        position: absolute;
+        transform: translateX(20px);
+
+        &--active {
+            opacity: 1;
+            visibility: visible;
+            position: static;
+            transform: none;
+        }
+    }
+}
