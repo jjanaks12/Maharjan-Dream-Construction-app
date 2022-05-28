@@ -2,45 +2,36 @@ import { VNode } from "vue"
 import { Component, Vue } from "vue-property-decorator"
 import { mapActions, mapGetters } from "vuex"
 
-import { iRent } from "@/interfaces/app"
-import RentItem from "@/components/rent/Item"
-import Paginate from "@/components/common/Paginate"
+import Modal from "@/components/common/Modal"
+import RentCreate from "@/components/rent/Create"
+import Tab from "@/components/common/tab/Index"
+import TabItem from "@/components/common/tab/Item"
+import RentList from "./List"
+import MyRent from "@/components/rent/MyRent"
 
 @Component({
     computed: {
         ...mapGetters({
-            list: 'rent/getRentList',
-            currentPage: 'rent/currentPage',
-            lastPage: 'rent/lastPage'
+            activeTab: 'rent/activeTab'
         })
     },
     methods: {
         ...mapActions({
             fetch: 'rent/fetch',
-            prev: 'rent/prevPage',
-            next: 'rent/nextPage',
-            goto: 'rent/gotoPage'
+            setActiveTab: 'rent/setActiveTab',
         })
     }
 })
 export default class Rent extends Vue {
-    private list!: Array<iRent>
+    private showCreateModal: boolean = false
     private isLoading: boolean = false
+    private activeTab!: string
 
-    private currentPage!: number
-    private lastPage!: number
     private fetch!: () => Promise<boolean>
-    private next!: () => Promise<boolean>
-    private prev!: () => Promise<boolean>
-    private goto!: (pageno: number) => Promise<boolean>
+    private setActiveTab!: (title: string) => string
 
     mounted() {
-        this.isLoading = true
-
-        this.fetch()
-            .finally(() => {
-                this.isLoading = false
-            })
+        this.init()
     }
 
     render(): VNode {
@@ -48,10 +39,38 @@ export default class Rent extends Vue {
             <section class="item__section">
                 <header class="item__section__heading">
                     <h2>Rent</h2>
+                    <div class="item__section__heading__action">
+                        <a href="#" class={{ 'btn btn__icon': true, 'animate': this.isLoading }} onClick={(event: MouseEvent) => {
+                            event.preventDefault()
+                            this.init()
+                        }}><span class="icon-loop"></span></a>
+                        <a href="#" class="btn btn__icon" onClick={(event: MouseEvent) => {
+                            event.preventDefault()
+                            this.showCreateModal = true
+                        }}><span class="icon-plus"></span></a>
+                    </div>
                 </header>
-                {this.list.map((rent: iRent) => (<RentItem item={rent} />))}
-                <Paginate current={this.currentPage} total={this.lastPage} onNext={() => this.next()} onPrev={() => this.prev()} onGoto={(pageno: number) => this.goto(pageno)} />
+                <Tab onChange={(title: string) => this.setActiveTab(title)}>
+                    <TabItem title="All" active={['All', ''].includes(this.activeTab)}>
+                        <RentList />
+                    </TabItem>
+                    <TabItem title="Mine" active={this.activeTab === 'Mine'}>
+                        <MyRent />
+                    </TabItem>
+                </Tab>
+                <Modal title="Add new Rental" v-model={this.showCreateModal}>
+                    <RentCreate onClose={() => { this.showCreateModal = false }} />
+                </Modal>
             </section>
         </main>
+    }
+
+    init() {
+        this.isLoading = true
+
+        this.fetch()
+            .finally(() => {
+                this.isLoading = false
+            })
     }
 }

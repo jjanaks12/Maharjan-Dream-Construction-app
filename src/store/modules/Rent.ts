@@ -1,9 +1,10 @@
 import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators"
-import { AxiosResponse } from "axios"
+import { AxiosError, AxiosResponse } from "axios"
 
 import { iRent, iRentResponse, RequestQuery } from '@/interfaces/app'
 import axios from '@/services/axios'
 import { SearchType } from "@/interfaces/search"
+import { iUserDetail } from "@/interfaces/auth"
 
 let params: RequestQuery = {
     params: {
@@ -11,22 +12,19 @@ let params: RequestQuery = {
     }
 }
 
-const rentInit: iRent = {
-    name: '',
-    description: '',
-    excerpt: '',
-    machinery: '',
-    price: ''
-}
-
 @Module
 export default class Rent extends VuexModule {
+    private tab: string = ''
     private rentList: iRentResponse = {
         data: [],
         current_page: 0,
         last_page: 0,
         per_page: 0,
         total: 0
+    }
+
+    get activeTab(): string {
+        return this.tab
     }
 
     get getRentList(): Array<iRent> {
@@ -48,6 +46,11 @@ export default class Rent extends VuexModule {
     @Mutation
     SET_RENT_LIST(rentList: iRentResponse): void {
         this.rentList = rentList
+    }
+
+    @Mutation
+    SET_ACTIVE_TAB(title: string) {
+        this.tab = title
     }
 
     @Action
@@ -139,9 +142,46 @@ export default class Rent extends VuexModule {
     @Action
     async getRent(id: number): Promise<iRent> {
 
-        if (this.rentList.data.length == 0)
-            await this.context.dispatch('fetch')
+        const { data } = await axios('rents/' + id)
 
-        return await this.rentList.data.find((material: iRent) => material.id === id) || rentInit
+        return data as iRent
+    }
+
+    @Action
+    save(formData: iRent): Promise<boolean> {
+        const { id: userID } = this.context.rootGetters['root/getLoggedinUser'] as iUserDetail
+
+        return new Promise((resolve, reject) => {
+            axios({
+                method: formData.id ? 'put' : 'post',
+                url: formData.id ? `/rents/users/${userID}/edit` : `/rents/users/${userID}`,
+                data: formData
+            })
+                .then(() => {
+                    this.context.dispatch('fetch')
+                    resolve(true)
+                }).catch((error: AxiosError) => {
+                    reject(error.response?.data)
+                })
+        })
+    }
+
+    @Action
+    destory(id: number): Promise<boolean> {
+        return new Promise((resolve) => {
+
+            axios.delete('user/rents/delete/' + id)
+                .then(() => {
+
+                    this.context.dispatch('fetch')
+                    resolve(true)
+                })
+                .catch(() => { })
+        })
+    }
+
+    @Action({ commit: 'SET_ACTIVE_TAB' })
+    setActiveTab(title: string): string {
+        return title
     }
 }

@@ -1,24 +1,24 @@
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
-import { VNode } from 'vue'
-import TextEditor from '../common/TextEditor'
-import { mapActions } from 'vuex'
-import { iRealState } from '@/interfaces/app'
+import { VNode } from "vue";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator"
+import TextEditor from "../common/TextEditor";
+import { iRent } from '@/interfaces/app';
+import { mapActions } from "vuex";
 
 let timer: number | null = null
 @Component({
     methods: {
         ...mapActions({
-            save: 'realstate/save'
+            save: 'rent/save'
         })
     }
 })
-export default class RealstateDescription extends Vue {
+export default class RentDescription extends Vue {
     private description: string = ''
     private isSaving: boolean = false
 
-    private save!: (formData: iRealState) => Promise<boolean>
+    private save!: (formData: iRent) => Promise<boolean>
 
-    @Prop({ required: true }) property!: iRealState
+    @Prop({ required: true }) rent!: iRent
 
     @Watch('description')
     onDescriptionChange(newChange: string, oldchange: string) {
@@ -31,12 +31,13 @@ export default class RealstateDescription extends Vue {
                 this.isSaving = true
 
                 this.save({
-                    id: this.property.id,
+                    id: this.rent.id,
                     description: this.description,
-                    excerpt: this.property.excerpt,
-                    location: this.property.location,
-                    rate: this.property.rate,
-                    unit: this.property.unit,
+                    excerpt: this.rent.excerpt,
+                    machinery: this.rent.machinery,
+                    name: this.rent.name,
+                    price: this.rent.price,
+                    published: true
                 })
                     .then(() => {
                         this.$emit('update')
@@ -49,7 +50,7 @@ export default class RealstateDescription extends Vue {
     }
 
     mounted() {
-        this.description = this.property.description
+        this.description = this.rent.description
     }
 
     constructor(props: any) {

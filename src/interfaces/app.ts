@@ -83,13 +83,15 @@ export interface iRentResponse {
 }
 
 export interface iRent {
-    id?: number
+    id?: string
     name: string
     machinery: string
     excerpt: string
     description: string
     created_at?: string
     price: string
+    published?: boolean
+    users?: Array<iUserDetail>
     [propName: string]: any
 }
 
