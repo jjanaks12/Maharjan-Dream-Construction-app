@@ -8,8 +8,12 @@ let isProductionServer = true
 if (isWindow)
     isProductionServer = !window.location.origin.includes('local')
 
+const baseURL: string = isWindow && !isProductionServer
+    ? process.env.VUE_APP_ROOT_API
+    : process.env.VUE_APP_PROD_ROOT_API
+
 const config: AxiosRequestConfig = {
-    baseURL: isWindow && isProductionServer ? process.env.VUE_APP_PROD_ROOT_API : process.env.VUE_APP_ROOT_API,
+    baseURL,
 }
 
 const instance = axios.create(config)
@@ -41,3 +45,4 @@ instance.interceptors.response.use((response: AxiosResponse): AxiosResponse => r
 })
 
 export default instance
+export { baseURL }

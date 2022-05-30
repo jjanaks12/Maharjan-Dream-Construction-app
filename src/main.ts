@@ -4,6 +4,9 @@ import App from '@/App'
 import router from '@/router'
 import store from '@/store'
 
+// Enviroment variable loading
+import('dotenv/config')
+
 // plugins
 import '@/plugins/validator'
 import '@/plugins/directive/click-outside'
