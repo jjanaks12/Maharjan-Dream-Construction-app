@@ -68,8 +68,14 @@
         }
 
         &__action {
+            display: flex;
+
             .btn {
-                margin-left: rem-calc(5px);
+                width: rem-calc(40px);
+
+                + .btn {
+                    margin-left: rem-calc(5px);
+                }
             }
         }
     }
@@ -82,6 +88,9 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        padding: rem-calc(20px 0);
+        margin-top: rem-calc(20px);
+        border-top: 1px dashed $gray;
 
         em {
             font-style: normal;

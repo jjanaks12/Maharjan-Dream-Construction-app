@@ -1,8 +1,8 @@
 import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators"
 import { AxiosResponse } from "axios"
-
-import { iOrder, orderInit } from "@/interfaces/order"
 import axios from '@/services/axios'
+
+import { iOrder, orderInit, OrderStatus } from "@/interfaces/order"
 import { APIResponse, RequestQuery } from "@/interfaces/app"
 
 let params: RequestQuery = {
@@ -40,7 +40,7 @@ export default class Order extends VuexModule {
     async fetch(query?: RequestQuery): Promise<APIResponse<iOrder>> {
         const parameter = { ...params.params, ...query }
         params = { params: parameter }
-        
+
         const { data }: AxiosResponse = await axios.get('user/order', { params: parameter })
 
         return data
@@ -79,6 +79,40 @@ export default class Order extends VuexModule {
             }
 
             resolve(true)
+        })
+    }
+
+    @Action
+    async getOrder(id: string) {
+        if (this.list.length == 0)
+            await this.context.dispatch('order/fetch', {}, { root: true })
+
+        const order = this.list.find(o => o.id === id)
+
+        return order as iOrder
+    }
+
+    @Action
+    cancelOrder(order_id: string): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+
+            axios({
+                method: "put",
+                url: `orders/${order_id}/updateOrderStatus`,
+                data: {
+                    order_status: OrderStatus.CANCELLED
+                }
+            }).then(({ status }: AxiosResponse) => {
+
+                if (status === 200)
+                    this.context.dispatch('fetch')
+                        .then(() => {
+                            resolve(true)
+                        })
+
+            }).catch(() => {
+                reject(false)
+            })
         })
     }
 }

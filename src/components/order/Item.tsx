@@ -14,7 +14,7 @@ export default class OrderItem extends Vue {
     }
 
     render(): VNode {
-        return <div class="item">
+        return <router-link class="item__card" to={{ name: 'order_detail', params: { id: this.order.id } }}>
             <div class="item__description">
                 <em class="item__date">{moment(this.order.ordered_at).local().format('Do [of] MMM, YYYY hh:mm a')}</em>
                 {this.order.delivery_date
@@ -22,7 +22,6 @@ export default class OrderItem extends Vue {
                     : null}
                 <OrderProgress current-status={this.order.order_status} />
             </div>
-            {/* <a href="#" class="item__link"><span class="icon-d-arrow"></span></a> */}
-        </div>
+        </router-link>
     }
 }

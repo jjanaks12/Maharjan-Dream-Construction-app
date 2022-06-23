@@ -15,7 +15,8 @@ import RentDescription from '@/components/rent/Description'
 @Component({
     computed: {
         ...mapGetters({
-            user: 'root/getLoggedinUser'
+            user: 'root/getLoggedinUser',
+            isLoggedIn: 'root/isLoggedIn'
         })
     },
     methods: {
@@ -33,6 +34,7 @@ export default class RentDetail extends Vue {
     private showAvailabilityModal: boolean = false
     private showEditForm: boolean = false
 
+    private isLoggedIn!: boolean
     private user!: iUserDetail
     private getRent!: (id: string) => iRent
     private save!: (formData: iRent) => Promise<boolean>
@@ -49,7 +51,7 @@ export default class RentDetail extends Vue {
     }
 
     get isMine(): boolean {
-        return this.rent.users && this.rent.users[0]
+        return this.isLoggedIn && this.rent.users && this.rent.users[0]
             ? this.rent.users[0].id === this.user.id
             : false
     }
@@ -62,8 +64,10 @@ export default class RentDetail extends Vue {
         this.isLoading = true
         const id = this.$route?.params?.id
         this.rent = await this.getRent(id)
-        this.appointment = await this.checkAppointment({ type: AppointmentType.RENT, id })
 
+        if (this.isLoggedIn) {
+            this.appointment = await this.checkAppointment({ type: AppointmentType.RENT, id })
+        }
         this.isLoading = false
     }
 
@@ -75,12 +79,13 @@ export default class RentDetail extends Vue {
                         ? [
                             //= Item header
                             <header class="item__header">
-                                {this.rent.published
-                                    ? this.isMine
-                                        ? <span class="status status__success">published</span>
-                                        : <span class="status status__success">{formatDate(this.rent.created_at)}</span>
-                                    : <a href="#" class="btn btn__xs btn__success" onClick={this.publishProperty}>Publish Now</a>
-                                }
+                                {this.isLoggedIn
+                                    ? this.rent.published
+                                        ? this.isMine
+                                            ? <span class="status status__success">published</span>
+                                            : <span class="status status__success">{formatDate(this.rent.created_at)}</span>
+                                        : <a href="#" class="btn btn__xs btn__success" onClick={this.publishProperty}>Publish Now</a>
+                                    : null}
                                 <div class="item__action">
                                     {this.isMine
                                         ? [
@@ -97,19 +102,22 @@ export default class RentDetail extends Vue {
                                         : null
                                     }
                                     {/* Back to detail Page */}
-                                    <router-link to={{ name: 'rent' }} class="back"><span class="icon-d-arrow-left"></span></router-link>
+                                    <a href="#" onClick={(event: MouseEvent) => {
+                                        event.preventDefault()
+                                        this.$router.go(-1)
+                                    }} class="back"><span class="icon-d-arrow-left"></span></a>
                                 </div>
                             </header>,
 
                             // If there is some appointment
-                            this.appointment && Object.keys(this.appointment).length > 0
+                            this.isLoggedIn && this.appointment && Object.keys(this.appointment).length > 0
                                 ? <div class="meta__info">
                                     <p>Your appointment for this propperty has <span class="text--primary">{this.appointment.status}</span> status. You will soon get updates</p>
                                 </div>
                                 : null,
 
                             // if the property is mine
-                            !this.isMine
+                            this.isLoggedIn && !this.isMine
                                 ? <div className="item__detail__header">
                                     <div class="text--right mb-4">
                                         <a href="#" class="btn btn__xs btn__primary" onClick={(event: MouseEvent) => {
@@ -143,20 +151,22 @@ export default class RentDetail extends Vue {
                 </Modal>
             </section>
 
-            {!this.isMine
-                ? [
-                    <Modal v-model={this.showAvailabilityModal}>
-                        <Appointment type={AppointmentType.RENT} onClose={() => { this.showAvailabilityModal = false }} />
-                    </Modal>
-                ]
-                : [
-                    <Modal v-model={this.showEditForm}>
-                        <RentCreate detail={this.rent} onClose={() => {
-                            this.showEditForm = false
-                            this.init()
-                        }} />
-                    </Modal>
-                ]
+            {this.isLoggedIn
+                ? !this.isMine
+                    ? [
+                        <Modal v-model={this.showAvailabilityModal}>
+                            <Appointment type={AppointmentType.RENT} onClose={() => { this.showAvailabilityModal = false }} />
+                        </Modal>
+                    ]
+                    : [
+                        <Modal v-model={this.showEditForm}>
+                            <RentCreate detail={this.rent} onClose={() => {
+                                this.showEditForm = false
+                                this.init()
+                            }} />
+                        </Modal>
+                    ]
+                : null
             }
         </main>)
     }

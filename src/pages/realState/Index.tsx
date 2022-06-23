@@ -13,7 +13,8 @@ import MyProperty from '@/components/realstate/MyProperty'
 @Component({
     computed: {
         ...mapGetters({
-            activeTab: 'realstate/activeTab'
+            activeTab: 'realstate/activeTab',
+            isLoggedIn: 'root/isLoggedIn'
         })
     },
     methods: {
@@ -27,6 +28,7 @@ export default class RealState extends Vue {
     private showCreateModal: boolean = false
     private isLoading: boolean = false
 
+    private isLoggedIn!: boolean
     private fetchProperty!: () => Promise<boolean>
     private setActiveTab!: (title: string) => string
     private activeTab!: string
@@ -49,18 +51,25 @@ export default class RealState extends Vue {
                             event.preventDefault()
                             this.showCreateModal = true
                         }}><span class="icon-plus"></span></a>
+                        {/* Back to detail Page */}
+                        <a href="#" class="btn btn__icon" onClick={(event: MouseEvent) => {
+                            event.preventDefault()
+                            this.$router.go(-1)
+                        }}><span class="icon-d-arrow-left"></span></a>
                     </div>
                 </header>
                 <Tab onChange={(title: string) => this.setActiveTab(title)}>
                     <TabItem title="All" active={['All', ''].includes(this.activeTab)}>
                         <RealStateList />
                     </TabItem>
-                    <TabItem title="Mine" active={this.activeTab === 'Mine'}>
-                        <MyProperty />
-                    </TabItem>
-                    <TabItem title="Collection" active={this.activeTab === 'Collection'}>
-                        <Collection />
-                    </TabItem>
+                    {this.isLoggedIn
+                        ? [<TabItem title="Mine" active={this.activeTab === 'Mine'}>
+                            <MyProperty />
+                        </TabItem>,
+                        <TabItem title="Collection" active={this.activeTab === 'Collection'}>
+                            <Collection />
+                        </TabItem>]
+                        : null}
                 </Tab>
                 <Modal title="Add new Property" v-model={this.showCreateModal}>
                     <RealstateCreate onClose={() => { this.showCreateModal = false }} />

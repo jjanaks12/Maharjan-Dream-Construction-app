@@ -1,9 +1,10 @@
 import { VNode } from 'vue'
 import { Component, Vue } from 'vue-property-decorator'
-import { mapActions, mapMutations } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 
 import { iMenu } from '@/interfaces/app'
 import Cart from '@/components/cart/Index'
+import { iUserDetail } from '@/interfaces/auth';
 
 const menuList: Array<iMenu> = [{
     icon: '',
@@ -25,24 +26,29 @@ const menuList: Array<iMenu> = [{
     name: 'training',
     path: 'training',
     text: 'Trainings'
-// }, {
-//     icon: '',
-//     name: 'notification',
-//     path: 'notification',
-//     text: 'Notifications'
-// }, {
-//     icon: '',
-//     name: 'order',
-//     path: 'order',
-//     text: 'My Orders'
-// }, {
-    // icon: '',
-    // name: 'account',
-    // path: 'account',
-    // text: 'My Account'
+    // }, {
+    //     icon: '',
+    //     name: 'notification',
+    //     path: 'notification',
+    //     text: 'Notifications'
+}, {
+    icon: '',
+    name: 'order',
+    path: 'order',
+    text: 'My Orders'
+}, {
+    icon: '',
+    name: 'account',
+    path: 'account',
+    text: 'My Account'
 }]
 
 @Component({
+    computed: {
+        ...mapGetters({
+            user: 'root/getLoggedinUser'
+        })
+    },
     methods: {
         ...mapMutations({
             updatePageName: 'root/SET_CURRENT_PAGE'
@@ -53,6 +59,8 @@ const menuList: Array<iMenu> = [{
     }
 })
 export default class Navigation extends Vue {
+    private user!: iUserDetail
+
     private updatePageName!: (current: string) => void
     private logout!: () => Promise<boolean>
 
@@ -72,9 +80,11 @@ export default class Navigation extends Vue {
                 </li>))}
             </ul>
             <Cart />
-            <div class="nav__footer">
-                <a href="#" onClick={this.makeLogout}>logout</a>
-            </div>
+            {this.user
+                ? <div class="nav__footer">
+                    <a href="#" onClick={this.makeLogout}>logout</a>
+                </div>
+                : null}
         </nav>)
     }
 

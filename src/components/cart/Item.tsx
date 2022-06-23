@@ -3,6 +3,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator'
 import { mapActions, mapMutations } from 'vuex'
 
 import { iCart } from '@/interfaces/cart'
+import { abbr } from '@/core/functions'
 
 @Component({
     methods: {
@@ -30,8 +31,10 @@ export default class CartItem extends Vue {
         return this.item.quantity * this.item.material.price
     }
 
-    get image(): string {
-        return this.item.material.images && this.item.material.images.length > 0 ? this.item.material.images[0].image_url : ''
+    get featuredImage(): string {
+        return this.item.material.images && this.item.material.images.length > 0
+            ? this.item.material.images[Math.floor(Math.random() * this.item.material.images.length)].image_url
+            : ''
     }
 
     /**
@@ -40,7 +43,9 @@ export default class CartItem extends Vue {
     render(): VNode {
         return (<div class="cart__item">
             <div class="cart__item__image">
-                <img src={this.image} alt={this.item.material.name} />
+                {this.featuredImage
+                ?<img src={this.featuredImage} alt={this.item.material.name} />
+                : <span class="item__image--default">{abbr(this.item.material.name)}</span>}
             </div>
             <div class="cart__item__detail">
                 <router-link to={{ name: 'material_detail', params: { id: this.item.material.id } }}>{this.item.material.name} <span>({this.item.quantity})</span></router-link>

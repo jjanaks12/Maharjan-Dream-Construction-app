@@ -12,7 +12,8 @@ import MyRent from "@/components/rent/MyRent"
 @Component({
     computed: {
         ...mapGetters({
-            activeTab: 'rent/activeTab'
+            activeTab: 'rent/activeTab',
+            isLoggedIn: 'root/isLoggedIn'
         })
     },
     methods: {
@@ -27,6 +28,7 @@ export default class Rent extends Vue {
     private isLoading: boolean = false
     private activeTab!: string
 
+    private isLoggedIn!: boolean
     private fetch!: () => Promise<boolean>
     private setActiveTab!: (title: string) => string
 
@@ -48,15 +50,22 @@ export default class Rent extends Vue {
                             event.preventDefault()
                             this.showCreateModal = true
                         }}><span class="icon-plus"></span></a>
+                        {/* Back to detail Page */}
+                        <a href="#" class="btn btn__icon" onClick={(event: MouseEvent) => {
+                            event.preventDefault()
+                            this.$router.go(-1)
+                        }}><span class="icon-d-arrow-left"></span></a>
                     </div>
                 </header>
                 <Tab onChange={(title: string) => this.setActiveTab(title)}>
                     <TabItem title="All" active={['All', ''].includes(this.activeTab)}>
                         <RentList />
                     </TabItem>
-                    <TabItem title="Mine" active={this.activeTab === 'Mine'}>
-                        <MyRent />
-                    </TabItem>
+                    {this.isLoggedIn
+                        ? <TabItem title="Mine" active={this.activeTab === 'Mine'}>
+                            <MyRent />
+                        </TabItem>
+                        : null}
                 </Tab>
                 <Modal title="Add new Rental" v-model={this.showCreateModal}>
                     <RentCreate onClose={() => { this.showCreateModal = false }} />

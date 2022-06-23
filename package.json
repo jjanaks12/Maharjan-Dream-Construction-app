@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "resources": "cordova-res ios && cordova-res android && node resources.js"
+    "resources": "cordova-res ios && cordova-res android"
   },
   "dependencies": {
     "@capacitor/android": "^3.1.1",

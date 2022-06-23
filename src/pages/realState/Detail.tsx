@@ -27,7 +27,8 @@ const slickOpt = {
 @Component({
     computed: {
         ...mapGetters({
-            user: 'root/getLoggedinUser'
+            user: 'root/getLoggedinUser',
+            isLoggedIn: 'root/isLoggedIn'
         })
     },
     methods: {
@@ -47,6 +48,7 @@ export default class RealstateDetail extends Vue {
     private showCollection: boolean = false
     private showEditForm: boolean = false
 
+    private isLoggedIn!: boolean
     private user!: iUserDetail
     private getProperty!: (id: string) => iRealState
     private deleteRealstate!: (id: string) => Promise<boolean>
@@ -63,8 +65,7 @@ export default class RealstateDetail extends Vue {
     }
 
     get isMine(): boolean {
-
-        return this.property.users && this.property.users[0]
+        return this.isLoggedIn && this.property.users && this.property.users[0]
             ? this.property.users[0].id === this.user.id
             : false
     }
@@ -77,8 +78,11 @@ export default class RealstateDetail extends Vue {
         this.isLoading = true
         const id = this.$route?.params?.id
         this.property = await this.getProperty(id)
-        this.appointment = await this.checkAppointment({ type: AppointmentType.REALSTATE, id })
-        this.fetchCollection()
+
+        if (this.isLoggedIn) {
+            this.fetchCollection()
+            this.appointment = await this.checkAppointment({ type: AppointmentType.REALSTATE, id })
+        }
 
         this.isLoading = false
 
@@ -117,37 +121,42 @@ export default class RealstateDetail extends Vue {
                                         : null
                                     }
                                     {/* Back to detail Page */}
-                                    <router-link to={{ name: 'realstate' }} class="back"><span class="icon-d-arrow-left"></span></router-link>
+                                    <a href="#" onClick={(event: MouseEvent) => {
+                                        event.preventDefault()
+                                        this.$router.go(-1)
+                                    }} class="back"><span class="icon-d-arrow-left"></span></a>
                                 </div>
                             </header>,
 
                             // If there is some appointment
-                            this.appointment && Object.keys(this.appointment).length > 0
+                            this.isLoggedIn && this.appointment && Object.keys(this.appointment).length > 0
                                 ? <div class="meta__info">
                                     <p>Your appointment for this propperty has <span class="text--primary">{this.appointment.status}</span> status. You will soon get updates</p>
                                 </div>
                                 : null,
 
                             // if the property is mine
-                            !this.isMine
-                                ? <div class="item__detail__header">
-                                    <a href="#" class="btn btn__xs btn__success" onClick={(event: MouseEvent) => {
-                                        event.preventDefault()
-                                        this.showCollection = true
-                                    }}>add to collection</a>
-
-                                    {!(this.appointment && Object.keys(this.appointment).length > 0)
-                                        ? <a href="#" class="btn btn__xs btn__primary" onClick={(event: MouseEvent) => {
+                            this.isLoggedIn
+                                ? !this.isMine
+                                    ? <div class="item__detail__header">
+                                        <a href="#" class="btn btn__xs btn__success" onClick={(event: MouseEvent) => {
                                             event.preventDefault()
-                                            this.showAvailabilityModal = true
-                                        }}>Request Appointment</a>
-                                        : null}
-                                </div>
-                                : <div class="images">
-                                    <PropertyImageUpload property={this.property} onUpdate={() => {
-                                        this.init()
-                                    }} />
-                                </div>,
+                                            this.showCollection = true
+                                        }}>add to collection</a>
+
+                                        {!(this.appointment && Object.keys(this.appointment).length > 0)
+                                            ? <a href="#" class="btn btn__xs btn__primary" onClick={(event: MouseEvent) => {
+                                                event.preventDefault()
+                                                this.showAvailabilityModal = true
+                                            }}>Request Appointment</a>
+                                            : null}
+                                    </div>
+                                    : <div class="images">
+                                        <PropertyImageUpload property={this.property} onUpdate={() => {
+                                            this.init()
+                                        }} />
+                                    </div>
+                                : null,
 
                             // if property has images show slick slider
                             this.property.images && this.property.images.length > 0 && !this.isMine
@@ -184,23 +193,26 @@ export default class RealstateDetail extends Vue {
                 </div>
             </section>
 
-            {!this.isMine
-                ? [
-                    <Modal v-model={this.showAvailabilityModal}>
-                        <Appointment onClose={() => { this.showAvailabilityModal = false }} />
-                    </Modal>,
-                    <Modal v-model={this.showCollection}>
-                        <CollectionDetail onClose={() => { this.showCollection = false }} />
-                    </Modal>
-                ]
-                : [
-                    <Modal v-model={this.showEditForm}>
-                        <RealstateCreate detail={this.property} onClose={() => {
-                            this.showEditForm = false
-                            this.init()
-                        }} />
-                    </Modal>
-                ]
+            {
+                this.isLoggedIn
+                    ? !this.isMine
+                        ? [
+                            <Modal v-model={this.showAvailabilityModal}>
+                                <Appointment onClose={() => { this.showAvailabilityModal = false }} />
+                            </Modal>,
+                            <Modal v-model={this.showCollection}>
+                                <CollectionDetail onClose={() => { this.showCollection = false }} />
+                            </Modal>
+                        ]
+                        : [
+                            <Modal v-model={this.showEditForm}>
+                                <RealstateCreate detail={this.property} onClose={() => {
+                                    this.showEditForm = false
+                                    this.init()
+                                }} />
+                            </Modal>
+                        ]
+                    : null
             }
         </main>
     }

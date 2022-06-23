@@ -15,7 +15,8 @@ const slickOpt = {
 @Component({
     computed: {
         ...mapGetters({
-            cartList: 'cart/getList'
+            cartList: 'cart/getList',
+            isLoggedIn: 'root/isLoggedIn'
         })
     },
     methods: {
@@ -28,6 +29,8 @@ const slickOpt = {
     }
 })
 export default class MaterialDetail extends Vue {
+    private isLoggedIn!: boolean
+
     private getMaterial!: (id: string) => iMaterial
     private addToCart!: (item: iMaterial) => Promise<boolean>
     private cartList!: Array<iCart>
@@ -55,24 +58,44 @@ export default class MaterialDetail extends Vue {
     }
 
     render(): VNode {
-        return (<main id="main">
+        return <main id="main">
             <section class="item__section">
-                {!this.isOnCart ? (<header class="item__section__heading">
-                    <div class="btn__holder">
-                        <a href="#" class="btn btn__xs btn__primary" onClick={(event: MouseEvent) => { event.preventDefault(); this.addToCart(this.material) }}>add to cart</a>
-                    </div>
-                </header>) : null}
+                {!this.isOnCart
+                    ? <header class="item__section__heading">
+                        <div class="btn__holder">
+                            {!this.isLoggedIn
+                                ? null
+                                : <a href="#" class="btn btn__xs btn__primary" onClick={(event: MouseEvent) => { event.preventDefault(); this.addToCart(this.material) }}>add to cart</a>
+                            }
+                            {/* Back to detail Page */}
+                            <a href="#" onClick={(event: MouseEvent) => {
+                                event.preventDefault()
+                                this.$router.go(-1)
+                            }} class="btn btn__icon"><span class="icon-d-arrow-left"></span></a>
+                        </div>
+                    </header>
+                    : <header class="item__section__heading">
+                        <div class="item__action">
+                            {/* Back to detail Page */}
+                            <a href="#" onClick={(event: MouseEvent) => {
+                                event.preventDefault()
+                                this.$router.go(-1)
+                            }} class="back"><span class="icon-d-arrow-left"></span></a>
+                        </div>
+                    </header>}
                 <div class="item__detail">
-                    <Slick class="item__detail__image" options={slickOpt} ref="materialDetailSlick">
-                        {this.material.images?.map((image: iImage) => (<img src={image.image_url} alt={this.material.name} />))}
-                    </Slick>
+                    {this.material.images && this.material.images.length > 0
+                        ? <Slick class="item__detail__image" options={slickOpt} ref="materialDetailSlick">
+                            {this.material.images?.map((image: iImage) => (<img src={image.image_url} alt={this.material.name} />))}
+                        </Slick>
+                        : null}
                     <div class="item__detail__description">
                         <h2>{this.material.name}</h2>
                         <div class="text__holder" domPropsInnerHTML={this.material.description} />
                     </div>
                 </div>
             </section>
-        </main>)
+        </main>
     }
 
     async checkRoute() {

@@ -3,13 +3,10 @@ import { newRouteConfig } from '@/interfaces/app'
 const routes: Array<newRouteConfig> = [{
     path: '/',
     name: 'home',
-    redirect: {
-      name: 'realstate'
-    },
     component: () => import('@/pages/Home'),
     meta: {
         layout: 'default',
-        type: 'authorized'
+        type: 'unauthorized'
     }
 }, {
     path: '/realstate',
@@ -17,7 +14,7 @@ const routes: Array<newRouteConfig> = [{
     component: () => import('@/pages/realState/Index'),
     meta: {
         layout: 'default',
-        type: 'authorized'
+        type: 'unauthorized'
     }
 }, {
     path: '/realstate/:id',
@@ -25,7 +22,7 @@ const routes: Array<newRouteConfig> = [{
     component: () => import('@/pages/realState/Detail'),
     meta: {
         layout: 'default',
-        type: 'authorized'
+        type: 'unauthorized'
     }
 }, {
     path: '/material',
@@ -33,7 +30,7 @@ const routes: Array<newRouteConfig> = [{
     component: () => import('@/pages/material/Index'),
     meta: {
         layout: 'default',
-        type: 'authorized'
+        type: 'unauthorized'
     }
 }, {
     path: '/material/:id',
@@ -41,7 +38,7 @@ const routes: Array<newRouteConfig> = [{
     component: () => import('@/pages/material/Detail'),
     meta: {
         layout: 'default',
-        type: 'authorized'
+        type: 'unauthorized'
     }
 }, {
 //     path: '/collection_detail/:id?',
@@ -57,7 +54,7 @@ const routes: Array<newRouteConfig> = [{
     component: () => import('@/pages/rent/Index'),
     meta: {
         layout: 'default',
-        type: 'authorized'
+        type: 'unauthorized'
     }
 }, {
     path: '/rent/:id',
@@ -65,7 +62,7 @@ const routes: Array<newRouteConfig> = [{
     component: () => import('@/pages/rent/Detail'),
     meta: {
         layout: 'default',
-        type: 'authorized'
+        type: 'unauthorized'
     }
 }, {
     path: '/training',
@@ -73,7 +70,7 @@ const routes: Array<newRouteConfig> = [{
     component: () => import('@/pages/training/Index'),
     meta: {
         layout: 'default',
-        type: 'authorized'
+        type: 'unauthorized'
     }
 }, {
     path: '/training/:id',
@@ -81,12 +78,20 @@ const routes: Array<newRouteConfig> = [{
     component: () => import('@/pages/training/Detail'),
     meta: {
         layout: 'default',
-        type: 'authorized'
+        type: 'unauthorized'
     }
 }, {
     path: '/order',
     name: 'order',
-    component: () => import('@/pages/Orders'),
+    component: () => import('@/pages/order/Index'),
+    meta: {
+        layout: 'default',
+        type: 'authorized'
+    }
+}, {
+    path: '/order/:id',
+    name: 'order_detail',
+    component: () => import('@/pages/order/Detail'),
     meta: {
         layout: 'default',
         type: 'authorized'

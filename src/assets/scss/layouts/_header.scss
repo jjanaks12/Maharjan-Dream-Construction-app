@@ -15,6 +15,23 @@
 		align-items: center;
 		justify-content: space-between;
 	}
+
+	&.home__header {
+		background: none;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: rem-calc(40px 25px 20px);
+
+		h1 {
+			background: linear-gradient(to bottom, #fefcea 0%,$primary 100%);
+			color: $primary;
+			background-clip: text;
+			-webkit-text-fill-color: transparent;
+			flex-grow: 1;
+			margin-bottom: 0;
+		}
+	}
 }
 
 .menu__opener,

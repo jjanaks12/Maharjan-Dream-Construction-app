@@ -61,10 +61,12 @@ export default class Header extends Vue {
                         event.preventDefault()
                         this.toggleNavigation(!this.showNavigation)
                     }}><span class="icon-menu"></span></button>
-                    <router-link class="auth__user" to={{ name: 'account_info' }}>
-                        <span class="icon-user"></span>
-                        <span class="text">{this.user.name}</span>
-                    </router-link>
+                    {this.user
+                        ? <router-link class="auth__user" to={{ name: 'account_info' }}>
+                            <span class="icon-user"></span>
+                            <span class="text">{this.user.name}</span>
+                        </router-link>
+                        : null}
                     <a href="#" class={{ "search__opener": true, "hide": !this.showShowSearch }} onClick={(event: MouseEvent) => {
                         event.preventDefault()
                         this.toggleSearch(true)

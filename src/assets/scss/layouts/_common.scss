@@ -174,7 +174,7 @@ mark {
 }
 
 .text--danger {
-	color: $danger !important;
+	color: $danger  !important;
 }
 
 .text--center {
@@ -186,7 +186,7 @@ mark {
 }
 
 .text--primary {
-	color: $primary !important;
+	color: $primary  !important;
 }
 
 .mb-4 {
@@ -289,17 +289,18 @@ mark {
 	0% {
 		transform: rotateZ(0deg);
 	}
+
 	100% {
 		transform: rotateZ(360deg);
 	}
 }
 
 .slide-fade-enter-active {
-	transition: all 0.3s ease;
+	transition: all 0.2s ease;
 }
 
 .slide-fade-leave-active {
-	transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+	transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
 }
 
 .slide-fade-enter,

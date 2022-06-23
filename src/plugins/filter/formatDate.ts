@@ -1,18 +1,24 @@
 import moment from "moment"
 
 const formatDate = (date: string | undefined, format: string = 'DD/MM/YYYY'): string => {
-    
-    if (format != 'DD/MM/YYYY')
-    return moment(date).local().format(format)
-    
+    let isPast: boolean = true
+    const newDate = moment(date).local()
     const diffDays = moment(date).diff(moment(), 'days')
-    
+
+    if (newDate.isAfter(moment()))
+        isPast = true
+
+    if (format != 'DD/MM/YYYY')
+        return newDate.format(format)
+
     if (diffDays >= 7)
-        return moment(date).local().format(format)
+        return newDate.format(format)
     else if (diffDays < 1)
-        return moment(date).local().fromNow()
+        return newDate.fromNow()
     else if (diffDays < 7)
-        return diffDays + 'days ago'
+        return isPast
+            ? 'in ' + diffDays + ' days'
+            : diffDays + 'days ago'
     else
         return ''
 }

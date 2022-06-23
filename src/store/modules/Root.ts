@@ -34,6 +34,10 @@ export default class Root extends VuexModule {
         return this.userDetail
     }
 
+    get isLoggedIn(): boolean {
+        return Boolean(this.token) && (this.token !== 'null') && (this.token !== 'undefined')
+    }
+
     get getToken(): string | null {
         return this.token
     }

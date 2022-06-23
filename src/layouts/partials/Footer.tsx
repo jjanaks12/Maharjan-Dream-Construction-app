@@ -45,8 +45,8 @@ export default class Footer extends Vue {
 
     updateMenu() {
         this.menus = menuList.map((menu: iMenu) => {
-            if (menu.name === 'Home')
-                menu.path = this.currentPage
+            // if (menu.name === 'Home')
+            //     menu.path = this.currentPage
             return menu
         })
     }

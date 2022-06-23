@@ -1,31 +1,65 @@
 #footer {
-	background: rgba($black, 0.3);
-	backdrop-filter: blur(20px);
-	// padding: rem-calc(15px 30px);
+	// background: rgba($black, 0.3);
 	border-radius: rem-calc(50px);
 	position: fixed;
 	right: 50%;
 	transform: translateX(50%);
 	bottom: rem-calc(20px);
 	z-index: 9999;
-	overflow: hidden;
+	// overflow: hidden;
+	z-index: 1;
+
+	&::after {
+		content: '';
+		background: linear-gradient(to top, darken($primary, 20%) 0%, $primary 100%);
+		// background: linear-gradient(to top, darken($white, 10%) 10%, darken($primary, 20%) 40%);
+		border-radius: rem-calc(50px);
+		position: absolute;
+		top: -3px;
+		right: -3px;
+		bottom: -3px;
+		left: -3px;
+		z-index: -1;
+	}
 }
 
 .footer__nav {
 	@extend %listreset;
+	background: linear-gradient(to bottom, darken($primary, 20%) 0%, $primary 100%);
 	display: flex;
 	justify-content: space-around;
+	border-radius: rem-calc(50px);
 
 	li {
 		text-align: center;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		position: relative;
+		z-index: 1;
+
+		&::after {
+			background: linear-gradient(to bottom, $white 0%, rgba($white, 0) 100%);
+			// content: '';
+			opacity: 0.4;
+			transform: scale(0.6);
+			transform-origin: 50% 0;
+			border-radius: 50%;
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			z-index: -1;
+		}
 	}
 
 	a {
 		@include animate(background);
 		@include size(#{rem-calc(70px)});
+		background: linear-gradient(to top, darken($white, 10%) 10%, darken($primary, 20%) 40%);
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
 		font-size: rem-calc(28px);
 		line-height: 1;
 		color: $primary;
@@ -34,12 +68,12 @@
 		align-items: center;
 		outline: none;
 
-		&:hover,
-		&:focus {
-			background: rgba($black, 0.2);
+		[class^=icon-],
+		[class*=" icon-"] {
+			font-weight: 900;
 		}
 	}
-	
+
 	.active a {
 		color: $white;
 	}

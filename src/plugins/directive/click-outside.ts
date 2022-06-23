@@ -27,7 +27,8 @@ Vue.directive('click-outside', {
         }, 100)
     },
 
-    unbind: function (el: any, binding: any) {
+    unbind: function (el: any) {
+        // unbind: function (el: any, binding: any) {
         // Remove Event Listeners
         document.removeEventListener('click', el.__vueClickOutside__)
         el.__vueClickOutside__ = null

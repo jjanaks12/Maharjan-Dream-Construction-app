@@ -24,14 +24,16 @@ export default class Tab extends Vue {
 
     render(): VNode {
         return <div class="tabs">
-            <ul class="tab__list">
-                {this.tabs.map((tab: any, index: number) => <li class={{ 'tab--active': this.currentTab === index }}>
-                    <a href="#" onClick={(event: MouseEvent) => {
-                        event.preventDefault()
-                        this.selectTab(index)
-                    }}>{tab.$props.title}</a>
-                </li>)}
-            </ul>
+            {this.tabs.length > 1
+                ? <ul class="tab__list">
+                    {this.tabs.map((tab: any, index: number) => <li class={{ 'tab--active': this.currentTab === index }}>
+                        <a href="#" onClick={(event: MouseEvent) => {
+                            event.preventDefault()
+                            this.selectTab(index)
+                        }}>{tab.$props.title}</a>
+                    </li>)}
+                </ul>
+                : null}
             <div class="tab__content">
                 {this.$slots.default?.map((component: VNode) => component)}
             </div>

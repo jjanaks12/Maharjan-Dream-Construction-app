@@ -2,11 +2,13 @@ import { Route, NavigationGuardNext } from 'vue-router'
 import Store from '@/store'
 
 export default (to: Route, from: Route, next: NavigationGuardNext) => {
-  const token = Store.getters['root/getToken']
+  const isLoggedIn = Store.getters['root/isLoggedIn']
 
-  if (token && token !== 'null') {
-    next({ name: 'realstate' })
+  if (isLoggedIn) {
+    next({ name: 'home' })
+    return
   }
 
   next()
+  return
 }

@@ -5,6 +5,7 @@ import { validate } from 'vee-validate'
 import { VNode } from 'vue'
 import { Component } from 'vue-property-decorator'
 import { mapActions, mapGetters } from 'vuex'
+import Brand from '@/components/common/Brand'
 
 @Component({
     computed: {
@@ -52,7 +53,8 @@ export default class Register extends FormComponent {
     render(): VNode {
         return (<section class="account__section">
             <div class="account__section__body">
-                {!this.isSuccess ? [<h1>Register</h1>,
+                {!this.isSuccess ? [<Brand />,
+                <h1>Register</h1>,
                 <form action="#" class="account__section__form" onSubmit={this.formSubmitted} novalidate>
                     <div class={{ 'form__group': true, 'input--invalid': this.errors.name.length > 0 }}>
                         <label class="sr-only" for="asf-name">Full Name</label>

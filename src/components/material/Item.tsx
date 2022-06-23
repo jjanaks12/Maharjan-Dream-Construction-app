@@ -2,6 +2,7 @@ import { VNode } from 'vue'
 import { Component, Prop, Vue } from 'vue-property-decorator'
 
 import { iMaterial } from '@/interfaces/app'
+import { abbr } from '@/core/functions'
 
 @Component
 export default class MaterialItem extends Vue {
@@ -13,7 +14,9 @@ export default class MaterialItem extends Vue {
     @Prop({ required: true }) item!: iMaterial
 
     get featuredImage(): string {
-        return this.item.images && this.item.images.length > 0 ? this.item.images[0].image_url : ''
+        return this.item.images && this.item.images.length > 0
+            ? this.item.images[(Math.floor(Math.random() * this.item.images.length))].image_url
+            : ''
     }
 
     /**
@@ -21,9 +24,15 @@ export default class MaterialItem extends Vue {
      */
     render(): VNode {
         return (<div class="item">
-            <div class="item__image"><img src={this.featuredImage} alt={this.item.name} /></div>
+            <div class="item__image">
+                {this.featuredImage
+                    ? <img src={this.featuredImage} alt={this.item.name} />
+                    : <span class="item__image--default">{abbr(this.item.name)}</span>}
+            </div>
             <div class="item__description">
                 <h3><router-link to={{ name: 'material_detail', params: { id: this.item.id } }}>{this.item.name}</router-link></h3>
+                <em class="price"><strong>Rs{this.item.price}</strong> per piece</em>
+                <span class="quantity">{this.item.quantity} piece in Stock</span>
                 <p>{this.item.excerpt}</p>
             </div>
             <router-link to={{ name: 'material_detail', params: { id: this.item.id } }} class="item__link"><span class="icon-d-arrow"></span></router-link>

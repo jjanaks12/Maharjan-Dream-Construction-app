@@ -53,6 +53,13 @@ export default class Rent extends Vue {
             <section class="item__section">
                 <header class="item__section__heading">
                     <h2>Training</h2>
+                    <div class="item__action">
+                        {/* Back to detail Page */}
+                        <a href="#" onClick={(event: MouseEvent) => {
+                            event.preventDefault()
+                            this.$router.go(-1)
+                        }} class="back"><span class="icon-d-arrow-left"></span></a>
+                    </div>
                 </header>
                 {this.list.map((rent: iRent) => (<TrainingItem item={rent} />))}
                 <Paginate current={this.currentPage} total={this.lastPage} onNext={() => this.next()} onPrev={() => this.prev()} onGoto={(pageno: number) => this.goto(pageno)} />

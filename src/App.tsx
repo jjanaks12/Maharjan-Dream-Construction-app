@@ -8,6 +8,7 @@ import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { iUserDetail } from "@/interfaces/auth"
 import Default from "@/layouts/Default"
 import Simple from "@/layouts/Simple"
+import HomePageLayout from '@/layouts/home/Index'
 
 // let hammer
 let timer: any = 0
@@ -74,8 +75,10 @@ export default class App extends Vue {
   }
 
   render(): VNode {
-    return (<transition name="fade-transition">
-      {this?.$route?.meta?.layout === 'default' ? (<Default key={1} />) : (<Simple key={2} />)}
+    return (<transition name="fade-transition" mode="out-in">
+      {this?.$route?.meta?.layout === 'default' ? <Default key={1} /> : null}
+      {this?.$route?.meta?.layout === 'simple' ? <Simple key={2} /> : null}
+      {this?.$route?.meta?.layout === 'HomePageLayout' ? <HomePageLayout key={3} /> : null}
     </transition>)
   }
 }
