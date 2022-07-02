@@ -28,7 +28,7 @@ export default class MaterialCard extends Vue {
             <div class="item__description">
                 <h3>{this.item.name}</h3>
                 <p>{this.item.excerpt}</p>
-                <em class="price">Rs<strong>{this.item.price}</strong> per piece</em>
+                <em class="price">Rs <strong>{this.item.price}</strong> per {this.item.measurement_unit}</em>
             </div>
         </router-link>
     }

@@ -23,6 +23,7 @@ let params: RequestQuery = {
 @Module
 export default class RealState extends VuexModule {
     private tab: string = ''
+    private loading: boolean = false
     private errors!: iErrorMessage
     private list: iRealStateResponse = {
         data: [],
@@ -56,6 +57,10 @@ export default class RealState extends VuexModule {
         return this.list.current_page
     }
 
+    get isLoading(): boolean {
+        return this.loading
+    }
+
     @Mutation
     SET_ERROR_MESSAGE(errorMessage: iErrorMessage): void {
         this.errors = errorMessage
@@ -71,9 +76,15 @@ export default class RealState extends VuexModule {
         this.tab = title
     }
 
+    @Mutation
+    SET_LOADING(status: boolean) {
+        this.loading = status
+    }
+
     @Action
     fetch(data: RequestQuery): Promise<boolean> {
         return new Promise((resolve, reject) => {
+            this.context.commit('SET_LOADING', true)
 
             axios.get('realStates', { ...data })
                 .then(({ data, status }: AxiosResponse) => {
@@ -86,6 +97,9 @@ export default class RealState extends VuexModule {
                 .catch((error: iErrorMessage) => {
                     this.context.commit('SET_ERROR_MESSAGE', error?.errors || { message: 'no data' })
                     reject(false)
+                })
+                .finally(() => {
+                    this.context.commit('SET_LOADING', false)
                 })
         })
     }

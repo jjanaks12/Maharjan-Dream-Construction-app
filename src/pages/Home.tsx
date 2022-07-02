@@ -1,19 +1,32 @@
 import { VNode } from 'vue'
 import { Component, Vue } from 'vue-property-decorator'
+import { mapGetters } from 'vuex'
 
 import RentCardList from '@/components/rent/CardList'
 import TrainingCardList from '@/components/training/CardList'
 import MaterialCardList from '@/components/material/CardList'
 import PropertyCardList from '@/components/realstate/CardList'
+import Order from '@/pages/order/Index'
 
-@Component
+@Component({
+	computed: {
+		...mapGetters({
+			isLoggedIn: 'root/isLoggedIn'
+		})
+	}
+})
 export default class Home extends Vue {
-  render(): VNode {
-    return <main id="main">
-      <PropertyCardList />
-      <RentCardList />
-      <MaterialCardList />
-      <TrainingCardList />
-    </main>
-  }
+	private isLoggedIn!: boolean
+
+	render(): VNode {
+		return <main id="main">
+			{this.isLoggedIn
+				? <Order />
+				: null}
+			<PropertyCardList />
+			<RentCardList />
+			<MaterialCardList />
+			<TrainingCardList />
+		</main>
+	}
 }

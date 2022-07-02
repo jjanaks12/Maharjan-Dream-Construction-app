@@ -5,10 +5,12 @@ import { mapActions, mapGetters } from 'vuex'
 import { iMaterial } from '@/interfaces/app'
 import MaterialItem from '@/components/material/Item'
 import Paginate from '@/components/common/Paginate'
+import CardLoading from '@/components/common/CardLoading'
 
 @Component({
     computed: {
         ...mapGetters({
+            isLoading: 'material/isLoading',
             list: 'material/getList',
             lastPage: 'material/lastPage',
             currentPage: 'material/currentPage'
@@ -28,6 +30,7 @@ export default class RealState extends Vue {
     private lastPage!: number
     private currentPage!: number
 
+    private isLoading!: boolean
     private fetchMaterial!: () => Promise<boolean>
     private next!: () => Promise<boolean>
     private prev!: () => Promise<boolean>
@@ -44,14 +47,15 @@ export default class RealState extends Vue {
                     <h2>Materials</h2>
                     <div class="item__action">
                         {/* Back to detail Page */}
-                        <a href="#" onClick={(event: MouseEvent) => {
-                            event.preventDefault()
-                            this.$router.go(-1)
-                        }} class="back"><span class="icon-d-arrow-left"></span></a>
+                        <router-link to={{ name: 'home' }} class="back"><span class="icon-d-arrow-left"></span></router-link>
                     </div>
                 </header>
-                {this.list.map((material: iMaterial) => (<MaterialItem item={material} />))}
-                <Paginate current={this.currentPage} total={this.lastPage} onNext={() => this.next()} onPrev={() => this.prev()} onGoto={(pageno: number) => this.goto(pageno)} />
+                {!this.isLoading
+                    ? [
+                        this.list.map((material: iMaterial) => (<MaterialItem item={material} key={material.id} />)),
+                        <Paginate current={this.currentPage} total={this.lastPage} onNext={() => this.next()} onPrev={() => this.prev()} onGoto={(pageno: number) => this.goto(pageno)} />
+                    ]
+                    : <CardLoading />}
             </section>
         </main>)
     }

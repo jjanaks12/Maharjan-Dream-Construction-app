@@ -5,6 +5,7 @@ import Slick from "vue-slick"
 
 import { iTraining } from "@/interfaces/app"
 import TrainingCard from '@/components/training/Card'
+import CardLoading from "@/components/common/CardLoading"
 
 const slickOpt = {
     rows: 0,
@@ -16,7 +17,7 @@ const slickOpt = {
 @Component({
     computed: {
         ...mapGetters({
-            trainingList: 'training/getTrainingList'
+            list: 'training/getTrainingList'
         })
     },
     methods: {
@@ -29,26 +30,28 @@ export default class TrainingCardList extends Vue {
     private isLoading: boolean = false
 
     private fetch!: () => Promise<boolean>
-    private trainingList!: Array<iTraining>
+    private list!: Array<iTraining>
 
     beforeMount() {
         this.init()
     }
 
     render(): VNode {
-        return <section class="item__section">
-            <header class="item__header">
-                <h2>Trainings</h2>
-                <div class="btn__holder">
-                    <router-link to={{ name: 'training' }}>View all</router-link>
-                </div>
-            </header>
-            {!this.isLoading
-                ? <Slick ref="slick" options={slickOpt} class="item__slider">
-                    {this.trainingList.map((training: iTraining) => <TrainingCard item={training} key={training.id} />)}
-                </Slick>
-                : null}
-        </section>
+        return this.list.length > 0
+            ? <section class="item__section">
+                <header class="item__header">
+                    <h2>Trainings</h2>
+                    <div class="btn__holder">
+                        <router-link to={{ name: 'training' }}>View all</router-link>
+                    </div>
+                </header>
+                {!this.isLoading
+                    ? <Slick ref="slick" options={slickOpt} class="item__slider">
+                        {this.list.map((training: iTraining) => <TrainingCard item={training} key={training.id} />)}
+                    </Slick>
+                    : <CardLoading />}
+            </section>
+            : <div class="sr-only">Training</div>
     }
 
     async init() {

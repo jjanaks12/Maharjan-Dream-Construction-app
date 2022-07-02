@@ -4,7 +4,8 @@ import TextEditor from '../common/TextEditor'
 import { mapActions } from 'vuex'
 import { iRealState } from '@/interfaces/app'
 
-let timer: number | null = null
+let timer: any
+
 @Component({
     methods: {
         ...mapActions({

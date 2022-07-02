@@ -221,6 +221,7 @@ export default class Root extends VuexModule {
             this.context.commit('SET_CURRENT_PAGE', 'realstate')
             this.context.commit('SET_TOKEN', null)
             this.context.commit('SET_LOGIN_USER', {})
+            this.context.commit('UPDATE_MENU', false)
             this.context.dispatch('cart/resetCart', null, { root: true })
 
             resolve(true)

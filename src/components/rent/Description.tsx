@@ -4,7 +4,7 @@ import TextEditor from "../common/TextEditor";
 import { iRent } from '@/interfaces/app';
 import { mapActions } from "vuex";
 
-let timer: number | null = null
+let timer: any
 @Component({
     methods: {
         ...mapActions({

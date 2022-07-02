@@ -23,6 +23,7 @@ const materialInit: iMaterial = {
 
 @Module
 export default class Material extends VuexModule {
+    private loading: boolean = false
     private errors!: iErrorMessage
     private materials: APIResponse<iMaterial> = {
         data: [],
@@ -52,6 +53,10 @@ export default class Material extends VuexModule {
         return this.materials.current_page
     }
 
+    get isLoading(): boolean {
+        return this.loading
+    }
+
     @Mutation
     SET_ERROR_MESSAGE(errorMessage: iErrorMessage): void {
         this.errors = errorMessage
@@ -62,9 +67,16 @@ export default class Material extends VuexModule {
         this.materials = list
     }
 
+    @Mutation
+    SET_LOADING(status: boolean) {
+        this.loading = status
+    }
+
     @Action({ commit: 'SET_STATE_LIST' })
     async fetch(query: RequestQuery): Promise<APIResponse<iMaterial>> {
+        this.context.commit('SET_LOADING', true)
         const { data }: AxiosResponse = await axios.get('materials', { ...query })
+        this.context.commit('SET_LOADING', false)
 
         return data
     }

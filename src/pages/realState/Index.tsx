@@ -52,10 +52,7 @@ export default class RealState extends Vue {
                             this.showCreateModal = true
                         }}><span class="icon-plus"></span></a>
                         {/* Back to detail Page */}
-                        <a href="#" class="btn btn__icon" onClick={(event: MouseEvent) => {
-                            event.preventDefault()
-                            this.$router.go(-1)
-                        }}><span class="icon-d-arrow-left"></span></a>
+                        <router-link to={{ name: 'home' }} class="btn btn__icon"><span class="icon-d-arrow-left"></span></router-link>
                     </div>
                 </header>
                 <Tab onChange={(title: string) => this.setActiveTab(title)}>

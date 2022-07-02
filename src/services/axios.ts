@@ -9,8 +9,8 @@ if (isWindow)
     isProductionServer = !window.location.origin.includes('local')
 
 const baseURL: string = isWindow && !isProductionServer
-    ? process.env.VUE_APP_ROOT_API
-    : process.env.VUE_APP_PROD_ROOT_API
+    ? process.env.VUE_APP_ROOT_API as string
+    : process.env.VUE_APP_PROD_ROOT_API as string
 
 const config: AxiosRequestConfig = {
     baseURL,

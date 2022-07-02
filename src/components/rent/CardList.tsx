@@ -5,6 +5,7 @@ import { mapActions, mapGetters } from "vuex"
 import { iRent } from "@/interfaces/app"
 import RentCard from '@/components/rent/Card'
 import Slick from "vue-slick"
+import CardLoading from "@/components/common/CardLoading"
 
 const slickOpt = {
     rows: 0,
@@ -36,19 +37,21 @@ export default class RentCardList extends Vue {
     }
 
     render(): VNode {
-        return <section class="item__section">
-            <header class="item__header">
-                <h2>Rent</h2>
-                <div class="btn__holder">
-                    <router-link to={{ name: 'rent' }}>View all</router-link>
-                </div>
-            </header>
-            {!this.isLoading
-                ? <Slick ref="slick" options={slickOpt} class="item__slider">
-                    {this.list.map((rent: iRent) => <RentCard item={rent} />)}
-                </Slick>
-                : null}
-        </section>
+        return this.list.length > 0
+            ? <section class="item__section">
+                <header class="item__header">
+                    <h2>Rent</h2>
+                    <div class="btn__holder">
+                        <router-link to={{ name: 'rent' }}>View all</router-link>
+                    </div>
+                </header>
+                {!this.isLoading
+                    ? <Slick ref="slick" options={slickOpt} class="item__slider">
+                        {this.list.map((rent: iRent) => <RentCard item={rent} />)}
+                    </Slick>
+                    : <CardLoading />}
+            </section>
+            : <div class="sr-only">Rents</div>
     }
 
     async init() {

@@ -30,28 +30,30 @@ export default class Paginate extends Vue {
      */
     render(): VNode {
         return (<nav class="pagination">
-            {this.total > 1 ? <ul class="">
-                {this.current > 1
-                    ? <li><a href="#" class="prev" onClick={(event: MouseEvent) => {
-                        event.preventDefault()
-                        this.$emit('prev')
-                    }}>prev</a></li>
-                    : null}
-                {this.pages.map((pageno: number) => <li>
-                    {pageno === this.current
-                        ? <strong>{pageno}</strong>
-                        : <a href="#" onClick={(event: MouseEvent) => {
+            {this.total > 1
+                ? <ul class="">
+                    {this.current > 1
+                        ? <li><a href="#" class="prev" onClick={(event: MouseEvent) => {
                             event.preventDefault()
-                            this.$emit('goto', pageno)
-                        }}>{pageno}</a>}
-                </li>)}
-                {this.current < this.total
-                    ? <li><a href="#" class="next" onClick={(event: MouseEvent) => {
-                        event.preventDefault()
-                        this.$emit('next')
-                    }}>next</a></li>
-                    : null}
-            </ul> : null}
+                            this.$emit('prev')
+                        }}>prev</a></li>
+                        : null}
+                    {this.pages.map((pageno: number) => <li>
+                        {pageno === this.current
+                            ? <strong>{pageno}</strong>
+                            : <a href="#" onClick={(event: MouseEvent) => {
+                                event.preventDefault()
+                                this.$emit('goto', pageno)
+                            }}>{pageno}</a>}
+                    </li>)}
+                    {this.current < this.total
+                        ? <li><a href="#" class="next" onClick={(event: MouseEvent) => {
+                            event.preventDefault()
+                            this.$emit('next')
+                        }}>next</a></li>
+                        : null}
+                </ul>
+                : null}
         </nav>)
     }
 }

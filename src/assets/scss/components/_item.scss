@@ -43,6 +43,7 @@
 	align-items: center;
 	padding: rem-calc(18px 20px);
 	margin-bottom: rem-calc(15px);
+	border-radius: 15px;
 
 	@include media(">=tablet") {
 		padding: rem-calc(18px 40px 13px);
@@ -60,9 +61,14 @@
 	align-items: center;
 	margin-bottom: rem-calc(12px);
 
-	.home__page &,
-	.default__page & {
-		padding: rem-calc(0 20px);
+	.btn__holder {
+		.btn {
+			vertical-align: middle;
+
+			+ .btn {
+				margin-left: rem-calc(10px);
+			}
+		}
 	}
 }
 
@@ -160,8 +166,6 @@
 }
 
 .item__detail {
-	padding: rem-calc(0 25px);
-
 	p {
 		margin-bottom: rem-calc(15px);
 	}

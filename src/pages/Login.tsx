@@ -118,7 +118,7 @@ export default class Login extends FormComponent {
           if (data) {
             this.errors = { ...this.errors, ...this.errorList }
             this.$store.dispatch('root/fetchUser')
-            this.$router.push({ name: 'realstate' })
+            this.$router.push({ name: 'home' })
           }
 
         } finally {

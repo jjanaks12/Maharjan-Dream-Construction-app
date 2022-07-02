@@ -4,7 +4,8 @@ import { mapActions, mapGetters } from "vuex"
 import Slick from "vue-slick"
 
 import { iRealState } from "@/interfaces/app"
-import RealStateCard from './Card'
+import RealStateCard from '@/components/realstate/Card'
+import CardLoading from "@/components/common/CardLoading"
 
 const slickOpt = {
     rows: 0,
@@ -36,19 +37,21 @@ export default class PropertyCardList extends Vue {
     }
 
     render(): VNode {
-        return <section class="item__section">
-            <header class="item__header">
-                <h2>Realstate</h2>
-                <div class="btn__holder">
-                    <router-link to={{ name: 'realstate' }}>View all</router-link>
-                </div>
-            </header>
-            {!this.isLoading
-                ? <Slick ref="slick" options={slickOpt} class="item__slider">
-                    {this.list.map((property: iRealState) => <RealStateCard item={property} />)}
-                </Slick>
-                : null}
-        </section>
+        return this.list.length > 0
+            ? <section class="item__section">
+                <header class="item__header">
+                    <h2>Realstate</h2>
+                    <div class="btn__holder">
+                        <router-link to={{ name: 'realstate' }}>View all</router-link>
+                    </div>
+                </header>
+                {!this.isLoading
+                    ? <Slick ref="slick" options={slickOpt} class="item__slider">
+                        {this.list.map((property: iRealState) => <RealStateCard item={property} />)}
+                    </Slick>
+                    : <CardLoading />}
+            </section>
+            : <div class="sr-only">RealState</div>
     }
 
     async init() {

@@ -5,13 +5,15 @@ import { mapActions, mapGetters } from "vuex"
 import { iRent } from "@/interfaces/app"
 import TrainingItem from "@/components/training/Item"
 import Paginate from "@/components/common/Paginate"
+import CardLoading from "@/components/common/CardLoading"
 
 @Component({
     computed: {
         ...mapGetters({
             list: 'training/getTrainingList',
             currentPage: 'training/currentPage',
-            lastPage: 'training/lastPage'
+            lastPage: 'training/lastPage',
+            isLoggedIn: 'root/isLoggedIn'
         })
     },
     methods: {
@@ -28,6 +30,7 @@ export default class Rent extends Vue {
     private list!: Array<iRent>
     private isLoading: boolean = false
 
+    private isLoggedIn!: boolean
     private currentPage!: number
     private lastPage!: number
     private fetch!: () => Promise<boolean>
@@ -41,7 +44,8 @@ export default class Rent extends Vue {
 
         this.fetch()
             .then(() => {
-                this.fetchEnrolled()
+                if (this.isLoggedIn)
+                    this.fetchEnrolled()
             })
             .finally(() => {
                 this.isLoading = false
@@ -55,14 +59,16 @@ export default class Rent extends Vue {
                     <h2>Training</h2>
                     <div class="item__action">
                         {/* Back to detail Page */}
-                        <a href="#" onClick={(event: MouseEvent) => {
-                            event.preventDefault()
-                            this.$router.go(-1)
-                        }} class="back"><span class="icon-d-arrow-left"></span></a>
+                        <router-link to={{ name: 'home' }} class="back"><span class="icon-d-arrow-left"></span></router-link>
                     </div>
                 </header>
-                {this.list.map((rent: iRent) => (<TrainingItem item={rent} />))}
-                <Paginate current={this.currentPage} total={this.lastPage} onNext={() => this.next()} onPrev={() => this.prev()} onGoto={(pageno: number) => this.goto(pageno)} />
+                {!this.isLoading
+                    ? [
+                        this.list.map((rent: iRent) => (<TrainingItem item={rent} />)),
+                        <Paginate current={this.currentPage} total={this.lastPage} onNext={() => this.next()} onPrev={() => this.prev()} onGoto={(pageno: number) => this.goto(pageno)} />
+                    ]
+                    : <CardLoading />
+                }
             </section>
         </main>
     }

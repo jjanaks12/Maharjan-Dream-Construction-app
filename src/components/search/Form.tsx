@@ -2,7 +2,7 @@ import { VNode } from 'vue'
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import { mapActions, mapGetters } from 'vuex'
 
-let timer: number
+let timer: any
 
 const searchText: { [propName: string]: string } = {
     realstate: 'Address, suburb, postcard or state',

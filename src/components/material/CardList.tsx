@@ -5,6 +5,7 @@ import Slick from "vue-slick"
 
 import { iMaterial } from '@/interfaces/app'
 import MaterialCard from '@/components/material/Card'
+import CardLoading from '@/components/common/CardLoading'
 
 const slickOpt = {
     rows: 0,
@@ -36,7 +37,8 @@ export default class MaterialCardList extends Vue {
     }
 
     render(): VNode {
-        return <section class="item__section">
+        return this.list.length > 0
+        ? <section class="item__section">
             <header class="item__header">
                 <h2>Materials</h2>
                 <div class="btn__holder">
@@ -47,8 +49,9 @@ export default class MaterialCardList extends Vue {
                 ? <Slick ref="slick" options={slickOpt} class="item__slider">
                     {this.list.map((material: iMaterial) => <MaterialCard item={material} />)}
                 </Slick>
-                : null}
+                : <CardLoading />}
         </section>
+        : <div class="sr-only">Materials</div>
     }
 
     async init() {

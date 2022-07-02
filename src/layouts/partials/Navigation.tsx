@@ -113,7 +113,7 @@ export default class Navigation extends Vue {
 
         this.logout()
             .then(() => {
-                this.$router.push({ name: 'login' })
+                this.$router.push({ name: 'home' })
             })
     }
 }

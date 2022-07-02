@@ -5,10 +5,12 @@ import { mapActions, mapGetters } from 'vuex'
 import RealestateItem from '@/components/realstate/Item'
 import { iRealState } from '@/interfaces/app'
 import Paginate from '@/components/common/Paginate'
+import CardLoading from '@/components/common/CardLoading'
 
 @Component({
     computed: {
         ...mapGetters({
+            isLoading: 'realstate/isLoading',
             propertyList: 'realstate/getPropertyList',
             lastPage: 'realstate/lastPage',
             currentPage: 'realstate/currentPage'
@@ -23,6 +25,7 @@ import Paginate from '@/components/common/Paginate'
     }
 })
 export default class RealStateList extends Vue {
+    private isLoading!: boolean
     private propertyList!: Array<iRealState>
     private lastPage!: number
     private currentPage!: number
@@ -35,9 +38,11 @@ export default class RealStateList extends Vue {
     @Prop({ default: false }) isMe!: boolean
 
     render(): VNode {
-        return <div>
-            {this.propertyList.map((property: iRealState) => (<RealestateItem item={property} />))}
-            <Paginate current={this.currentPage} total={this.lastPage} onNext={() => this.next()} onPrev={() => this.prev()} onGoto={(pageno: number) => this.goto(pageno)} />
-        </div>
+        return !this.isLoading
+            ? <div>
+                {this.propertyList.map((property: iRealState) => (<RealestateItem item={property} />))}
+                <Paginate current={this.currentPage} total={this.lastPage} onNext={() => this.next()} onPrev={() => this.prev()} onGoto={(pageno: number) => this.goto(pageno)} />
+            </div>
+            : <CardLoading />
     }
 }

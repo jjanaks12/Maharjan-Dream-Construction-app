@@ -22,17 +22,8 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-plus:before {
+.icon-pdf:before {
   content: "\e914";
-}
-.icon-upload:before {
-  content: "\e913";
-}
-.icon-edit:before {
-  content: "\e911";
-}
-.icon-loop:before {
-  content: "\e910";
 }
 .icon-order:before {
   content: "\e900";
@@ -52,18 +43,6 @@
 .icon-d-arrow-left:before {
   content: "\e905";
 }
-.icon-d-arrow:before {
-  content: "\e912";
-}
-.icon-check-o:before {
-  content: "\e90b";
-}
-.icon-check:before {
-  content: "\e90d";
-}
-.icon-close:before {
-  content: "\e90e";
-}
 .icon-home:before {
   content: "\e906";
 }
@@ -79,9 +58,33 @@
 .icon-user:before {
   content: "\e90a";
 }
+.icon-check-o:before {
+  content: "\e90b";
+}
 .icon-spinner:before {
   content: "\e90c";
 }
+.icon-check:before {
+  content: "\e90d";
+}
+.icon-close:before {
+  content: "\e90e";
+}
 .icon-trash:before {
   content: "\e90f";
+}
+.icon-loop:before {
+  content: "\e910";
+}
+.icon-edit:before {
+  content: "\e911";
+}
+.icon-d-arrow:before {
+  content: "\e912";
+}
+.icon-upload:before {
+  content: "\e913";
+}
+.icon-plus:before {
+  content: "\e915";
 }

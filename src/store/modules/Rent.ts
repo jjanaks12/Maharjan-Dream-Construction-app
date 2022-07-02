@@ -15,6 +15,7 @@ let params: RequestQuery = {
 @Module
 export default class Rent extends VuexModule {
     private tab: string = ''
+    private loading: boolean = false
     private rentList: iRentResponse = {
         data: [],
         current_page: 0,
@@ -43,6 +44,10 @@ export default class Rent extends VuexModule {
         return this.rentList.current_page
     }
 
+    get isLoading(): boolean {
+        return this.loading
+    }
+
     @Mutation
     SET_RENT_LIST(rentList: iRentResponse): void {
         this.rentList = rentList
@@ -53,14 +58,23 @@ export default class Rent extends VuexModule {
         this.tab = title
     }
 
+    @Mutation
+    SET_LOADING(status: boolean) {
+        this.loading = status
+    }
+
     @Action
     fetch(data: RequestQuery): Promise<boolean> {
         return new Promise((resolve) => {
+            this.context.commit('SET_LOADING', true)
 
             axios.get('rents', { ...data })
                 .then((response: AxiosResponse) => {
                     this.context.commit('SET_RENT_LIST', response.data)
                     resolve(true)
+                })
+                .finally(() => {
+                    this.context.commit('SET_LOADING', false)
                 })
         })
     }

@@ -283,6 +283,23 @@ mark {
 		text-transform: uppercase;
 		border-radius: rem-calc(15px);
 	}
+
+	&__cancelled {
+		background: $danger;
+		text-transform: uppercase;
+		border-radius: rem-calc(15px);
+	}
+}
+
+.order--print {
+	.text-wrap {
+		max-width: rem-calc(100px);
+		white-space: nowrap;
+		display: inline-block;
+		vertical-align: middle;
+		text-overflow: ellipsis;
+		overflow: hidden;
+	}
 }
 
 @keyframes rotate {

@@ -46,15 +46,15 @@ export default class Rent extends Vue {
                             event.preventDefault()
                             this.init()
                         }}><span class="icon-loop"></span></a>
-                        <a href="#" class="btn btn__icon" onClick={(event: MouseEvent) => {
-                            event.preventDefault()
-                            this.showCreateModal = true
-                        }}><span class="icon-plus"></span></a>
+
+                        {this.isLoggedIn
+                            ? <a href="#" class="btn btn__icon" onClick={(event: MouseEvent) => {
+                                event.preventDefault()
+                                this.showCreateModal = true
+                            }}><span class="icon-plus"></span></a>
+                            : null}
                         {/* Back to detail Page */}
-                        <a href="#" class="btn btn__icon" onClick={(event: MouseEvent) => {
-                            event.preventDefault()
-                            this.$router.go(-1)
-                        }}><span class="icon-d-arrow-left"></span></a>
+                        <router-link to={{ name: 'home' }} class="btn btn__icon"><span class="icon-d-arrow-left"></span></router-link>
                     </div>
                 </header>
                 <Tab onChange={(title: string) => this.setActiveTab(title)}>

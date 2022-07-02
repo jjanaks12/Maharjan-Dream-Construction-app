@@ -3,20 +3,17 @@ import '@/assets/scss/main.scss'
 import { Component, Vue, Watch } from "vue-property-decorator"
 import { VNode } from "vue/types/umd"
 import { mapActions, mapGetters, mapMutations } from 'vuex'
-// import Hammer from 'hammerjs'
 
-import { iUserDetail } from "@/interfaces/auth"
 import Default from "@/layouts/Default"
 import Simple from "@/layouts/Simple"
 import HomePageLayout from '@/layouts/home/Index'
 
-// let hammer
 let timer: any = 0
 
 @Component({
   computed: {
     ...mapGetters({
-      userDetail: 'root/getLoggedinUser',
+      isLoggedIn: 'root/isLoggedIn',
       showMenu: 'root/isMenuActive'
     })
   },
@@ -30,29 +27,10 @@ let timer: any = 0
   }
 })
 export default class App extends Vue {
-  // private showMenu!: boolean
   private fetchUser!: () => Promise<boolean>
-  // private toggleNavigation!: (status: boolean) => void
-  private userDetail!: iUserDetail
+  private isLoggedIn!: boolean
 
   mounted() {
-    // const self = this
-
-    // setTimeout(() => {
-    //   const el: HTMLElement | null = document.querySelector('#wrapper')
-
-    //   if (el) {
-    //     hammer = new Hammer(el, {})
-    //     hammer.get('swipe').set({ direction: Hammer.DIRECTION_HORIZONTAL })
-
-    //     hammer.on("swipe", function () {
-    //       console.log('a');
-          
-    //       self.toggleNavigation(!self.showMenu)
-    //     })
-    //   }
-    // }, 500)
-
     this.fetchUser()
   }
 
@@ -60,7 +38,7 @@ export default class App extends Vue {
   routeChanged() {
     this.$store.commit('root/SET_ERROR_MESSAGE', '')
 
-    if (this.userDetail && Object.keys(this.userDetail).length === 0)
+    if (this.isLoggedIn)
       this.fetchUser()
   }
 
@@ -71,7 +49,7 @@ export default class App extends Vue {
 
     timer = setTimeout(() => {
       this.$store.commit('root/SET_ERROR_MESSAGE', '')
-    }, 7000)
+    }, 3000)
   }
 
   render(): VNode {

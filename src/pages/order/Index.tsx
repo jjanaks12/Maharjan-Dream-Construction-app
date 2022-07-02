@@ -52,14 +52,14 @@ export default class Order extends Vue {
         return <section class="item__section">
             <header class="item__header">
                 <h2>My orders</h2>
-                <div class="item__action">
+                <div class="btn__holder">
                     {this.cartCount > 0
                         ? <a class="btn btn__xs btn__success" onClick={(event: MouseEvent) => {
                             event.preventDefault()
                             this.showModal = true
                         }}>place your order</a>
                         : null}
-                    <a href="#" onClick={(event: MouseEvent) => {
+                    <a href="#" class="btn btn__icon" onClick={(event: MouseEvent) => {
                         event.preventDefault()
                         this.getOrder()
                     }}><span class={{ "icon-loop d-inline-block": true, animate: this.isLoading }}></span></a>
