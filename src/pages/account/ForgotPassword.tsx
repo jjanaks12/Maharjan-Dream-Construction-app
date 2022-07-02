@@ -96,7 +96,7 @@ export default class ForgotPassword extends FormComponent {
                     if (!data) {
                         this.errors = { ...this.errors, ...this.errorList }
                     } else {
-                        // this.isSuccess = true
+                        this.isSuccess = true
                     }
                 } finally {
                     this.isLoading = false
