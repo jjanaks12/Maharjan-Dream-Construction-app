@@ -1,15 +1,15 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { VNode } from 'vue'
 import { mapActions } from 'vuex'
-import Slick from 'vue-slick'
 import { Printd } from 'printd'
+
+import Slick from 'vue-slick'
 
 import { iOrder, OrderStatus } from '@/interfaces/order'
 import OrderProgress from '@/components/order/Status'
 import MaterialCard from '@/components/material/Card'
 import { iMaterial } from '@/interfaces/app'
 import { formatDate } from '@/plugins/filter'
-import Modal from '@/components/common/Modal'
 
 const slickOpt = {
     rows: 0,
@@ -43,11 +43,7 @@ export default class OrderDetail extends Vue {
             <header class="item__section__heading">
                 <h1 class="h2">Order Detail</h1>
                 <div class="item__action">
-                    <a href="#" onClick={(event: MouseEvent) => {
-                        event.preventDefault()
-
-                        this.showPDFModal = true
-                    }}><span class="icon-pdf"></span></a>
+                    <a href="#" onClick={this.downloadPDF}><span class="icon-pdf"></span></a>
                     <a href="#" class="btn btn__icon" onClick={(event: MouseEvent) => {
                         event.preventDefault()
 
@@ -93,79 +89,73 @@ export default class OrderDetail extends Vue {
             </footer>
 
             {/* Preparing for PDF download */}
-            <Modal v-model={this.showPDFModal}>
-                <div class="text--right">
-                    <a href="#" class="btn btn__danger btn__icon" onClick={this.downloadPDF}><span class="icon-pdf"></span></a>
-                </div>
-                {/* PDF Layout */}
-                {/* <PDFLayout order={this.order} ref="PDFDownload" /> */}
-                <div class="order--print" ref="PDFDownload" style="font-family: Arial, sans-serif;">
-                    <dl>
-                        <dt>ID</dt>
-                        <dd style="margin-left: 0; margin-bottom: 10px;">{this.order.id}</dd>
-                        <dt>Order Status</dt>
-                        <dd style="margin-left: 0; margin-bottom: 10px;"><strong style="text-transform: uppercase;">{this.order.order_status}</strong></dd>
-                        <dt>Payment Status</dt>
-                        <dd style="margin-left: 0; margin-bottom: 10px;"><strong style="text-transform: uppercase;">{this.order.payment_status}</strong></dd>
-                        <dt>Ordered At</dt>
-                        <dd style="margin-left: 0; margin-bottom: 10px;">{formatDate(this.order.ordered_at, process.env.VUE_APP_DATE_FORMAT)}</dd>
-                        {this.order.user
-                            ? [
-                                <dt>Ordered By</dt>,
-                                <dd style="margin-left: 0; margin-bottom: 10px;">{this.order.user.name}</dd>
-                            ]
-                            : null}
-                        {this.order.order_status !== OrderStatus.CANCELLED
-                            ? [
-                                <dt>Delivery Detail</dt>,
-                                <dd style="margin-left: 0; margin-bottom: 10px;">
-                                    <dl>
-                                        <dt>Address</dt>
-                                        <dd style="margin-left: 0; margin-bottom: 10px;">{this.order.delivery_address}</dd>
-                                        <dt>Cost</dt>
-                                        <dd style="margin-left: 0; margin-bottom: 10px;">Rs. {this.order.delivery_charge}</dd>
-                                        {this.order.delivery_date
-                                            ? [
-                                                <dt>Date</dt>,
-                                                <dd style="margin-left: 0; margin-bottom: 10px;">{formatDate(this.order.delivery_date)}</dd>
-                                            ]
-                                            : null}
-                                    </dl>
-                                </dd>
-                            ]
-                            : null}
-                        {this.order.material
-                            ? [
-                                <dt>Order Summary</dt>,
-                                <dd style="margin-left: 0; margin-bottom: 10px;">
-                                    <table style="width: 100%; border: 1px solid #606060; border-spacing: 0;">
-                                        <thead>
-                                            <tr>
-                                                <th style="text-align: left; padding: 0 5px; border-bottom: 1px solid #606060;">ID</th>
-                                                <th style="text-align: left; padding: 0 5px; border-bottom: 1px solid #606060; border-left: 1px solid #606060;">Name</th>
-                                                <th style="text-align: left; padding: 0 5px; border-bottom: 1px solid #606060; border-left: 1px solid #606060;">Price</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {this.order.material.map((material: iMaterial) => <tr style="border-bottom: 1px solid #606060;">
-                                                <td style="white-space: nowrap; padding: 0 5px; border-bottom: 1px solid #606060;"><span class="text-wrap">{material.id}</span></td>
-                                                <td style="width: 40%; padding: 0 5px; border-bottom: 1px solid #606060; border-left: 1px solid #606060;">{material.name}</td>
-                                                <td style="width: 70px; padding: 0 5px; border-bottom: 1px solid #606060; border-left: 1px solid #606060;">Rs. {material.price}</td>
-                                            </tr>)}
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <th style="text-align: left; padding: 0 5px;" colspan="2">Total</th>
-                                                <th style="text-align: left; padding: 0 5px; border-left: 1px solid #606060;">Rs. {this.order.total}</th>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </dd>
-                            ]
-                            : null}
-                    </dl>
-                </div>
-            </Modal>
+            {/* PDF Layout */}
+            <div class="order--print sr-only" ref="PDFDownload" style="font-family: Arial, sans-serif;">
+                <dl>
+                    <dt>ID</dt>
+                    <dd style="margin-left: 0; margin-bottom: 10px;">{this.order.id}</dd>
+                    <dt>Order Status</dt>
+                    <dd style="margin-left: 0; margin-bottom: 10px;"><strong style="text-transform: uppercase;">{this.order.order_status}</strong></dd>
+                    <dt>Payment Status</dt>
+                    <dd style="margin-left: 0; margin-bottom: 10px;"><strong style="text-transform: uppercase;">{this.order.payment_status}</strong></dd>
+                    <dt>Ordered At</dt>
+                    <dd style="margin-left: 0; margin-bottom: 10px;">{formatDate(this.order.ordered_at, process.env.VUE_APP_DATE_FORMAT)}</dd>
+                    {this.order.user
+                        ? [
+                            <dt>Ordered By</dt>,
+                            <dd style="margin-left: 0; margin-bottom: 10px;">{this.order.user.name}</dd>
+                        ]
+                        : null}
+                    {this.order.order_status !== OrderStatus.CANCELLED
+                        ? [
+                            <dt>Delivery Detail</dt>,
+                            <dd style="margin-left: 0; margin-bottom: 10px;">
+                                <dl>
+                                    <dt>Address</dt>
+                                    <dd style="margin-left: 0; margin-bottom: 10px;">{this.order.delivery_address}</dd>
+                                    <dt>Cost</dt>
+                                    <dd style="margin-left: 0; margin-bottom: 10px;">Rs. {this.order.delivery_charge}</dd>
+                                    {this.order.delivery_date
+                                        ? [
+                                            <dt>Date</dt>,
+                                            <dd style="margin-left: 0; margin-bottom: 10px;">{formatDate(this.order.delivery_date)}</dd>
+                                        ]
+                                        : null}
+                                </dl>
+                            </dd>
+                        ]
+                        : null}
+                    {this.order.material
+                        ? [
+                            <dt>Order Summary</dt>,
+                            <dd style="margin-left: 0; margin-bottom: 10px;">
+                                <table style="width: 100%; border: 1px solid #606060; border-spacing: 0;">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align: left; padding: 0 5px; border-bottom: 1px solid #606060;">ID</th>
+                                            <th style="text-align: left; padding: 0 5px; border-bottom: 1px solid #606060; border-left: 1px solid #606060;">Name</th>
+                                            <th style="text-align: left; padding: 0 5px; border-bottom: 1px solid #606060; border-left: 1px solid #606060;">Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {this.order.material.map((material: iMaterial) => <tr style="border-bottom: 1px solid #606060;">
+                                            <td style="white-space: nowrap; padding: 0 5px; border-bottom: 1px solid #606060;"><span class="text-wrap">{material.id}</span></td>
+                                            <td style="width: 40%; padding: 0 5px; border-bottom: 1px solid #606060; border-left: 1px solid #606060;">{material.name}</td>
+                                            <td style="width: 70px; padding: 0 5px; border-bottom: 1px solid #606060; border-left: 1px solid #606060;">Rs. {material.price}</td>
+                                        </tr>)}
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th style="text-align: left; padding: 0 5px;" colspan="2">Total</th>
+                                            <th style="text-align: left; padding: 0 5px; border-left: 1px solid #606060;">Rs. {this.order.total}</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </dd>
+                        ]
+                        : null}
+                </dl>
+            </div>
         </section>
     }
 
@@ -180,9 +170,11 @@ export default class OrderDetail extends Vue {
 
         const PDF = new Printd()
 
-        if (this.$refs.PDFDownload)
+        if (this.$refs.PDFDownload) {
             PDF.print(this.$refs.PDFDownload as HTMLElement, [], [], ({ launchPrint }) => {
+                alert(typeof launchPrint)
                 launchPrint()
             })
+        }
     }
 }
