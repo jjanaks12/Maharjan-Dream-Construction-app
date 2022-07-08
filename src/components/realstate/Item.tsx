@@ -4,6 +4,8 @@ import { Component, Prop, Vue } from 'vue-property-decorator'
 import RealestateService from './Services'
 import { iRealState } from '@/interfaces/app'
 
+import logo from '@/assets/images/logo.svg'
+
 @Component
 export default class RealestateItem extends Vue {
 
@@ -14,26 +16,24 @@ export default class RealestateItem extends Vue {
     @Prop({ required: true }) item!: iRealState
 
     get featuredImage(): string {
-        return this.item.images && this.item.images.length > 0 ? this.item.images[0].image_url : ''
+        return this.item.images && this.item.images.length > 0
+            ? this.item.images[0].image_url
+            : logo
     }
 
     /**
      * @returns VNode
      */
     render(): VNode {
-        return (<div class="item">
-            {this.featuredImage
-                ? <div class="item__image">
-                    <img src={this.featuredImage} alt={this.item.location} />
-                </div>
-                : null
-            }
+        return <router-link to={{ name: 'realstate_detail', params: { id: this.item.id } }} class="item">
+            <div class="item__image">
+                <img src={this.featuredImage} alt={this.item.location} />
+            </div>
             <div class="item__description">
-                <h3><router-link to={{ name: 'realstate_detail', params: { id: this.item.id } }}>{this.item.location}</router-link></h3>
+                <h3>{this.item.location}</h3>
                 <p>{this.item.excerpt}</p>
                 {this.item.detail ? (<RealestateService item={this.item.detail} />) : null}
             </div>
-            <router-link to={{ name: 'realstate_detail', params: { id: this.item.id } }} class="item__link"><span class="icon-d-arrow"></span></router-link>
-        </div>)
+        </router-link>
     }
 }

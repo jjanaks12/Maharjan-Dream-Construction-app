@@ -2,6 +2,8 @@ import { Component, Prop, Vue } from "vue-property-decorator"
 import { VNode } from "vue"
 import { iRealState } from '@/interfaces/app';
 
+import logo from '@/assets/images/logo.svg'
+
 @Component
 export default class RealStateCard extends Vue {
 
@@ -14,7 +16,7 @@ export default class RealStateCard extends Vue {
     get image(): string {
         return this.item.images && this.item.images.length > 0
             ? this.item.images[Math.floor(Math.random() * this.item?.images.length)]?.image_url
-            : ''
+            : logo
     }
 
     /**

@@ -110,6 +110,7 @@
 
 	img {
 		@include size(100%);
+		background: $white;
 		object-fit: cover;
 	}
 
