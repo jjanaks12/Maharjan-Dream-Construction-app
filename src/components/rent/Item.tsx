@@ -16,12 +16,11 @@ export default class RentItem extends Vue {
      * @returns VNode
      */
     render(): VNode {
-        return (<div class="item">
+        return <router-link to={{ name: 'rent_detail', params: { id: this.item.id } }} class="item">
             <div class="item__description">
-                <h3><router-link to={{ name: 'rent_detail', params: { id: this.item.id } }}>{this.item.name}</router-link></h3>
+                <h3>{this.item.name}</h3>
                 <p>{this.item.excerpt}</p>
             </div>
-            <router-link to={{ name: 'rent_detail', params: { id: this.item.id } }} class="item__link"><span class="icon-d-arrow"></span></router-link>
-        </div>)
+        </router-link>
     }
 }
