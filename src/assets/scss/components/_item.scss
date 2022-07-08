@@ -404,29 +404,23 @@
 		grid-gap: rem-calc(8px);
 		margin-bottom: rem-calc(15px);
 
-		.custom__input {
+		.upload__btn {
+			background: none;
+			color: $white;
 			height: rem-calc(160px);
 			grid-column: 1/ 3;
 			grid-row: 1/3;
 			display: flex;
 			justify-content: center;
 			align-items: center;
+			flex-direction: column;
+			padding: rem-calc(0 5px);
 			border: 1px dashed $gray;
 			border-radius: 8px;
 
-			input {
-				position: absolute;
-				opacity: 0;
-				visibility: hidden;
-			}
-
-			&__text {
-				text-align: center;
-				padding: rem-calc(0 5px);
-
-				strong {
-					display: block;
-				}
+			strong {
+				display: block;
+				margin-bottom: rem-calc(8px);
 			}
 		}
 

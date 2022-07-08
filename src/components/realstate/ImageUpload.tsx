@@ -1,8 +1,11 @@
 import { Component, Prop, Vue } from "vue-property-decorator"
 import { VNode } from "vue"
+import { mapActions } from "vuex"
+import { Camera, CameraResultType, CameraSource, Photo } from "@capacitor/camera"
+import { Filesystem } from "@capacitor/filesystem"
+import { Capacitor } from '@capacitor/core'
 
 import { iImage, iRealState } from "@/interfaces/app"
-import { mapActions } from "vuex"
 
 @Component({
     methods: {
@@ -13,7 +16,7 @@ import { mapActions } from "vuex"
     }
 })
 export default class PropertyImageUpload extends Vue {
-    private images: Array<ArrayBuffer> = []
+    private images: Array<string> = []
     private isSaving: boolean = false
     private imageList: Array<iImage> = []
 
@@ -33,19 +36,16 @@ export default class PropertyImageUpload extends Vue {
 
     render(): VNode {
         return <div class="image__list">
-            <label class="custom__input">
-                <input type="file" multiple onChange={this.onChange} accept="image/*" />
-                <div class="custom__input__text">
-                    {this.images.length > 0
-                        ? <span>{this.images.length} image{this.images.length > 1 ? 's' : ''} selected</span>
-                        : null}
-                    <strong>Upload an image</strong>
-                    <span>PNG, JPG, GIF is supported</span>
-                </div>
-            </label>
+            <button onClick={this.selectPhoto} class="upload__btn">
+                {this.images.length > 0
+                    ? <span>{this.images.length} image{this.images.length > 1 ? 's' : ''} selected</span>
+                    : null}
+                <strong>Upload an image</strong>
+                <span>PNG, JPG, GIF is supported</span>
+            </button>
 
             {/* newly added images */}
-            {this.images.map((image: ArrayBuffer, index: number) => <div class="image">
+            {this.images.map((image: string, index: number) => <div class="image">
                 <img src={image} alt="image description" />
                 <a href="#" class="remove" onClick={(event: MouseEvent) => {
                     event.preventDefault()
@@ -76,35 +76,6 @@ export default class PropertyImageUpload extends Vue {
         </div>
     }
 
-    onChange(event: Event) {
-        const element = event.target as HTMLInputElement
-        const fileList: FileList | null = element.files
-        const readers: Array<FileReader> = []
-
-        if (fileList) {
-            for (let index: number = 0; index < fileList.length; index++) {
-                const fileReader: FileReader = new FileReader()
-                const uploadedFile: File | null = fileList.item(index)
-
-                if (uploadedFile) {
-                    fileReader.readAsDataURL(uploadedFile)
-                    readers.push(fileReader)
-                }
-            }
-        }
-
-        Promise.all(readers)
-            .then(() => {
-                readers.forEach((fileReader: FileReader) => {
-                    fileReader.onload = () => {
-                        if (fileReader.result) {
-                            this.images.push(fileReader.result as ArrayBuffer)
-                        }
-                    }
-                })
-            })
-    }
-
     removeImage(index: number) {
         this.images.splice(index, 1)
     }
@@ -133,5 +104,55 @@ export default class PropertyImageUpload extends Vue {
             .then(() => {
                 this.imageList.splice(index, 1)
             })
+    }
+
+    async selectPhoto() {
+        const image = await Camera.getPhoto({
+            quality: 90,
+            allowEditing: false,
+            resultType: CameraResultType.Uri,
+            source: CameraSource.Photos
+        })
+
+        this.saveImage(image)
+    }
+
+    async saveImage(photo: Photo) {
+        const base64Data = await this.readAsBase64(photo) as string
+
+        this.images.push(base64Data)
+    }
+
+    async readAsBase64(photo: Photo) {
+        if (['ios', 'android'].includes(Capacitor.getPlatform())) {
+
+            if (photo.path) {
+                const file = await Filesystem.readFile({
+                    path: photo.path,
+                })
+
+                return 'data:image/jpeg;base64,' + file.data
+            }
+        } else {
+            if (photo.webPath) {
+                const response = await fetch(photo.webPath)
+                const blob = await response.blob()
+
+                return await this.convertBlobToBase64(blob) as string
+            }
+        }
+    }
+
+    convertBlobToBase64(blob: Blob) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader()
+
+            reader.onerror = reject
+            reader.onload = () => {
+                resolve(reader.result)
+            }
+
+            reader.readAsDataURL(blob)
+        })
     }
 }

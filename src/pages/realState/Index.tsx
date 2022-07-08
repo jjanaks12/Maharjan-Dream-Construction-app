@@ -27,6 +27,7 @@ import MyProperty from '@/components/realstate/MyProperty'
 export default class RealState extends Vue {
     private showCreateModal: boolean = false
     private isLoading: boolean = false
+    private shouldUpdate: boolean = false
 
     private isLoggedIn!: boolean
     private fetchProperty!: () => Promise<boolean>
@@ -63,7 +64,7 @@ export default class RealState extends Vue {
                     </TabItem>
                     {this.isLoggedIn
                         ? [<TabItem title="Mine" active={this.activeTab === 'Mine'}>
-                            <MyProperty />
+                            <MyProperty should-update={this.shouldUpdate} onUpdate={() => this.shouldUpdate = false} />
                         </TabItem>,
                         <TabItem title="Collection" active={this.activeTab === 'Collection'}>
                             <Collection />
@@ -71,7 +72,11 @@ export default class RealState extends Vue {
                         : null}
                 </Tab>
                 <Modal title="Add new Property" v-model={this.showCreateModal}>
-                    <RealstateCreate onClose={() => { this.showCreateModal = false }} />
+                    <RealstateCreate onClose={() => {
+                        this.showCreateModal = false
+                        this.shouldUpdate = true
+                        this.init()
+                    }} />
                 </Modal>
             </section>
         </main>)
@@ -79,6 +84,7 @@ export default class RealState extends Vue {
 
     init() {
         this.isLoading = true
+        this.shouldUpdate = true
         this.fetchProperty()
             .finally(() => {
                 this.isLoading = false

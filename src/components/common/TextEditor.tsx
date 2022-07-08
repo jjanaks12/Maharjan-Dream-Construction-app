@@ -44,6 +44,7 @@ export default class TextEditor extends Vue {
                     <button type="button" onClick={() => this.editor.chain().focus().setHeading({ level: 4 }).run()}>h4</button>
                     <button type="button" onClick={() => this.editor.chain().focus().setHeading({ level: 5 }).run()}>h5</button>
                     <button type="button" onClick={() => this.editor.chain().focus().setHeading({ level: 6 }).run()}>h6</button>
+                    <button type="button" onClick={() => this.editor.chain().focus().setParagraph().run()}>p</button>
                 </div>
                 <button type="button" onClick={() => this.editor.chain().focus().toggleBulletList().run()}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
