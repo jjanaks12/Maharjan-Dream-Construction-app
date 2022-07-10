@@ -27,6 +27,7 @@ export default class Rent extends Vue {
     private showCreateModal: boolean = false
     private isLoading: boolean = false
     private activeTab!: string
+    private shouldUpdate: boolean = false
 
     private isLoggedIn!: boolean
     private fetch!: () => Promise<boolean>
@@ -63,12 +64,16 @@ export default class Rent extends Vue {
                     </TabItem>
                     {this.isLoggedIn
                         ? <TabItem title="Mine" active={this.activeTab === 'Mine'}>
-                            <MyRent />
+                            <MyRent should-update={this.shouldUpdate} onUpdate={() => { this.shouldUpdate = false }} />
                         </TabItem>
                         : null}
                 </Tab>
                 <Modal title="Add new Rental" v-model={this.showCreateModal}>
-                    <RentCreate onClose={() => { this.showCreateModal = false }} />
+                    <RentCreate onClose={() => {
+                        this.showCreateModal = false,
+                            this.shouldUpdate = true
+                        this.init()
+                    }} />
                 </Modal>
             </section>
         </main>
@@ -76,6 +81,7 @@ export default class Rent extends Vue {
 
     init() {
         this.isLoading = true
+        this.shouldUpdate = true
 
         this.fetch()
             .finally(() => {

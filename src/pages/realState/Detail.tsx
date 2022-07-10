@@ -13,7 +13,7 @@ import Modal from '@/components/common/Modal'
 import Appointment from '@/components/realstate/Appointment'
 import CollectionDetail from '@/components/collection/Detail'
 import RealstateCreate from '@/components/realstate/Create'
-import PropertyImageUpload from '@/components/realstate/ImageUpload'
+import PropertyImageUpload from '@/components/realstate/ImageList'
 import RealstateDescription from '@/components/realstate/Description'
 import ServiceDetail from '@/components/realstate/ServiceDetail'
 import { formatDate } from '@/plugins/filter'
@@ -152,9 +152,7 @@ export default class RealstateDetail extends Vue {
                                             : null}
                                     </div>
                                     : <div class="images">
-                                        <PropertyImageUpload property={this.property} onUpdate={() => {
-                                            this.init()
-                                        }} />
+                                        <PropertyImageUpload property={this.property} onUpdate={() => { this.init() }} />
                                     </div>
                                 : null,
 
