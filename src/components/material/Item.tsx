@@ -23,19 +23,18 @@ export default class MaterialItem extends Vue {
      * @returns VNode
      */
     render(): VNode {
-        return (<div class="item">
+        return <router-link to={{ name: 'material_detail', params: { id: this.item.id } }} class="item">
             <div class="item__image">
                 {this.featuredImage
                     ? <img src={this.featuredImage} alt={this.item.name} />
                     : <span class="item__image--default">{abbr(this.item.name)}</span>}
             </div>
             <div class="item__description">
-                <h3><router-link to={{ name: 'material_detail', params: { id: this.item.id } }}>{this.item.name}</router-link></h3>
+                <h3>{this.item.name}</h3>
                 <em class="price"><strong>Rs{this.item.price}</strong> per piece</em>
                 <span class="quantity">{this.item.quantity} piece in Stock</span>
                 <p>{this.item.excerpt}</p>
             </div>
-            <router-link to={{ name: 'material_detail', params: { id: this.item.id } }} class="item__link"><span class="icon-d-arrow"></span></router-link>
-        </div>)
+        </router-link>
     }
 }

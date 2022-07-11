@@ -13,6 +13,14 @@ html {
 	@include media(">=tablet") {
 		font-size: 1.93vw;
 	}
+
+	&.is-web-view {
+		font-size: 12px;
+
+		@include media('>=tablet') {
+			font-size: 12px;
+		}
+	}
 }
 
 body {
@@ -129,6 +137,11 @@ mark {
 		@include size(#{rem-calc(450px)});
 		bottom: rem-calc(-50px);
 		left: rem-calc(-150px);
+	}
+
+	.is-web-view & {
+		max-width: 480px;
+		margin: 0 auto;
 	}
 }
 

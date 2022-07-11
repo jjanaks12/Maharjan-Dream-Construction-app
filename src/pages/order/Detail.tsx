@@ -1,9 +1,15 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { VNode } from 'vue'
 import { mapActions } from 'vuex'
-import { Printd } from 'printd'
-
 import Slick from 'vue-slick'
+
+/* for PDF Generate */
+import pdfMake from "pdfmake/build/pdfmake"
+import pdfFonts from 'pdfmake/build/vfs_fonts.js'
+import { TDocumentDefinitions } from 'pdfmake/interfaces'
+import { Capacitor } from '@capacitor/core'
+import { Directory, Filesystem } from '@capacitor/filesystem'
+import { DocumentViewer } from '@awesome-cordova-plugins/document-viewer'
 
 import { iOrder, OrderStatus } from '@/interfaces/order'
 import OrderProgress from '@/components/order/Status'
@@ -31,13 +37,65 @@ export default class OrderDetail extends Vue {
     private isLoading: boolean = false
     private showPDFModal: boolean = false
 
+    private docDefination: TDocumentDefinitions = {
+        pageSize: 'A4',
+        pageOrientation: 'portrait',
+        content: [],
+        styles: {
+            header: {
+                fontSize: 18,
+                bold: true,
+                margin: [0, 0, 0, 10]
+            },
+            tableExample: {
+                margin: [0, 5, 0, 15]
+            },
+            tableHeader: {
+                bold: true,
+                fontSize: 13,
+                color: 'black'
+            }
+        }
+    }
+
     private getOrder!: (id: string) => Promise<iOrder>
     private cancelOrder!: (id: string) => Promise<boolean>
 
-    mounted() {
-        this.init()
+    /**
+     * @returns void
+     * @params void
+     * @descrption runs on components added, calls init function then prepare for PDF's content
+     */
+    async mounted() {
+        await this.init()
+
+        this.docDefination.content = [
+            'ID:\n3c4ad94b-0b75-4cec-a903-868847f235ba\n\nOrder Status:\nCancelled\n\nPayment Status:\nUnPaid\n\nOrdered At:\n2022-07-01\n\nOrdered By:\nKuame Mcclure\n\n',
+            {
+                text: 'Order Summary',
+                style: 'header'
+            }, {
+                style: 'tableExample',
+                table: {
+                    widths: ['*', '*', 100],
+                    body: [
+                        [{ text: 'ID', bold: true }, { text: "Name", bold: true }, { text: "Price", bold: true }],
+                        ['fa811afc-fd73-45da-a4e3-b208128e38d1', 'totam', 'Rs. 633'],
+                        ['fa811afc-fd73-45da-a4e3-b208128e38d1', 'totam', 'Rs. 633'],
+                        [{ text: 'Sub Total:', colSpan: 2, bold: true, alignment: 'right' }, '', 'Rs. 1266'],
+                        [{ text: 'Deliver Charge:', colSpan: 2, bold: true, alignment: 'right' }, '', 'Rs. 2000'],
+                        [{ text: 'Total:', colSpan: 2, bold: true, alignment: 'right' }, '', 'Rs. 3266']
+                    ]
+                }
+            },
+        ]
     }
 
+    /**
+     * @returns (VNode)Virtial Node for vue component
+     * @params void
+     * @description contains order's layouts
+     */
     render(): VNode {
         return <section class="item__section">
             <header class="item__section__heading">
@@ -159,21 +217,63 @@ export default class OrderDetail extends Vue {
         </section>
     }
 
+    /**
+     * @returns void
+     * @params void
+     * @description gets order with order's Id
+     **/
     async init() {
         this.isLoading = true
         this.order = await this.getOrder(this.$route.params.id)
         this.isLoading = false
     }
 
+    /**
+     * @returns void
+     * @params event is MouseEvent
+     * @description downloads PDF on button click
+     **/
     downloadPDF(event: MouseEvent) {
         event.preventDefault()
 
-        const PDF = new Printd()
+        const fileName = 'order-' + (this.order.id ? this.order.id : '')
 
-        if (this.$refs.PDFDownload) {
-            PDF.print(this.$refs.PDFDownload as HTMLElement, [], [], ({ launchPrint }) => {
-                alert(typeof launchPrint)
-                launchPrint()
+        if (pdfMake.vfs === undefined)
+            pdfMake.vfs = pdfFonts.pdfMake.vfs
+
+        const pdfOBJ = pdfMake.createPdf(this.docDefination)
+
+        if (Capacitor.getPlatform().toLowerCase() === 'web') {
+            pdfOBJ.download(fileName)
+        } else {
+            pdfOBJ.getBase64(async (data) => {
+                try {
+                    const path = `${fileName}.pdf`
+
+                    const apdf = await Filesystem.writeFile({
+                        path,
+                        data,
+                        directory: Directory.Library,
+                        recursive: true
+                    })
+
+                    const finalURI = await Filesystem.getUri({
+                        directory: Directory.Library,
+                        path
+                    })
+
+                    DocumentViewer.viewDocument(finalURI.uri, 'application/pdf', {
+                        title: fileName,
+                        print: {
+                            enabled: true
+                        }
+                    })
+
+                    console.log(apdf);
+                    
+                } catch (e) {
+                    console.log('Unable to write file ', e);
+                }
             })
         }
     }
